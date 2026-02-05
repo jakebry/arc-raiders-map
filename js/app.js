@@ -67,12 +67,16 @@ function initLeafletMap(map) {
 
     L.imageOverlay(map.image, [[0, 0], [map.height, map.width]]).addTo(leafletMap);
 
-    // Fit the original map content (inside the blurred border) to the viewport
+    // Fit the original map content (inside the blurred border) to the viewport.
+    // Short delay ensures the container has rendered and has a valid size.
     var contentBounds = L.latLngBounds(
         [map.border, map.border],
         [map.height - map.border, map.width - map.border]
     );
-    leafletMap.fitBounds(contentBounds);
+    setTimeout(() => {
+        leafletMap.invalidateSize();
+        leafletMap.fitBounds(contentBounds, { padding: [10, 10] });
+    }, 100);
 }
 
 // --- Rarity Filter Bar ---

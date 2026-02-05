@@ -10,7 +10,7 @@ const MAPS = [
     { id: 'spaceport',     name: 'Spaceport',         image: 'images/maps/spaceport.jpg',     preview: 'images/preview/spaceport.jpg',     width: 4896, height: 4896, border: 400 },
     { id: 'buried_city',   name: 'Buried City',       image: 'images/maps/buried_city.jpg',   preview: 'images/preview/buried_city.jpg',   width: 4896, height: 4896, border: 400 },
     { id: 'blue_gate',     name: 'Blue Gate',         image: 'images/maps/blue_gate.jpg',     preview: 'images/preview/blue_gate.jpg',     width: 4896, height: 3872, border: 400 },
-    { id: 'stella_montis', name: 'Stella Montis',     image: 'images/maps/stella_montis.jpg', preview: 'images/preview/stella_montis.jpg', width: 4896, height: 3872, border: 400 }
+    { id: 'stella_montis', name: 'Stella Montis',     image: 'images/maps/stella_montis.jpg', preview: 'images/preview/stella_montis.jpg', width: 4896, height: 6378, border: 400 }
 ];
 
 const RARITIES = [
@@ -50,7 +50,7 @@ const KEYS = [
     // --- Stella Montis ---
     { id: 'sm_assembly',          map: 'stella_montis', name: 'Stella Montis Assembly Admin Key',        rarity: 'uncommon', coords: [1300, 2200], location: 'Assembly Hallway — Locked Door' },
     { id: 'sm_medical',           map: 'stella_montis', name: 'Stella Montis Medical Storage Key',       rarity: 'uncommon', coords: [2350, 2600], location: 'Medical Storage Area' },
-    { id: 'sm_archives',          map: 'stella_montis', name: 'Stella Montis Archives Key',              rarity: 'rare',     coords: [1075, 3400],  location: 'Seat Vault Area — Tunnel End Door' },
+    { id: 'sm_archives',          map: 'stella_montis', name: 'Stella Montis Archives Key',              rarity: 'rare',     coords: [4320, 3400],  location: 'Seat Vault Area — Tunnel End Door (Lower Level)' },
     { id: 'sm_security',          map: 'stella_montis', name: 'Stella Montis Security Checkpoint Key',   rarity: 'epic',     coords: [1600, 1000],  location: 'Security Checkpoint Access Point' },
 
     // --- Special: Raider Hatch Key (multiple pins per map) ---
@@ -63,7 +63,7 @@ const KEYS = [
     { id: 'hatch_bg_1',           map: 'blue_gate',    name: 'Raider Hatch Key',               rarity: 'rare', coords: [1150, 3800], location: 'Extraction Hatch — Mountain Ridge' },
     { id: 'hatch_bg_2',           map: 'blue_gate',    name: 'Raider Hatch Key',               rarity: 'rare', coords: [2500, 1000],  location: 'Extraction Hatch — Underground Exit' },
     { id: 'hatch_sm_1',           map: 'stella_montis', name: 'Raider Hatch Key',              rarity: 'rare', coords: [700, 2800],  location: 'Extraction Hatch — Assembly Roof' },
-    { id: 'hatch_sm_2',           map: 'stella_montis', name: 'Raider Hatch Key',              rarity: 'rare', coords: [2650, 1800], location: 'Extraction Hatch — Lower Tunnels' }
+    { id: 'hatch_sm_2',           map: 'stella_montis', name: 'Raider Hatch Key',              rarity: 'rare', coords: [5020, 1800], location: 'Extraction Hatch — Lower Tunnels' }
 ];
 
 // Helper: get rarity object by id
