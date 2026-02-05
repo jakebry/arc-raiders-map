@@ -323,3 +323,48 @@ html, body {
     0%, 100% { opacity: 1; box-shadow: 0 0 12px currentColor; }
     50%      { opacity: 0.8; box-shadow: 0 0 20px currentColor; }
 }
+
+/* --- Mobile --- */
+@media (max-width: 700px) {
+    .map-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 12px;
+    }
+
+    #screen-map {
+        flex-direction: column;
+    }
+
+    #map-container {
+        flex: 1;
+        min-height: 0;
+    }
+
+    #key-panel {
+        width: 100%;
+        min-width: unset;
+        max-height: 45vh;
+        border-left: none;
+        border-top: 1px solid #1e1e28;
+        overflow-y: auto;
+        flex-direction: column;
+    }
+
+    #key-list {
+        max-height: 200px;
+    }
+
+    #map-ui-overlay {
+        padding: 8px 12px;
+    }
+
+    #screen-select header h1 {
+        font-size: 1.8rem;
+    }
+}
+
+@media (max-width: 400px) {
+    .map-grid {
+        grid-template-columns: 1fr;
+    }
+}
