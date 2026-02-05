@@ -71,13 +71,19 @@ function initLeafletMap(map) {
     leafletMap = L.map('leaflet-map', {
         crs: L.CRS.Simple,
         zoom: 0,
-        minZoom: -3,
+        minZoom: -5,  // Will be overridden dynamically
         maxZoom: 3,
         zoomControl: true,
-        attributionControl: false
+        attributionControl: false,
+        maxBoundsViscosity: 1.0  // Hard bounds (not elastic)
     });
 
     var config = getCurrentImageConfig();
+
+    // Set max bounds to the full image (prevents panning outside)
+    var imageBounds = L.latLngBounds([[0, 0], [config.height, config.width]]);
+    leafletMap.setMaxBounds(imageBounds);
+
     mapOverlay = L.imageOverlay(config.image, [[0, 0], [config.height, config.width]]).addTo(leafletMap);
 
     // Fit the original map content (inside the blurred border) to the viewport.
@@ -88,6 +94,15 @@ function initLeafletMap(map) {
     );
     setTimeout(() => {
         leafletMap.invalidateSize();
+
+        // Calculate minimum zoom to prevent black areas from showing
+        var container = leafletMap.getContainer();
+        var containerWidth = container.offsetWidth;
+        var containerHeight = container.offsetHeight;
+        var scaleNeeded = Math.max(containerWidth / config.width, containerHeight / config.height);
+        var minZoom = Math.log2(scaleNeeded);
+        leafletMap.setMinZoom(minZoom);
+
         leafletMap.fitBounds(contentBounds, { padding: [10, 10] });
     }, 100);
 }
@@ -150,7 +165,20 @@ function switchLevel(level) {
     // Swap the map overlay
     if (mapOverlay) mapOverlay.remove();
     var config = getCurrentImageConfig();
+
+    // Update max bounds for new image dimensions
+    var imageBounds = L.latLngBounds([[0, 0], [config.height, config.width]]);
+    leafletMap.setMaxBounds(imageBounds);
+
     mapOverlay = L.imageOverlay(config.image, [[0, 0], [config.height, config.width]]).addTo(leafletMap);
+
+    // Recalculate minimum zoom for new image dimensions
+    var container = leafletMap.getContainer();
+    var containerWidth = container.offsetWidth;
+    var containerHeight = container.offsetHeight;
+    var scaleNeeded = Math.max(containerWidth / config.width, containerHeight / config.height);
+    var minZoom = Math.log2(scaleNeeded);
+    leafletMap.setMinZoom(minZoom);
 
     // Re-fit to new content bounds
     var contentBounds = L.latLngBounds(

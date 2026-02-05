@@ -26,49 +26,48 @@ const RARITIES = [
 
 const KEYS = [
     // --- Dam Battlegrounds ---
-    { id: 'dam_surveillance',     map: 'dam',          name: 'Dam Surveillance Key',          rarity: 'uncommon', coords: [1222, 1600],  location: 'Water Treatment Control Room' },
-    { id: 'dam_staff_room',       map: 'dam',          name: 'Dam Staff Room Key',            rarity: 'uncommon', coords: [948, 3200],  location: 'Control Tower — Staff Quarters' },
-    { id: 'dam_utility',          map: 'dam',          name: 'Dam Utility Key',               rarity: 'uncommon', coords: [2591, 2200], location: 'Utility Room (Lower Level)' },
-    { id: 'dam_testing_annex',    map: 'dam',          name: 'Dam Testing Annex Key',         rarity: 'rare',     coords: [2044, 3600], location: 'Testing Annex — Two Doors Inside' },
-    { id: 'dam_control_tower',    map: 'dam',          name: 'Dam Control Center Tower Key',  rarity: 'epic',     coords: [857, 3000],  location: 'Control Tower — Upper Level Room' },
+    { id: 'dam_surveillance',     map: 'dam',          name: 'Dam Surveillance Key',          rarity: 'uncommon', coords: [1222, 1600],  location: 'Water Treatment Control — Southwestern Hallway' },
+    { id: 'dam_staff_room',       map: 'dam',          name: 'Dam Staff Room Key',            rarity: 'uncommon', coords: [948, 3200],  location: 'Research & Administration — First Floor' },
+    { id: 'dam_testing_annex',    map: 'dam',          name: 'Dam Testing Annex Key',         rarity: 'rare',     coords: [2044, 3600], location: 'Testing Annex — Ground Floor (Two Doors)' },
+    { id: 'dam_control_tower',    map: 'dam',          name: 'Dam Control Tower Key',         rarity: 'epic',     coords: [857, 3000],  location: 'Control Tower — Top Floor' },
 
     // --- Spaceport ---
-    { id: 'sp_trench_tower',      map: 'spaceport',    name: 'Spaceport Trench Tower Key',    rarity: 'uncommon', coords: [1800, 2000], location: 'North & South Trench Towers' },
-    { id: 'sp_warehouse',         map: 'spaceport',    name: 'Spaceport Warehouse Key',       rarity: 'uncommon', coords: [3000, 3400], location: 'Shipping Warehouse — Upper Floors' },
-    { id: 'sp_ground_control',    map: 'spaceport',    name: 'Spaceport Ground Control Key',  rarity: 'uncommon', coords: [1200, 2600],  location: 'Control Tower A6 — Upper Level' },
+    { id: 'sp_trench_tower',      map: 'spaceport',    name: 'Spaceport Trench Tower Key',    rarity: 'uncommon', coords: [1800, 2000], location: 'North or South Trench Tower (Between West/East Hangers)' },
+    { id: 'sp_warehouse',         map: 'spaceport',    name: 'Spaceport Warehouse Key',       rarity: 'uncommon', coords: [3000, 3400], location: 'Shipping Warehouse — Top of Catwalk' },
+    { id: 'sp_ground_control',    map: 'spaceport',    name: 'Spaceport Ground Control Key',  rarity: 'uncommon', coords: [1200, 2600],  location: 'Ground Control Tower — Upper Level' },
     { id: 'sp_container_storage', map: 'spaceport',    name: 'Spaceport Container Storage Key', rarity: 'rare',   coords: [1400, 3800], location: 'Container Storage — Top Floor Red Door' },
-    { id: 'sp_outskirts_bunker',  map: 'spaceport',    name: 'Spaceport Outskirts Bunker Key',  rarity: 'rare',   coords: [3600, 1000],  location: 'Outskirts Bunker' },
+    { id: 'sp_outskirts_bunker',  map: 'spaceport',    name: 'Spaceport Outskirts Bunker Key',  rarity: 'rare',   coords: [3600, 1000],  location: 'Outskirts Bunker — Western Map Boundary' },
 
     // --- Buried City ---
-    { id: 'bc_residential',       map: 'buried_city',  name: 'Buried City Residential Master Key', rarity: 'uncommon', coords: [2000, 1800], location: 'Multiple Apartment Doors' },
-    { id: 'bc_jkv',               map: 'buried_city',  name: 'Buried City JKV Employee Card',      rarity: 'uncommon', coords: [2400, 3000], location: 'Space Travel Building — Fourth Floor' },
-    { id: 'bc_hospital',          map: 'buried_city',  name: 'Buried City Hospital Key',           rarity: 'rare',     coords: [1600, 3400], location: 'Hospital — Third Floor Room' },
-    { id: 'bc_town_hall',         map: 'buried_city',  name: 'Buried City Town Hall Key',          rarity: 'epic',     coords: [1200, 2200],  location: 'Town Hall — Main Door' },
+    { id: 'bc_residential',       map: 'buried_city',  name: 'Buried City Residential Master Key', rarity: 'uncommon', coords: [2000, 1800], location: 'Plaza Rosa Area / Grandioso Apartments' },
+    { id: 'bc_jkv',               map: 'buried_city',  name: 'Buried City JKV Employee Card',      rarity: 'uncommon', coords: [2400, 3000], location: 'Space Travel Building — Northeast Section' },
+    { id: 'bc_hospital',          map: 'buried_city',  name: 'Buried City Hospital Key',           rarity: 'rare',     coords: [1600, 3400], location: 'Hospital — Third Floor Northwest' },
+    { id: 'bc_town_hall',         map: 'buried_city',  name: 'Buried City Town Hall Key',          rarity: 'epic',     coords: [1200, 2200],  location: 'Town Hall — Northern Side Ground Level' },
 
     // --- Blue Gate ---
-    { id: 'bg_village',           map: 'blue_gate',    name: 'Blue Gate Village Key',              rarity: 'uncommon', coords: [2050, 1400], location: 'Old Village Building Entrance' },
-    { id: 'bg_patrol_car',        map: 'blue_gate',    name: 'Blue Gate Patrol Car Key',           rarity: 'uncommon', coords: [2650, 2800], location: 'Patrol Car — Rear Door' },
-    { id: 'bg_comm_tower',        map: 'blue_gate',    name: 'Blue Gate Communication Tower Key',  rarity: 'rare',     coords: [850, 3200],  location: 'Communication Tower — Locked Room' },
-    { id: 'bg_cellar',            map: 'blue_gate',    name: 'Blue Gate Cellar Key',               rarity: 'rare',     coords: [2200, 1600], location: 'Village Building — Cellar Door' },
-    { id: 'bg_confiscation',      map: 'blue_gate',    name: 'Blue Gate Confiscation Room Key',    rarity: 'epic',     coords: [1750, 3600], location: 'Tunnel Networks — Confiscation Room' },
+    { id: 'bg_village',           map: 'blue_gate',    name: 'Blue Gate Village Key',              rarity: 'uncommon', coords: [2050, 1400], location: 'Village — House with Barred Front Door' },
+    { id: 'bg_patrol_car',        map: 'blue_gate',    name: 'Blue Gate Patrol Car Key',           rarity: 'uncommon', coords: [2650, 2800], location: 'Traffic Tunnel — Armored Patrol Car Rear Door' },
+    { id: 'bg_comm_tower',        map: 'blue_gate',    name: 'Blue Gate Communication Tower Key',  rarity: 'rare',     coords: [850, 3200],  location: 'Communication Tower — Underground Storage Room' },
+    { id: 'bg_cellar',            map: 'blue_gate',    name: 'Blue Gate Cellar Key',               rarity: 'rare',     coords: [2200, 1600], location: 'Cellar South of Ruined Homestead' },
+    { id: 'bg_confiscation',      map: 'blue_gate',    name: 'Blue Gate Confiscation Room Key',    rarity: 'epic',     coords: [1750, 3600], location: 'Headhouse — Underground Tunnel System' },
 
     // --- Stella Montis ---
-    { id: 'sm_assembly',          map: 'stella_montis', name: 'Stella Montis Assembly Admin Key',        rarity: 'uncommon', coords: [1300, 2200], location: 'Assembly Hallway — Locked Door',            level: 'upper' },
-    { id: 'sm_medical',           map: 'stella_montis', name: 'Stella Montis Medical Storage Key',       rarity: 'uncommon', coords: [2350, 2600], location: 'Medical Storage Area',                        level: 'upper' },
-    { id: 'sm_archives',          map: 'stella_montis', name: 'Stella Montis Archives Key',              rarity: 'rare',     coords: [1200, 2800], location: 'Seat Vault Area — Tunnel End Door (Lower Level)', level: 'lower' },
-    { id: 'sm_security',          map: 'stella_montis', name: 'Stella Montis Security Checkpoint Key',   rarity: 'epic',     coords: [1600, 1000], location: 'Security Checkpoint Access Point',            level: 'upper' },
+    { id: 'sm_assembly',          map: 'stella_montis', name: 'Stella Montis Assembly Admin Key',        rarity: 'uncommon', coords: [1300, 2200], location: 'Assembly — Central Corridor (Western Section)',            level: 'upper' },
+    { id: 'sm_medical',           map: 'stella_montis', name: 'Stella Montis Medical Storage Key',       rarity: 'uncommon', coords: [2350, 2600], location: 'Medical Research — North Side',                        level: 'upper' },
+    { id: 'sm_archives',          map: 'stella_montis', name: 'Stella Montis Archives Key',              rarity: 'rare',     coords: [1200, 2800], location: 'Seed Vault — End of Tunnels', level: 'lower' },
+    { id: 'sm_security',          map: 'stella_montis', name: 'Stella Montis Security Checkpoint Key',   rarity: 'epic',     coords: [1600, 1000], location: 'Lobby — Northern Section',            level: 'upper' },
 
     // --- Special: Raider Hatch Key (multiple pins per map) ---
-    { id: 'hatch_dam_1',          map: 'dam',          name: 'Raider Hatch Key',               rarity: 'rare', coords: [1678, 1200],  location: 'Extraction Hatch — Swamp Edge' },
-    { id: 'hatch_dam_2',          map: 'dam',          name: 'Raider Hatch Key',               rarity: 'rare', coords: [3139, 2400], location: 'Extraction Hatch — East Ruins' },
-    { id: 'hatch_sp_1',           map: 'spaceport',    name: 'Raider Hatch Key',               rarity: 'rare', coords: [900, 1400],  location: 'Extraction Hatch — Launch Pad Area' },
-    { id: 'hatch_sp_2',           map: 'spaceport',    name: 'Raider Hatch Key',               rarity: 'rare', coords: [3800, 3200], location: 'Extraction Hatch — South Terminal' },
-    { id: 'hatch_bc_1',           map: 'buried_city',  name: 'Raider Hatch Key',               rarity: 'rare', coords: [1000, 2600],  location: 'Extraction Hatch — Market Square' },
-    { id: 'hatch_bc_2',           map: 'buried_city',  name: 'Raider Hatch Key',               rarity: 'rare', coords: [3600, 1200],  location: 'Extraction Hatch — Sand Dunes' },
-    { id: 'hatch_bg_1',           map: 'blue_gate',    name: 'Raider Hatch Key',               rarity: 'rare', coords: [1150, 3800], location: 'Extraction Hatch — Mountain Ridge' },
-    { id: 'hatch_bg_2',           map: 'blue_gate',    name: 'Raider Hatch Key',               rarity: 'rare', coords: [2500, 1000],  location: 'Extraction Hatch — Underground Exit' },
-    { id: 'hatch_sm_1',           map: 'stella_montis', name: 'Raider Hatch Key',              rarity: 'rare', coords: [700, 2800],  location: 'Extraction Hatch — Assembly Roof',  level: 'upper' },
-    { id: 'hatch_sm_2',           map: 'stella_montis', name: 'Raider Hatch Key',              rarity: 'rare', coords: [2000, 1800], location: 'Extraction Hatch — Lower Tunnels',     level: 'lower' }
+    { id: 'hatch_dam_1',          map: 'dam',          name: 'Raider Hatch Key',               rarity: 'rare', coords: [1678, 1200],  location: 'Sunroof Hatch — Trees Above Ben Welder\'s Sunroof' },
+    { id: 'hatch_dam_2',          map: 'dam',          name: 'Raider Hatch Key',               rarity: 'rare', coords: [3139, 2400], location: 'Spillway Hatch — South of Red Lakes Berm' },
+    { id: 'hatch_sp_1',           map: 'spaceport',    name: 'Raider Hatch Key',               rarity: 'rare', coords: [900, 1400],  location: 'West Elevator Hatch — West of Departure Building' },
+    { id: 'hatch_sp_2',           map: 'spaceport',    name: 'Raider Hatch Key',               rarity: 'rare', coords: [3800, 3200], location: 'Central Elevator Hatch — East of Arrival Building' },
+    { id: 'hatch_bc_1',           map: 'buried_city',  name: 'Raider Hatch Key',               rarity: 'rare', coords: [1000, 2600],  location: 'Cargo Elevator Hatch' },
+    { id: 'hatch_bc_2',           map: 'buried_city',  name: 'Raider Hatch Key',               rarity: 'rare', coords: [3600, 1200],  location: 'Metro Station Hatch' },
+    { id: 'hatch_bg_1',           map: 'blue_gate',    name: 'Raider Hatch Key',               rarity: 'rare', coords: [1150, 3800], location: 'Airshaft Extraction Point' },
+    { id: 'hatch_bg_2',           map: 'blue_gate',    name: 'Raider Hatch Key',               rarity: 'rare', coords: [2500, 1000],  location: 'Airshaft Extraction Point' },
+    { id: 'hatch_sm_1',           map: 'stella_montis', name: 'Raider Hatch Key',              rarity: 'rare', coords: [700, 2800],  location: 'Assembly Workshops Hatch — Bottom Right of Assembly',  level: 'upper' },
+    { id: 'hatch_sm_2',           map: 'stella_montis', name: 'Raider Hatch Key',              rarity: 'rare', coords: [2000, 1800], location: 'Sandbox B Hatch — Very South of Map',     level: 'lower' }
 ];
 
 // Helper: get rarity object by id
