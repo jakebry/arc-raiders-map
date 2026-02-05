@@ -1,0 +1,325 @@
+/* css/styles.css */
+
+/* --- Reset & Base --- */
+*, *::before, *::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html, body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: #0a0a0f;
+    color: #c8c8d0;
+    font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+    font-size: 14px;
+    letter-spacing: 0.05em;
+    user-select: none;
+    -webkit-user-select: none;
+}
+
+/* --- Screens --- */
+.screen {
+    position: absolute;
+    inset: 0;
+    display: none;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+.screen.active {
+    display: flex;
+    opacity: 1;
+}
+
+/* =============================================
+   SCREEN 1: MAP SELECTION
+   ============================================= */
+#screen-select {
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background:
+        radial-gradient(ellipse at 50% 0%, rgba(30, 30, 45, 0.8) 0%, transparent 70%),
+        #0a0a0f;
+    padding: 40px 20px;
+}
+
+#screen-select header {
+    text-align: center;
+    margin-bottom: 48px;
+}
+#screen-select header h1 {
+    font-size: 2.8rem;
+    font-weight: 700;
+    letter-spacing: 0.35em;
+    color: #e8e8f0;
+    text-shadow: 0 0 40px rgba(100, 140, 255, 0.2);
+}
+#screen-select header .subtitle {
+    font-size: 0.95rem;
+    letter-spacing: 0.6em;
+    color: #555;
+    margin-top: 8px;
+}
+
+.map-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+    max-width: 900px;
+    width: 100%;
+}
+
+.map-card {
+    background: #131318;
+    border: 1px solid #222230;
+    border-radius: 8px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: border-color 0.25s, transform 0.2s, box-shadow 0.25s;
+    display: flex;
+    flex-direction: column;
+}
+.map-card:hover {
+    border-color: #4a6fa5;
+    transform: translateY(-3px);
+    box-shadow: 0 6px 24px rgba(74, 111, 165, 0.25);
+}
+.map-card-img {
+    width: 100%;
+    aspect-ratio: 16 / 10;
+    background-size: cover;
+    background-position: center;
+    background-color: #1a1a22;
+}
+.map-card-label {
+    padding: 14px 16px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    color: #b8b8c8;
+    text-transform: uppercase;
+    border-top: 1px solid #1e1e28;
+}
+
+/* =============================================
+   SCREEN 2: MAP VIEW
+   ============================================= */
+#screen-map {
+    flex-direction: row;
+}
+
+/* --- Map Container (takes remaining space) --- */
+#map-container {
+    flex: 1;
+    position: relative;
+    min-width: 0;
+}
+#leaflet-map {
+    width: 100%;
+    height: 100%;
+    background: #0a0a0f;
+}
+
+/* --- Top UI Overlay (back button + filters) --- */
+#map-ui-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 12px 16px;
+    background: linear-gradient(to bottom, rgba(10, 10, 15, 0.85) 0%, transparent 100%);
+    pointer-events: none;
+}
+#map-ui-overlay > * {
+    pointer-events: auto;
+}
+
+.btn-back {
+    background: rgba(20, 20, 28, 0.8);
+    border: 1px solid #333340;
+    color: #999;
+    padding: 6px 14px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.82rem;
+    letter-spacing: 0.1em;
+    transition: border-color 0.2s, color 0.2s;
+}
+.btn-back:hover {
+    border-color: #4a6fa5;
+    color: #fff;
+}
+
+/* --- Rarity Filter Pills --- */
+.filter-bar {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+.filter-pill {
+    background: rgba(20, 20, 28, 0.85);
+    border: 1px solid #333340;
+    color: #777;
+    padding: 5px 14px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    transition: all 0.2s;
+}
+.filter-pill:hover {
+    border-color: var(--pill-color, #4a6fa5);
+    color: var(--pill-color, #fff);
+}
+.filter-pill.active {
+    border-color: var(--pill-color, #4a6fa5);
+    color: var(--pill-color, #fff);
+    background: rgba(20, 20, 28, 0.95);
+    box-shadow: 0 0 10px color-mix(in srgb, var(--pill-color, #4a6fa5) 30%, transparent);
+}
+
+/* --- Key Panel (right side) --- */
+#key-panel {
+    width: 240px;
+    min-width: 240px;
+    background: rgba(12, 12, 18, 0.92);
+    border-left: 1px solid #1e1e28;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+#key-list {
+    flex: 1;
+    overflow-y: auto;
+    padding: 12px 0;
+}
+#key-list::-webkit-scrollbar { width: 4px; }
+#key-list::-webkit-scrollbar-track { background: transparent; }
+#key-list::-webkit-scrollbar-thumb { background: #2a2a35; border-radius: 2px; }
+
+.key-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 18px;
+    cursor: pointer;
+    transition: background 0.15s;
+}
+.key-item:hover {
+    background: rgba(74, 111, 165, 0.1);
+}
+.key-item.active {
+    background: rgba(74, 111, 165, 0.18);
+    border-left: 3px solid var(--key-color);
+}
+.key-item-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--key-color);
+    box-shadow: 0 0 6px var(--key-color);
+    flex-shrink: 0;
+}
+.key-item-name {
+    font-size: 0.82rem;
+    color: #aaa;
+    line-height: 1.3;
+}
+.key-item.active .key-item-name {
+    color: #fff;
+}
+
+/* --- Key Detail (bottom of panel when a key is selected) --- */
+#key-detail {
+    border-top: 1px solid #1e1e28;
+    padding: 18px;
+    background: rgba(8, 8, 12, 0.95);
+}
+#key-detail.hidden {
+    display: none;
+}
+.key-detail-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 6px;
+}
+.key-detail-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    box-shadow: 0 0 8px currentColor;
+}
+.key-detail-name {
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: #e0e0e8;
+}
+.key-detail-rarity {
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    margin-bottom: 8px;
+}
+.key-detail-location {
+    font-size: 0.82rem;
+    color: #888;
+    line-height: 1.4;
+}
+
+/* --- Leaflet Overrides --- */
+.leaflet-container {
+    background: #0a0a0f;
+}
+.leaflet-control-zoom {
+    background: rgba(20, 20, 28, 0.85) !important;
+    border-color: #2a2a35 !important;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.4) !important;
+    border-radius: 6px !important;
+}
+.leaflet-control-zoom a {
+    color: #999 !important;
+    border-bottom-color: #2a2a35 !important;
+    line-height: 28px !important;
+}
+.leaflet-control-zoom a:hover {
+    background: rgba(74, 111, 165, 0.2) !important;
+    color: #fff !important;
+}
+
+/* --- Markers --- */
+.keycard-marker {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.marker-dot {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    border: 2px solid rgba(255,255,255,0.15);
+    animation: pulse 2s infinite;
+}
+.keycard-marker.selected .marker-dot {
+    border-color: rgba(255,255,255,0.5);
+    animation: pulse-selected 1.5s infinite;
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50%      { opacity: 0.6; }
+}
+@keyframes pulse-selected {
+    0%, 100% { opacity: 1; box-shadow: 0 0 12px currentColor; }
+    50%      { opacity: 0.8; box-shadow: 0 0 20px currentColor; }
+}
