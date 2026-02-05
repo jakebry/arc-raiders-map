@@ -7,7 +7,7 @@ const MAPS = [
     { id: 'spaceport',    name: 'Spaceport',          image: 'images/maps/spaceport.jpg',    preview: 'images/preview/spaceport.jpg' },
     { id: 'buried_city',  name: 'Buried City',        image: 'images/maps/buried_city.jpg',  preview: 'images/preview/buried_city.jpg' },
     { id: 'blue_gate',    name: 'Blue Gate',          image: 'images/maps/blue_gate.jpg',    preview: 'images/preview/blue_gate.jpg' },
-    { id: 'stella_montis',name: 'Stella Montis',      image: 'images/maps/stella_montis.jpg',preview: 'images/preview/stella_montis.jpg' }
+    { id: 'stella_montis', name: 'Stella Montis',     image: 'images/maps/stella_montis.jpg', preview: 'images/preview/stella_montis.jpg' }
 ];
 
 const RARITIES = [
@@ -28,8 +28,8 @@ const KEYS = [
     { id: 'sp_trench_tower',      map: 'spaceport',    name: 'Spaceport Trench Tower Key',    rarity: 'uncommon', coords: [1400, 1600], location: 'North & South Trench Towers' },
     { id: 'sp_warehouse',         map: 'spaceport',    name: 'Spaceport Warehouse Key',       rarity: 'uncommon', coords: [2600, 3000], location: 'Shipping Warehouse — Upper Floors' },
     { id: 'sp_ground_control',    map: 'spaceport',    name: 'Spaceport Ground Control Key',  rarity: 'uncommon', coords: [800, 2200],  location: 'Control Tower A6 — Upper Level' },
-    { id: 'sp_container_storage', map: 'spaceport',    name: 'Spaceport Container Storage Key',rarity: 'rare',    coords: [1000, 3400], location: 'Container Storage — Top Floor Red Door' },
-    { id: 'sp_outskirts_bunker',  map: 'spaceport',    name: 'Spaceport Outskirts Bunker Key',rarity: 'rare',     coords: [3200, 600],  location: 'Outskirts Bunker' },
+    { id: 'sp_container_storage', map: 'spaceport',    name: 'Spaceport Container Storage Key', rarity: 'rare',   coords: [1000, 3400], location: 'Container Storage — Top Floor Red Door' },
+    { id: 'sp_outskirts_bunker',  map: 'spaceport',    name: 'Spaceport Outskirts Bunker Key',  rarity: 'rare',   coords: [3200, 600],  location: 'Outskirts Bunker' },
 
     // --- Buried City ---
     { id: 'bc_residential',       map: 'buried_city',  name: 'Buried City Residential Master Key', rarity: 'uncommon', coords: [1600, 1400], location: 'Multiple Apartment Doors' },
@@ -45,10 +45,10 @@ const KEYS = [
     { id: 'bg_confiscation',      map: 'blue_gate',    name: 'Blue Gate Confiscation Room Key',    rarity: 'epic',     coords: [1800, 3200], location: 'Tunnel Networks — Confiscation Room' },
 
     // --- Stella Montis ---
-    { id: 'sm_assembly',          map: 'stella_montis',name: 'Stella Montis Assembly Admin Key',   rarity: 'uncommon', coords: [1200, 1800], location: 'Assembly Hallway — Locked Door' },
-    { id: 'sm_medical',           map: 'stella_montis',name: 'Stella Montis Medical Storage Key',  rarity: 'uncommon', coords: [2600, 2200], location: 'Medical Storage Area' },
-    { id: 'sm_archives',          map: 'stella_montis',name: 'Stella Montis Archives Key',         rarity: 'rare',     coords: [900, 3000],  location: 'Seat Vault Area — Tunnel End Door' },
-    { id: 'sm_security',          map: 'stella_montis',name: 'Stella Montis Security Checkpoint Key',rarity: 'epic',   coords: [1600, 600],  location: 'Security Checkpoint Access Point' },
+    { id: 'sm_assembly',          map: 'stella_montis', name: 'Stella Montis Assembly Admin Key',        rarity: 'uncommon', coords: [1200, 1800], location: 'Assembly Hallway — Locked Door' },
+    { id: 'sm_medical',           map: 'stella_montis', name: 'Stella Montis Medical Storage Key',       rarity: 'uncommon', coords: [2600, 2200], location: 'Medical Storage Area' },
+    { id: 'sm_archives',          map: 'stella_montis', name: 'Stella Montis Archives Key',              rarity: 'rare',     coords: [900, 3000],  location: 'Seat Vault Area — Tunnel End Door' },
+    { id: 'sm_security',          map: 'stella_montis', name: 'Stella Montis Security Checkpoint Key',   rarity: 'epic',     coords: [1600, 600],  location: 'Security Checkpoint Access Point' },
 
     // --- Special: Raider Hatch Key (multiple pins per map) ---
     { id: 'hatch_dam_1',          map: 'dam',          name: 'Raider Hatch Key',               rarity: 'rare', coords: [1400, 800],  location: 'Extraction Hatch — Swamp Edge' },
@@ -59,8 +59,8 @@ const KEYS = [
     { id: 'hatch_bc_2',           map: 'buried_city',  name: 'Raider Hatch Key',               rarity: 'rare', coords: [3200, 800],  location: 'Extraction Hatch — Sand Dunes' },
     { id: 'hatch_bg_1',           map: 'blue_gate',    name: 'Raider Hatch Key',               rarity: 'rare', coords: [1000, 3400], location: 'Extraction Hatch — Mountain Ridge' },
     { id: 'hatch_bg_2',           map: 'blue_gate',    name: 'Raider Hatch Key',               rarity: 'rare', coords: [2800, 600],  location: 'Extraction Hatch — Underground Exit' },
-    { id: 'hatch_sm_1',           map: 'stella_montis',name: 'Raider Hatch Key',               rarity: 'rare', coords: [400, 2400],  location: 'Extraction Hatch — Assembly Roof' },
-    { id: 'hatch_sm_2',           map: 'stella_montis',name: 'Raider Hatch Key',               rarity: 'rare', coords: [3000, 1400], location: 'Extraction Hatch — Lower Tunnels' }
+    { id: 'hatch_sm_1',           map: 'stella_montis', name: 'Raider Hatch Key',              rarity: 'rare', coords: [400, 2400],  location: 'Extraction Hatch — Assembly Roof' },
+    { id: 'hatch_sm_2',           map: 'stella_montis', name: 'Raider Hatch Key',              rarity: 'rare', coords: [3000, 1400], location: 'Extraction Hatch — Lower Tunnels' }
 ];
 
 // Helper: get rarity object by id
@@ -73,8 +73,8 @@ function getKeysForMap(mapId, rarityId = null) {
     return KEYS.filter(k => k.map === mapId && (!rarityId || k.rarity === rarityId));
 }
 
-// Helper: get unique key names for a map (collapses Raider Hatch duplicates into one list entry)
-function getUniqueKeyNames(mapId, rarityId = null) {
+// Helper: get unique keys for a map (collapses Raider Hatch duplicates into one list entry)
+function getUniqueKeys(mapId, rarityId = null) {
     const keys = getKeysForMap(mapId, rarityId);
     const seen = new Set();
     return keys.filter(k => {
