@@ -16,8 +16,7 @@ const mapCardsEl   = document.getElementById('map-cards');
 const btnBack      = document.getElementById('btn-back');
 const btnExport    = document.getElementById('btn-export');
 const filterBarEl  = document.getElementById('filter-bar');
-const keyListEl    = document.getElementById('key-list');
-const keyDetailEl  = document.getElementById('key-detail');
+const inventorySlotsEl = document.getElementById('inventory-slots');
 const leafletMapEl = document.getElementById('leaflet-map');
 
 // --- Helpers ---
@@ -59,7 +58,7 @@ function enterMap(map) {
     initLeafletMap(map);
     renderLevelToggle();
     renderFilterBar();
-    renderKeyList();
+    renderInventory();
 }
 
 // --- Leaflet Map ---
@@ -120,7 +119,7 @@ function renderFilterBar() {
         currentRarity = null;
         selectedKey = null;
         renderFilterBar();
-        renderKeyList();
+        renderInventory();
         renderMarkers();
     });
     filterBarEl.appendChild(allPill);
@@ -135,7 +134,7 @@ function renderFilterBar() {
             currentRarity = rarity.id;
             selectedKey = null;
             renderFilterBar();
-            renderKeyList();
+            renderInventory();
             renderMarkers();
         });
         filterBarEl.appendChild(pill);
@@ -191,28 +190,32 @@ function switchLevel(level) {
     // Re-render everything
     renderLevelToggle();
     renderFilterBar();
-    renderKeyList();
+    renderInventory();
     renderMarkers();
 }
 
-// --- Key List Panel ---
-function renderKeyList() {
-    keyListEl.innerHTML = '';
-    keyDetailEl.classList.add('hidden');
+// --- Inventory Bar ---
+function renderInventory() {
+    inventorySlotsEl.innerHTML = '';
 
     const keys = getUniqueKeys(currentMap.id, currentRarity, currentLevel);
 
+    // Sort by rarity: uncommon, rare, epic
+    const rarityOrder = { 'uncommon': 0, 'rare': 1, 'epic': 2 };
+    keys.sort((a, b) => rarityOrder[a.rarity] - rarityOrder[b.rarity]);
+
     keys.forEach(key => {
         const rarity = getRarity(key.rarity);
-        const item = document.createElement('div');
-        item.className = 'key-item' + (selectedKey && selectedKey.name === key.name ? ' active' : '');
-        item.style.setProperty('--key-color', rarity.color);
-        item.innerHTML = `
-            <span class="key-item-dot"></span>
-            <span class="key-item-name">${key.name}</span>
+        const slot = document.createElement('div');
+        slot.className = 'inventory-slot' + (selectedKey && selectedKey.name === key.name ? ' active' : '');
+        slot.style.setProperty('--slot-color', rarity.color);
+        slot.innerHTML = `
+            <img class="inventory-slot-icon" src="images/keys/placeholder.svg" alt="${key.name}">
+            <div class="inventory-slot-rarity"></div>
         `;
-        item.addEventListener('click', () => selectKey(key));
-        keyListEl.appendChild(item);
+        slot.addEventListener('click', () => selectKey(key));
+        slot.title = key.name;
+        inventorySlotsEl.appendChild(slot);
     });
 }
 
@@ -252,7 +255,10 @@ function renderMarkers() {
 
         const icon = L.divIcon({
             className: 'keycard-marker' + (isSelected ? ' selected' : ''),
-            html: `<div class="marker-dot" style="background-color: ${rarity.color}; box-shadow: 0 0 8px ${rarity.color};"></div>`,
+            html: `
+                <div class="marker-dot" style="background-color: ${rarity.color}; box-shadow: 0 0 8px ${rarity.color};"></div>
+                <div class="marker-label" style="color: ${rarity.color};">${key.name}</div>
+            `,
             iconSize: [isSelected ? 24 : 16, isSelected ? 24 : 16],
             iconAnchor: [isSelected ? 12 : 8, isSelected ? 12 : 8]
         });
@@ -290,20 +296,8 @@ function selectKey(key) {
     // Zoom and pan to the selected key
     leafletMap.flyTo(key.coords, 2, { duration: 0.6 });
 
-    // Show detail panel
-    const rarity = getRarity(key.rarity);
-    keyDetailEl.innerHTML = `
-        <div class="key-detail-header">
-            <span class="key-detail-dot" style="background-color: ${rarity.color};"></span>
-            <span class="key-detail-name">${key.name}</span>
-        </div>
-        <div class="key-detail-rarity" style="color: ${rarity.color};">${rarity.label.toUpperCase()}</div>
-        <div class="key-detail-location">${key.location}</div>
-    `;
-    keyDetailEl.classList.remove('hidden');
-
-    // Re-render list and markers to update active states
-    renderKeyList();
+    // Re-render inventory and markers to update active states
+    renderInventory();
     renderMarkers();
 }
 
