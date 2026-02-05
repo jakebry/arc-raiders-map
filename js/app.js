@@ -58,9 +58,8 @@ function initLeafletMap(map) {
 
     leafletMap = L.map('leaflet-map', {
         crs: L.CRS.Simple,
-        center: [map.height / 2, map.width / 2],
         zoom: 0,
-        minZoom: -2,
+        minZoom: -3,
         maxZoom: 3,
         zoomControl: true,
         attributionControl: false
@@ -68,7 +67,12 @@ function initLeafletMap(map) {
 
     L.imageOverlay(map.image, [[0, 0], [map.height, map.width]]).addTo(leafletMap);
 
-    leafletMap.setView([map.height / 2, map.width / 2], 0);
+    // Fit the original map content (inside the blurred border) to the viewport
+    var contentBounds = L.latLngBounds(
+        [map.border, map.border],
+        [map.height - map.border, map.width - map.border]
+    );
+    leafletMap.fitBounds(contentBounds);
 }
 
 // --- Rarity Filter Bar ---
