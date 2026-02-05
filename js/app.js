@@ -137,6 +137,57 @@ btnBack.addEventListener('click', () => {
     showScreen('screen-select');
 });
 
+// --- Markers ---
+function renderMarkers() {
+    // Remove old markers
+    markers.forEach(m => m.remove());
+    markers = [];
+
+    const keys = getKeysForMap(currentMap.id, currentRarity);
+
+    keys.forEach(key => {
+        const rarity = getRarity(key.rarity);
+        const isSelected = selectedKey && selectedKey.id === key.id;
+
+        const icon = L.divIcon({
+            className: 'keycard-marker' + (isSelected ? ' selected' : ''),
+            html: `<div class="marker-dot" style="background-color: ${rarity.color}; box-shadow: 0 0 8px ${rarity.color};"></div>`,
+            iconSize: [isSelected ? 24 : 16, isSelected ? 24 : 16],
+            iconAnchor: [isSelected ? 12 : 8, isSelected ? 12 : 8]
+        });
+
+        const marker = L.marker(key.coords, { icon })
+            .addTo(leafletMap)
+            .on('click', () => selectKey(key));
+
+        markers.push(marker);
+    });
+}
+
+// --- Key Selection ---
+function selectKey(key) {
+    selectedKey = key;
+
+    // Zoom and pan to the selected key
+    leafletMap.flyTo(key.coords, 2, { duration: 0.6 });
+
+    // Show detail panel
+    const rarity = getRarity(key.rarity);
+    keyDetailEl.innerHTML = `
+        <div class="key-detail-header">
+            <span class="key-detail-dot" style="background-color: ${rarity.color};"></span>
+            <span class="key-detail-name">${key.name}</span>
+        </div>
+        <div class="key-detail-rarity" style="color: ${rarity.color};">${rarity.label.toUpperCase()}</div>
+        <div class="key-detail-location">${key.location}</div>
+    `;
+    keyDetailEl.classList.remove('hidden');
+
+    // Re-render list and markers to update active states
+    renderKeyList();
+    renderMarkers();
+}
+
 // --- Init on page load ---
 document.addEventListener('DOMContentLoaded', () => {
     renderMapCards();
