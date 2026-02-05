@@ -324,6 +324,12 @@ html, body {
     50%      { opacity: 0.8; box-shadow: 0 0 20px currentColor; }
 }
 
+/* --- Level Toggle --- */
+.level-toggle {
+    display: flex;
+    gap: 6px;
+}
+
 /* --- Mobile --- */
 @media (max-width: 700px) {
     .map-grid {

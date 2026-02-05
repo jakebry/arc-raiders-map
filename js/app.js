@@ -6,6 +6,8 @@ let currentRarity = null;     // currently active rarity filter (null = all)
 let selectedKey = null;       // currently selected key object
 let leafletMap = null;        // Leaflet map instance
 let markers = [];             // active Leaflet markers on the map
+let currentLevel = null;      // 'upper' or 'lower' for maps with levels, null otherwise
+let mapOverlay = null;        // reference to the active Leaflet imageOverlay
 
 // --- DOM References ---
 const screenSelect = document.getElementById('screen-select');
@@ -16,6 +18,14 @@ const filterBarEl  = document.getElementById('filter-bar');
 const keyListEl    = document.getElementById('key-list');
 const keyDetailEl  = document.getElementById('key-detail');
 const leafletMapEl = document.getElementById('leaflet-map');
+
+// --- Helpers ---
+function getCurrentImageConfig() {
+    if (currentMap.levels && currentLevel) {
+        return currentMap.levels[currentLevel];
+    }
+    return { image: currentMap.image, width: currentMap.width, height: currentMap.height };
+}
 
 // --- Screen Switchers ---
 function showScreen(id) {
@@ -43,8 +53,10 @@ function enterMap(map) {
     currentMap = map;
     currentRarity = null;
     selectedKey = null;
+    currentLevel = map.levels ? 'upper' : null;
     showScreen('screen-map');
     initLeafletMap(map);
+    renderLevelToggle();
     renderFilterBar();
     renderKeyList();
 }
@@ -65,13 +77,14 @@ function initLeafletMap(map) {
         attributionControl: false
     });
 
-    L.imageOverlay(map.image, [[0, 0], [map.height, map.width]]).addTo(leafletMap);
+    var config = getCurrentImageConfig();
+    mapOverlay = L.imageOverlay(config.image, [[0, 0], [config.height, config.width]]).addTo(leafletMap);
 
     // Fit the original map content (inside the blurred border) to the viewport.
     // Short delay ensures the container has rendered and has a valid size.
     var contentBounds = L.latLngBounds(
         [map.border, map.border],
-        [map.height - map.border, map.width - map.border]
+        [config.height - map.border, config.width - map.border]
     );
     setTimeout(() => {
         leafletMap.invalidateSize();
@@ -113,12 +126,52 @@ function renderFilterBar() {
     });
 }
 
+// --- Level Toggle (Stella Montis upper/lower) ---
+function renderLevelToggle() {
+    const el = document.getElementById('level-toggle');
+    el.innerHTML = '';
+    if (!currentMap || !currentMap.levels) return;
+
+    ['upper', 'lower'].forEach(level => {
+        const btn = document.createElement('button');
+        btn.className = 'filter-pill' + (currentLevel === level ? ' active' : '');
+        btn.style.setProperty('--pill-color', '#7a9cc6');
+        btn.textContent = level.toUpperCase();
+        btn.addEventListener('click', () => switchLevel(level));
+        el.appendChild(btn);
+    });
+}
+
+// --- Level Switching ---
+function switchLevel(level) {
+    currentLevel = level;
+    selectedKey = null;
+
+    // Swap the map overlay
+    if (mapOverlay) mapOverlay.remove();
+    var config = getCurrentImageConfig();
+    mapOverlay = L.imageOverlay(config.image, [[0, 0], [config.height, config.width]]).addTo(leafletMap);
+
+    // Re-fit to new content bounds
+    var contentBounds = L.latLngBounds(
+        [currentMap.border, currentMap.border],
+        [config.height - currentMap.border, config.width - currentMap.border]
+    );
+    leafletMap.fitBounds(contentBounds, { padding: [10, 10] });
+
+    // Re-render everything
+    renderLevelToggle();
+    renderFilterBar();
+    renderKeyList();
+    renderMarkers();
+}
+
 // --- Key List Panel ---
 function renderKeyList() {
     keyListEl.innerHTML = '';
     keyDetailEl.classList.add('hidden');
 
-    const keys = getUniqueKeys(currentMap.id, currentRarity);
+    const keys = getUniqueKeys(currentMap.id, currentRarity, currentLevel);
 
     keys.forEach(key => {
         const rarity = getRarity(key.rarity);
@@ -149,7 +202,7 @@ function renderMarkers() {
     markers.forEach(m => m.remove());
     markers = [];
 
-    const keys = getKeysForMap(currentMap.id, currentRarity);
+    const keys = getKeysForMap(currentMap.id, currentRarity, currentLevel);
 
     keys.forEach(key => {
         const rarity = getRarity(key.rarity);
