@@ -45,6 +45,8 @@ function enterMap(map) {
     selectedKey = null;
     showScreen('screen-map');
     initLeafletMap(map);
+    renderFilterBar();
+    renderKeyList();
 }
 
 // --- Leaflet Map ---
@@ -69,6 +71,61 @@ function initLeafletMap(map) {
     L.imageOverlay(map.image, [[0, 0], [MAP_SIZE, MAP_SIZE]]).addTo(leafletMap);
 
     leafletMap.setView([MAP_SIZE / 2, MAP_SIZE / 2], 0);
+}
+
+// --- Rarity Filter Bar ---
+function renderFilterBar() {
+    filterBarEl.innerHTML = '';
+
+    // "All" pill
+    const allPill = document.createElement('button');
+    allPill.className = 'filter-pill' + (currentRarity === null ? ' active' : '');
+    allPill.textContent = 'ALL';
+    allPill.addEventListener('click', () => {
+        currentRarity = null;
+        selectedKey = null;
+        renderFilterBar();
+        renderKeyList();
+        renderMarkers();
+    });
+    filterBarEl.appendChild(allPill);
+
+    // One pill per rarity
+    RARITIES.forEach(rarity => {
+        const pill = document.createElement('button');
+        pill.className = 'filter-pill' + (currentRarity === rarity.id ? ' active' : '');
+        pill.style.setProperty('--pill-color', rarity.color);
+        pill.textContent = rarity.label.toUpperCase();
+        pill.addEventListener('click', () => {
+            currentRarity = rarity.id;
+            selectedKey = null;
+            renderFilterBar();
+            renderKeyList();
+            renderMarkers();
+        });
+        filterBarEl.appendChild(pill);
+    });
+}
+
+// --- Key List Panel ---
+function renderKeyList() {
+    keyListEl.innerHTML = '';
+    keyDetailEl.classList.add('hidden');
+
+    const keys = getUniqueKeys(currentMap.id, currentRarity);
+
+    keys.forEach(key => {
+        const rarity = getRarity(key.rarity);
+        const item = document.createElement('div');
+        item.className = 'key-item' + (selectedKey && selectedKey.name === key.name ? ' active' : '');
+        item.style.setProperty('--key-color', rarity.color);
+        item.innerHTML = `
+            <span class="key-item-dot"></span>
+            <span class="key-item-name">${key.name}</span>
+        `;
+        item.addEventListener('click', () => selectKey(key));
+        keyListEl.appendChild(item);
+    });
 }
 
 // --- Back Button ---
