@@ -38,12 +38,37 @@ function renderMapCards() {
     });
 }
 
-// --- Enter a Map (stub — fleshed out in Task 4) ---
+// --- Enter a Map ---
 function enterMap(map) {
     currentMap = map;
     currentRarity = null;
     selectedKey = null;
     showScreen('screen-map');
+    initLeafletMap(map);
+}
+
+// --- Leaflet Map ---
+const MAP_SIZE = 4096; // assumed pixel size of map images (square)
+
+function initLeafletMap(map) {
+    if (leafletMap) {
+        leafletMap.remove();
+        leafletMap = null;
+    }
+
+    leafletMap = L.map('leaflet-map', {
+        crs: L.CRS.Simple,
+        center: [MAP_SIZE / 2, MAP_SIZE / 2],
+        zoom: 0,
+        minZoom: -2,
+        maxZoom: 3,
+        zoomControl: true,
+        attributionControl: false
+    });
+
+    L.imageOverlay(map.image, [[0, 0], [MAP_SIZE, MAP_SIZE]]).addTo(leafletMap);
+
+    leafletMap.setView([MAP_SIZE / 2, MAP_SIZE / 2], 0);
 }
 
 // --- Back Button ---
