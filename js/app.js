@@ -14,6 +14,7 @@ const screenSelect = document.getElementById('screen-select');
 const screenMap    = document.getElementById('screen-map');
 const mapCardsEl   = document.getElementById('map-cards');
 const btnBack      = document.getElementById('btn-back');
+const btnExport    = document.getElementById('btn-export');
 const filterBarEl  = document.getElementById('filter-bar');
 const keyListEl    = document.getElementById('key-list');
 const keyDetailEl  = document.getElementById('key-detail');
@@ -224,6 +225,19 @@ btnBack.addEventListener('click', () => {
     showScreen('screen-select');
 });
 
+// --- Export Coordinates Button ---
+btnExport.addEventListener('click', () => {
+    console.clear();
+    console.log('=== CURRENT COORDINATES ===\n');
+
+    KEYS.forEach(key => {
+        console.log(`{ id: '${key.id}', coords: [${key.coords[0]}, ${key.coords[1]}] },`);
+    });
+
+    console.log('\n=== Copy the above and paste to update data.js ===');
+    alert('Coordinates exported to console! Press F12 to view.');
+});
+
 // --- Markers ---
 function renderMarkers() {
     // Remove old markers
@@ -243,9 +257,27 @@ function renderMarkers() {
             iconAnchor: [isSelected ? 12 : 8, isSelected ? 12 : 8]
         });
 
-        const marker = L.marker(key.coords, { icon })
+        const marker = L.marker(key.coords, {
+            icon,
+            draggable: true  // Make markers draggable
+        })
             .addTo(leafletMap)
-            .on('click', () => selectKey(key));
+            .on('click', () => selectKey(key))
+            .on('dragend', (e) => {
+                const newPos = e.target.getLatLng();
+                const newCoords = [Math.round(newPos.lat), Math.round(newPos.lng)];
+
+                // Update the key object in memory
+                key.coords = newCoords;
+
+                // Log to console for easy copying
+                console.log(`{ id: '${key.id}', coords: [${newCoords[0]}, ${newCoords[1]}] }`);
+
+                // If this key is selected, update the detail panel
+                if (selectedKey && selectedKey.id === key.id) {
+                    selectedKey.coords = newCoords;
+                }
+            });
 
         markers.push(marker);
     });

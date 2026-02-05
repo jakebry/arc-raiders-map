@@ -157,6 +157,25 @@ html, body {
     color: #fff;
 }
 
+.btn-export {
+    background: rgba(30, 50, 80, 0.8);
+    border: 1px solid #4a6fa5;
+    color: #7aa3d8;
+    padding: 6px 14px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.82rem;
+    letter-spacing: 0.1em;
+    transition: all 0.2s;
+    margin-left: 8px;
+}
+.btn-export:hover {
+    background: rgba(40, 60, 100, 0.9);
+    border-color: #60a5fa;
+    color: #fff;
+    box-shadow: 0 0 12px rgba(96, 165, 250, 0.3);
+}
+
 /* --- Rarity Filter Pills --- */
 .filter-bar {
     display: flex;
@@ -302,6 +321,7 @@ html, body {
     display: flex;
     align-items: center;
     justify-content: center;
+    cursor: move;
 }
 .marker-dot {
     width: 100%;
@@ -309,6 +329,7 @@ html, body {
     border-radius: 50%;
     border: 2px solid rgba(255,255,255,0.15);
     animation: pulse 2s infinite;
+    pointer-events: none;
 }
 .keycard-marker.selected .marker-dot {
     border-color: rgba(255,255,255,0.5);
