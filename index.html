@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arc Raiders — Keycard Map</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+
+    <!-- Screen 1: Map Selection -->
+    <div id="screen-select" class="screen active">
+        <header>
+            <h1>ARC RAIDERS</h1>
+            <p class="subtitle">KEYCARD MAP</p>
+        </header>
+        <div id="map-cards" class="map-grid"></div>
+    </div>
+
+    <!-- Screen 2: Interactive Map -->
+    <div id="screen-map" class="screen">
+        <div id="map-ui-overlay">
+            <button id="btn-back" class="btn-back">← BACK</button>
+            <div id="filter-bar" class="filter-bar"></div>
+        </div>
+        <div id="map-container">
+            <div id="leaflet-map"></div>
+        </div>
+        <div id="key-panel" class="key-panel">
+            <div id="key-list" class="key-list"></div>
+            <div id="key-detail" class="key-detail hidden"></div>
+        </div>
+    </div>
+
+    <script src="js/data.js"></script>
+    <script src="js/app.js"></script>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+</body>
+</html>
