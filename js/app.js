@@ -402,11 +402,13 @@ function renderMarkers() {
                     <div class="marker-card-location">${key.location}</div>
                 </div>
             ` : `
-                <div class="marker-dot" style="background-color: ${rarity.color}; box-shadow: 0 0 8px ${rarity.color};"></div>
-                <img class="marker-icon" src="${key.icon}" alt="${key.name}" style="filter: drop-shadow(0 0 4px ${rarity.color});">
+                <div class="marker-icon-container" style="border-color: ${rarity.color}; color: ${rarity.color};">
+                    <img class="marker-icon" src="${key.icon}" alt="${key.name}" style="filter: drop-shadow(0 0 3px ${rarity.color});">
+                    <div class="marker-icon-rarity"></div>
+                </div>
             `,
-            iconSize: isSelected ? [200, 120] : [12, 12],
-            iconAnchor: isSelected ? [100, 60] : [6, 6]
+            iconSize: isSelected ? [200, 120] : [32, 32],
+            iconAnchor: isSelected ? [100, 60] : [16, 16]
         });
 
         const marker = L.marker(key.coords, {

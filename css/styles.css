@@ -236,7 +236,7 @@ html, body {
     display: flex;
     align-items: center;
     justify-content: center;
-    overflow: visible;
+    overflow: hidden;
 }
 
 .inventory-slot:hover {
@@ -248,9 +248,9 @@ html, body {
 .inventory-slot.active {
     border-color: var(--slot-color);
     background:
-        radial-gradient(circle at 90% 10%, rgba(255, 255, 255, 0.03) 0%, transparent 50%),
+        radial-gradient(circle at 85% 15%, transparent 0%, rgba(0, 0, 0, 0.4) 70%),
         rgba(40, 40, 50, 0.95);
-    box-shadow: 0 0 16px var(--slot-color), inset 0 0 20px rgba(255, 255, 255, 0.02);
+    box-shadow: 0 0 16px var(--slot-color);
 }
 
 .inventory-slot-icon {
@@ -262,13 +262,22 @@ html, body {
 
 .inventory-slot-rarity {
     position: absolute;
-    left: -2px;
-    top: -2px;
-    bottom: -2px;
-    width: 5px;
-    background: var(--slot-color);
+    bottom: 0;
+    left: 0;
+    width: 45%;
+    height: 5px;
+    background: linear-gradient(to right, var(--slot-color) 0%, transparent 100%);
     box-shadow: 0 0 8px var(--slot-color);
-    border-radius: 4px 0 0 4px;
+    border-radius: 0 0 0 4px;
+    clip-path: polygon(
+        0 0,
+        0 100%,
+        20% 100%,
+        20% 40%,
+        100% 40%,
+        100% 100%,
+        100% 0
+    );
 }
 
 /* --- Leaflet Overrides --- */
@@ -345,15 +354,41 @@ html, body {
     animation: pulse 2s infinite;
     pointer-events: none;
 }
-.marker-icon {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    width: 24px;
-    height: 24px;
-    object-fit: contain;
+.marker-icon-container {
+    width: 32px;
+    height: 32px;
+    background: rgba(20, 20, 28, 0.95);
+    border: 2px solid;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
     pointer-events: none;
+}
+.marker-icon {
+    width: 20px;
+    height: 20px;
+    object-fit: contain;
+}
+.marker-icon-rarity {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 45%;
+    height: 3px;
+    background: linear-gradient(to right, currentColor 0%, transparent 100%);
+    border-radius: 0 0 0 4px;
+    clip-path: polygon(
+        0 0,
+        0 100%,
+        20% 100%,
+        20% 40%,
+        100% 40%,
+        100% 100%,
+        100% 0
+    );
 }
 .marker-card {
     background: rgba(20, 20, 28, 0.95);
