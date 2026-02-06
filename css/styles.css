@@ -247,10 +247,18 @@ html, body {
 
 .inventory-slot.active {
     border: 3px solid var(--slot-color);
-    background:
-        radial-gradient(circle at 15% 85%, rgba(255, 255, 255, 0.15) 0%, rgba(0, 0, 0, 0.3) 50%, rgba(0, 0, 0, 0.6) 100%),
-        rgba(25, 25, 35, 0.95);
+    background: rgba(25, 25, 35, 0.95);
     box-shadow: 0 0 20px var(--slot-color), 0 4px 12px rgba(0, 0, 0, 0.6);
+    position: relative;
+}
+.inventory-slot.active::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 3px;
+    background: radial-gradient(circle at 15% 85%, var(--slot-color) 0%, transparent 60%);
+    opacity: 0.3;
+    pointer-events: none;
 }
 
 .inventory-slot-icon {
@@ -341,9 +349,6 @@ html, body {
 .marker-icon-container {
     width: 32px;
     height: 32px;
-    background:
-        radial-gradient(circle at 15% 85%, rgba(255, 255, 255, 0.15) 0%, rgba(0, 0, 0, 0.3) 50%, rgba(0, 0, 0, 0.6) 100%),
-        rgba(25, 25, 35, 0.95);
     border: 3px solid;
     border-radius: 6px;
     display: flex;
