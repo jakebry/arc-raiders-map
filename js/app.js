@@ -58,8 +58,12 @@ function enterMap(map) {
     selectedKey = null;
     currentLevel = map.levels ? 'upper' : null;
 
-    // Reset offset for Stella Montis alignment mode
-    mapOffset = { x: 0, y: 0 };
+    // Set permanent offset for Stella Montis alignment
+    if (map.id === 'stella_montis') {
+        mapOffset = { x: -882, y: 328 };
+    } else {
+        mapOffset = { x: 0, y: 0 };
+    }
 
     showScreen('screen-map');
     initLeafletMap(map);
@@ -222,8 +226,10 @@ function renderAlignmentControls() {
     const container = document.getElementById('alignment-controls');
     if (!container) return;
 
-    // Alignment mode active
-    if (currentMap && currentMap.id === 'stella_montis') {
+    // Hide alignment controls now that offset is locked in
+    // Uncomment the line below to re-enable alignment mode
+    // if (currentMap && currentMap.id === 'stella_montis') {
+    if (false) {
         container.style.display = 'flex';
         container.innerHTML = `
             <div style="display: flex; gap: 8px; align-items: center; background: rgba(20,20,28,0.9); padding: 8px 12px; border-radius: 6px; border: 1px solid #333;">
@@ -254,7 +260,9 @@ function renderAlignmentControls() {
 }
 
 // --- Keyboard Controls for Map Alignment ---
+// Disabled now that alignment is locked in. Uncomment to re-enable alignment mode.
 document.addEventListener('keydown', (e) => {
+    if (true) return; // Alignment locked in
     if (!currentMap || currentMap.id !== 'stella_montis') return;
 
     const step = e.shiftKey ? 10 : 1; // Hold Shift for bigger steps
