@@ -1,0 +1,205 @@
+{
+  "metadata": {
+    "generated": "2026-02-05",
+    "total_keys": 21,
+    "total_images": 150,
+    "sources": ["GameRant", "DualShockers", "Eldorado.gg", "Skycoach"]
+  },
+  "keys": {
+    "blue_gate_confiscation": {
+      "name": "Blue Gate Confiscation Room Key",
+      "map": "Blue Gate",
+      "rarity": "Epic",
+      "images": {
+        "key_item": "https://static0.gamerantimages.com/wordpress/wp-content/uploads/2026/01/arc-raiders-blue-gate-confiscation-room-key.jpg",
+        "door": "https://static0.gamerantimages.com/wordpress/wp-content/uploads/2026/01/arc-raiders-blue-gate-confiscation-locked-room.jpg",
+        "interior": "https://static0.gamerantimages.com/wordpress/wp-content/uploads/2026/01/arc-raiders-blue-gate-confiscation-key-loot-room.jpg",
+        "security_wing": "https://static0.gamerantimages.com/wordpress/wp-content/uploads/2026/01/arc-raiders-blue-gate-confiscation-room-inside-the-security-wing.jpg",
+        "map_location": "https://static0.gamerantimages.com/wordpress/wp-content/uploads/2026/01/arc-raiders-blue-gate-confiscation-room-location.jpg"
+      }
+    },
+    "blue_gate_village": {
+      "name": "Blue Gate Village Key",
+      "map": "Blue Gate",
+      "images": {
+        "key_item": "https://static0.gamerantimages.com/wordpress/wp-content/uploads/2026/01/blue-gate-village-key-arc-raiders.jpg",
+        "door": "https://static0.gamerantimages.com/wordpress/wp-content/uploads/2026/01/blue-gate-village-key-locked-door-arc-raiders.jpg",
+        "interior": "https://static0.gamerantimages.com/wordpress/wp-content/uploads/2026/01/blue-gate-village-key-loot-room-arc-raiders.jpg"
+      }
+    },
+    "blue_gate_cellar": {
+      "name": "Blue Gate Cellar Key",
+      "map": "Blue Gate",
+      "images": {
+        "door_1": "https://www.eldorado.gg/blog/wp-content/uploads/2026/01/Blue-Gate-Cellar-Key.webp",
+        "door_2": "https://www.eldorado.gg/blog/wp-content/uploads/2026/01/Blue-Gate-Cellar-Key-2.webp",
+        "map_location_1": "https://www.eldorado.gg/blog/wp-content/uploads/2026/01/Blue-Gate-Cellar-location.webp",
+        "map_location_2": "https://www.eldorado.gg/blog/wp-content/uploads/2026/01/Blue-Gate-Cellar-location-2.webp"
+      }
+    },
+    "blue_gate_comm_tower": {
+      "name": "Blue Gate Communication Tower Key",
+      "map": "Blue Gate",
+      "images": {
+        "door": "https://www.eldorado.gg/blog/wp-content/uploads/2026/01/Blue-Gate-Communication-Tower-Key.webp",
+        "map_location": "https://www.eldorado.gg/blog/wp-content/uploads/2026/01/Blue-Gate-Communication-Tower-location.webp"
+      }
+    },
+    "patrol_car": {
+      "name": "Patrol Car Key",
+      "map": "Blue Gate",
+      "images": {
+        "trunk": "https://www.eldorado.gg/blog/wp-content/uploads/2026/01/Patrol-Car-Key.webp",
+        "map_location": "https://www.eldorado.gg/blog/wp-content/uploads/2026/01/Patrol-Car-location.webp"
+      }
+    },
+    "dam_control_tower": {
+      "name": "Dam Control Tower Key",
+      "map": "Dam Battlegrounds",
+      "images": {
+        "pipe_entrance": "https://static0.dualshockersimages.com/wordpress/wp-content/uploads/2025/11/arc-raiders-control-tower-key-entering-pipe-1.jpg",
+        "door": "https://www.eldorado.gg/blog/wp-content/uploads/2026/01/Dam-Control-Tower-Key.webp",
+        "finding_door": "https://static0.dualshockersimages.com/wordpress/wp-content/uploads/2025/11/arc-raiders-control-tower-key-finding-the-door-1.jpg",
+        "map_guide": "https://static0.dualshockersimages.com/wordpress/wp-content/uploads/2025/11/arc-raiders-control-tower-key-map-guide-1.jpg"
+      }
+    },
+    "dam_staff_room": {
+      "name": "Dam Staff Room Key",
+      "map": "Dam Battlegrounds",
+      "images": {
+        "door": "https://static0.dualshockersimages.com/wordpress/wp-content/uploads/2025/11/arc-raiders-dam-staff-room-key-guide.jpg",
+        "walkthrough": "https://static0.dualshockersimages.com/wordpress/wp-content/uploads/2025/11/arc-raiders-dam-staff-room-key-walkthrough.jpg",
+        "detailed_location": "https://static0.dualshockersimages.com/wordpress/wp-content/uploads/2025/11/where-to-use-the-dam-staff-room-key-in-arc-raiders.jpg"
+      }
+    },
+    "dam_surveillance": {
+      "name": "Dam Surveillance Key",
+      "map": "Dam Battlegrounds",
+      "images": {
+        "door": "https://www.eldorado.gg/blog/wp-content/uploads/2026/01/Dam-Surveillance-Key.webp",
+        "map_location": "https://www.eldorado.gg/blog/wp-content/uploads/2026/01/Dam-Surveillance-location.webp"
+      }
+    },
+    "dam_testing_annex": {
+      "name": "Dam Testing Annex Key",
+      "map": "Dam Battlegrounds",
+      "images": {
+        "entrance": "https://static0.dualshockersimages.com/wordpress/wp-content/uploads/2025/11/where-to-use-the-dam-testing-annex-room-key-arc-raiders.jpg",
+        "door": "https://static0.dualshockersimages.com/wordpress/wp-content/uploads/2025/11/testing-annex-door-leading-to-locked-room.jpg",
+        "interior": "https://static0.dualshockersimages.com/wordpress/wp-content/uploads/2025/11/dam-testing-annex-room-arc-raiders.jpg",
+        "rewards": "https://static0.dualshockersimages.com/wordpress/wp-content/uploads/2025/11/dam-testing-annex-room-rewards-arc-raiders.jpg"
+      }
+    },
+    "buried_city_hospital": {
+      "name": "Buried City Hospital Key",
+      "map": "Buried City",
+      "images": {
+        "entrance": "https://static0.dualshockersimages.com/wordpress/wp-content/uploads/2025/11/img_0522.jpeg",
+        "stairs": "https://static0.dualshockersimages.com/wordpress/wp-content/uploads/2025/11/img_0523.jpeg",
+        "door": "https://www.eldorado.gg/blog/wp-content/uploads/2026/01/Buried-City-Hospital-Key.webp"
+      }
+    },
+    "buried_city_jkv": {
+      "name": "Buried City JKV Employee Access Card",
+      "map": "Buried City",
+      "images": {
+        "door": "https://www.eldorado.gg/blog/wp-content/uploads/2026/01/Buried-City-JKV-Employee-Access-Card.webp",
+        "map_location": "https://www.eldorado.gg/blog/wp-content/uploads/2026/01/Buried-City-JKV-Employee-Access-Card-door-location.webp"
+      }
+    },
+    "buried_city_residential": {
+      "name": "Buried City Residential Master Key",
+      "map": "Buried City",
+      "images": {
+        "main_street_door": "https://static0.gamerantimages.com/wordpress/wp-content/uploads/2025/12/buried-city-residential-master-key-door-1-arc-raiders.jpg",
+        "grandioso_door": "https://static0.gamerantimages.com/wordpress/wp-content/uploads/2025/12/buried-city-residential-master-key-door-2-arc-raiders.jpg",
+        "red_tower_door": "https://static0.gamerantimages.com/wordpress/wp-content/uploads/2026/01/buried-city-residential-master-key-red-tower-locked-room-arc-raiders.jpg",
+        "red_tower_overview": "https://static0.gamerantimages.com/wordpress/wp-content/uploads/2026/01/buried-city-residential-master-key-red-tower-arc-raiders.jpg"
+      }
+    },
+    "buried_city_town_hall": {
+      "name": "Buried City Town Hall Key",
+      "map": "Buried City",
+      "images": {
+        "entrance": "https://www.eldorado.gg/blog/wp-content/uploads/2026/01/Buried-City-Town-Hall-Key.webp",
+        "map_location": "https://www.eldorado.gg/blog/wp-content/uploads/2026/01/Buried-City-Town-Hall-location.webp"
+      }
+    },
+    "stella_montis_archives": {
+      "name": "Stella Montis Archives Key",
+      "map": "Stella Montis",
+      "images": {
+        "vent_entrance": "https://static0.dualshockersimages.com/wordpress/wp-content/uploads/2025/11/arc-raiders-stella-montis-archives-key-tunnel-entrance.jpg",
+        "secret_tunnel": "https://static0.dualshockersimages.com/wordpress/wp-content/uploads/2025/11/arc-raiders-stella-montis-secret-tunnel.jpg",
+        "staircase": "https://static0.dualshockersimages.com/wordpress/wp-content/uploads/2025/11/arc-raiders-stella-montis.jpg",
+        "archives_entrance": "https://static0.dualshockersimages.com/wordpress/wp-content/uploads/2025/11/how-to-use-the-arc-raiders-stella-montis-archives-key.jpg",
+        "storage_door": "https://static0.dualshockersimages.com/wordpress/wp-content/uploads/2025/11/arc-raiders-stella-montis-archives-key-how-to-use-it.jpg",
+        "interior": "https://static0.dualshockersimages.com/wordpress/wp-content/uploads/2025/11/arc-raiders-where-to-use-the-stella-montis-archives-key.jpg",
+        "map_overview": "https://static0.dualshockersimages.com/wordpress/wp-content/uploads/2025/11/arc-raiders-stella-montis-map.jpg"
+      }
+    },
+    "stella_montis_assembly": {
+      "name": "Stella Montis Assembly Admin Key",
+      "map": "Stella Montis",
+      "images": {
+        "door": "https://www.eldorado.gg/blog/wp-content/uploads/2026/01/Stella-Montis-Assembly-Admin-Key.webp",
+        "map_location": "https://www.eldorado.gg/blog/wp-content/uploads/2026/01/Stella-Montis-Assembly-Admin-location.webp"
+      }
+    },
+    "stella_montis_medical": {
+      "name": "Stella Montis Medical Storage Key",
+      "map": "Stella Montis",
+      "images": {
+        "door": "https://www.eldorado.gg/blog/wp-content/uploads/2026/01/Stella-Montis-Medical-Storage-Key.webp",
+        "map_location": "https://www.eldorado.gg/blog/wp-content/uploads/2026/01/Stella-Montis-Medical-Storage-location.webp"
+      }
+    },
+    "stella_montis_security": {
+      "name": "Stella Montis Security Checkpoint Key",
+      "map": "Stella Montis",
+      "images": {
+        "barricade": "https://static0.gamerantimages.com/wordpress/wp-content/uploads/2026/01/stella-montis-security-checkpoint-arc-raiders.jpg",
+        "locked_room": "https://static0.gamerantimages.com/wordpress/wp-content/uploads/2026/01/stella-montis-security-checkpoint-locked-room-arc-raiders.jpg",
+        "interior": "https://static0.gamerantimages.com/wordpress/wp-content/uploads/2026/01/stella-montis-security-checkpoint-loot-room-unlocked-arc-raiders.jpg",
+        "map_location": "https://static0.gamerantimages.com/wordpress/wp-content/uploads/2026/01/stella-montis-security-checkpoint-location-arc-raiders.jpg"
+      }
+    },
+    "spaceport_container": {
+      "name": "Spaceport Container Storage Key",
+      "map": "Spaceport",
+      "images": {
+        "building": "https://static0.dualshockersimages.com/wordpress/wp-content/uploads/2025/11/where-to-use-the-spaceport-storage-container-key-arc-raiders.jpg",
+        "stairs": "https://static0.dualshockersimages.com/wordpress/wp-content/uploads/2025/11/finding-the-spaceport-storage-container-location.jpg",
+        "doors": "https://static0.dualshockersimages.com/wordpress/wp-content/uploads/2025/11/location-of-spaceport-storage-container-arc-raiders.jpg"
+      }
+    },
+    "spaceport_control_tower": {
+      "name": "Spaceport Control Tower Key",
+      "map": "Spaceport",
+      "images": {
+        "door": "https://www.eldorado.gg/blog/wp-content/uploads/2026/01/Spaceport-Control-Tower-Key.webp",
+        "map_location": "https://www.eldorado.gg/blog/wp-content/uploads/2026/01/Spaceport-Control-Tower-location.webp"
+      }
+    },
+    "spaceport_trench_tower": {
+      "name": "Spaceport Trench Tower Key",
+      "map": "Spaceport",
+      "images": {
+        "buildings": "https://static0.gamerantimages.com/wordpress/wp-content/uploads/2025/12/south-and-north-trench-towers-spaceport-buildingsarc-raiders.jpg",
+        "door": "https://www.eldorado.gg/blog/wp-content/uploads/2026/01/Spaceport-Trench-Tower-Key.webp",
+        "map_overview": "https://static0.gamerantimages.com/wordpress/wp-content/uploads/2025/12/south-and-north-trench-towers-spaceport-arc-raiders.jpg"
+      }
+    },
+    "spaceport_warehouse": {
+      "name": "Spaceport Warehouse Key",
+      "map": "Spaceport",
+      "images": {
+        "entrance": "https://static0.dualshockersimages.com/wordpress/wp-content/uploads/2025/11/arc-raiders-spaceport-warehouse-key-walkthrough.jpg",
+        "staircase": "https://static0.dualshockersimages.com/wordpress/wp-content/uploads/2025/11/arc-raiders-spaceport-warehouse-key.jpg",
+        "path": "https://static0.dualshockersimages.com/wordpress/wp-content/uploads/2025/11/arc-raiders-spaceport-warehouse-key-how-to-locate-the-door.jpg",
+        "door": "https://static0.dualshockersimages.com/wordpress/wp-content/uploads/2025/11/arc-raiders-spaceport-warehouse-key-door.jpg",
+        "loot": "https://static0.dualshockersimages.com/wordpress/wp-content/uploads/2025/11/arc-raiders-spaceport-warehouse-loot.jpg"
+      }
+    }
+  }
+}
