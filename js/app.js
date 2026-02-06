@@ -81,6 +81,14 @@ function initLeafletMap(map) {
         maxBoundsViscosity: 1.0  // Hard bounds (not elastic)
     });
 
+    // Add dark space background for Stella Montis (space station)
+    const container = leafletMap.getContainer();
+    if (map.id === 'stella_montis') {
+        container.classList.add('space-station');
+    } else {
+        container.classList.remove('space-station');
+    }
+
     var config = getCurrentImageConfig();
 
     // Set max bounds to the full image (prevents panning outside)
@@ -110,7 +118,13 @@ function initLeafletMap(map) {
         var containerHeight = container.offsetHeight;
         var scaleNeeded = Math.max(containerWidth / config.width, containerHeight / config.height);
         var minZoom = Math.log2(scaleNeeded);
-        leafletMap.setMinZoom(minZoom);
+
+        // For Stella Montis, allow zooming out much further for alignment
+        if (map.id === 'stella_montis') {
+            leafletMap.setMinZoom(-3);
+        } else {
+            leafletMap.setMinZoom(minZoom);
+        }
 
         leafletMap.fitBounds(contentBounds, { padding: [10, 10] });
     }, 100);
