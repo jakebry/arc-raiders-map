@@ -21,7 +21,7 @@ const MAPS = [
 const RARITIES = [
     { id: 'uncommon', label: 'Uncommon', color: '#4ade80' },
     { id: 'rare',     label: 'Rare',     color: '#60a5fa' },
-    { id: 'epic',     label: 'Epic',     color: '#c084fc' }
+    { id: 'epic',     label: 'Epic',     color: '#CD3197' }
 ];
 
 const KEYS = [

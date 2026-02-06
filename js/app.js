@@ -18,7 +18,6 @@ const screenMap    = document.getElementById('screen-map');
 const mapCardsEl   = document.getElementById('map-cards');
 const btnBack      = document.getElementById('btn-back');
 const btnExport    = document.getElementById('btn-export');
-const filterBarEl  = document.getElementById('filter-bar');
 const inventorySlotsEl = document.getElementById('inventory-slots');
 const leafletMapEl = document.getElementById('leaflet-map');
 
@@ -69,7 +68,6 @@ function enterMap(map) {
     initLeafletMap(map);
     renderLevelToggle();
     renderAlignmentControls();
-    renderFilterBar();
     renderInventory();
 }
 
@@ -391,15 +389,18 @@ function renderMarkers() {
 
         const icon = L.divIcon({
             className: 'keycard-marker' + (isSelected ? ' selected' : ''),
-            html: `
-                <div class="marker-dot" style="background-color: ${rarity.color}; box-shadow: 0 0 8px ${rarity.color};"></div>
-                <div class="marker-label" style="color: ${rarity.color};">
-                    <div class="marker-label-name">${key.name}</div>
-                    ${key.doorImage ? `<img class="marker-label-image" src="${key.doorImage}" alt="${key.name} door">` : ''}
+            html: isSelected ? `
+                <div class="marker-card" style="border-color: ${rarity.color}; box-shadow: 0 0 12px ${rarity.color};">
+                    <div class="marker-card-title" style="color: ${rarity.color};">${key.name}</div>
+                    ${key.doorImage ? `<img class="marker-card-door" src="${key.doorImage}" alt="${key.name} door">` : ''}
+                    <div class="marker-card-location">${key.location}</div>
                 </div>
+            ` : `
+                <div class="marker-dot" style="background-color: ${rarity.color}; box-shadow: 0 0 8px ${rarity.color};"></div>
+                <img class="marker-icon" src="${key.icon}" alt="${key.name}" style="filter: drop-shadow(0 0 4px ${rarity.color});">
             `,
-            iconSize: [isSelected ? 24 : 16, isSelected ? 24 : 16],
-            iconAnchor: [isSelected ? 12 : 8, isSelected ? 12 : 8]
+            iconSize: isSelected ? [200, 120] : [12, 12],
+            iconAnchor: isSelected ? [100, 60] : [6, 6]
         });
 
         const marker = L.marker(key.coords, {
