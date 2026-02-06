@@ -278,6 +278,38 @@ html, body {
 .leaflet-image-layer {
     transition: opacity 0.3s ease-in-out;
 }
+.leaflet-container.space-station .leaflet-image-layer {
+    mask-image: linear-gradient(
+        to right,
+        transparent 0%,
+        black 3%,
+        black 97%,
+        transparent 100%
+    ),
+    linear-gradient(
+        to bottom,
+        transparent 0%,
+        black 3%,
+        black 97%,
+        transparent 100%
+    );
+    mask-composite: intersect;
+    -webkit-mask-image: linear-gradient(
+        to right,
+        transparent 0%,
+        black 3%,
+        black 97%,
+        transparent 100%
+    ),
+    linear-gradient(
+        to bottom,
+        transparent 0%,
+        black 3%,
+        black 97%,
+        transparent 100%
+    );
+    -webkit-mask-composite: source-in;
+}
 .leaflet-control-zoom {
     background: rgba(20, 20, 28, 0.85) !important;
     border-color: #2a2a35 !important;
