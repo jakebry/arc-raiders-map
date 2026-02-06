@@ -8,6 +8,8 @@ let leafletMap = null;        // Leaflet map instance
 let markers = [];             // active Leaflet markers on the map
 let currentLevel = null;      // 'upper' or 'lower' for maps with levels, null otherwise
 let mapOverlay = null;        // reference to the active Leaflet imageOverlay
+let mapOverlayUpper = null;   // upper level overlay (for alignment)
+let mapOverlayLower = null;   // lower level overlay (for alignment)
 let mapOffset = { x: 0, y: 0 }; // offset for aligning multi-level maps
 
 // --- DOM References ---
@@ -102,13 +104,23 @@ function initLeafletMap(map) {
     }
     leafletMap.setMaxBounds(imageBounds);
 
-    // Apply offset to upper level for alignment (lower is the base)
-    var bounds = [[0, 0], [config.height, config.width]];
-    if (currentLevel === 'upper' && map.id === 'stella_montis') {
-        bounds = [[mapOffset.y, mapOffset.x], [config.height + mapOffset.y, config.width + mapOffset.x]];
-    }
+    // For Stella Montis, load BOTH layers at once for alignment
+    if (map.id === 'stella_montis' && map.levels) {
+        // Lower level (fixed reference)
+        var lowerConfig = map.levels.lower;
+        mapOverlayLower = L.imageOverlay(lowerConfig.image, [[0, 0], [lowerConfig.height, lowerConfig.width]], { opacity: 0.7 }).addTo(leafletMap);
 
-    mapOverlay = L.imageOverlay(config.image, bounds).addTo(leafletMap);
+        // Upper level (adjustable)
+        var upperConfig = map.levels.upper;
+        var upperBounds = [[mapOffset.y, mapOffset.x], [upperConfig.height + mapOffset.y, upperConfig.width + mapOffset.x]];
+        mapOverlayUpper = L.imageOverlay(upperConfig.image, upperBounds, { opacity: 0.7 }).addTo(leafletMap);
+
+        mapOverlay = mapOverlayUpper; // For compatibility
+    } else {
+        // Single layer map
+        var bounds = [[0, 0], [config.height, config.width]];
+        mapOverlay = L.imageOverlay(config.image, bounds).addTo(leafletMap);
+    }
 
     // Fit the original map content (inside the blurred border) to the viewport.
     // Short delay ensures the container has rendered and has a valid size.
@@ -224,7 +236,7 @@ function renderAlignmentControls() {
 
 // --- Keyboard Controls for Map Alignment ---
 document.addEventListener('keydown', (e) => {
-    if (!currentMap || currentMap.id !== 'stella_montis' || currentLevel !== 'upper') return;
+    if (!currentMap || currentMap.id !== 'stella_montis') return;
 
     const step = e.shiftKey ? 10 : 1; // Hold Shift for bigger steps
     let changed = false;
@@ -250,7 +262,20 @@ document.addEventListener('keydown', (e) => {
 
     if (changed) {
         e.preventDefault();
-        switchLevel(currentLevel);
+
+        // Update upper layer position
+        if (mapOverlayUpper && currentMap.levels) {
+            var upperConfig = currentMap.levels.upper;
+            var upperBounds = [[mapOffset.y, mapOffset.x], [upperConfig.height + mapOffset.y, upperConfig.width + mapOffset.x]];
+
+            // Remove and recreate with new bounds
+            mapOverlayUpper.remove();
+            mapOverlayUpper = L.imageOverlay(upperConfig.image, upperBounds, { opacity: 0.7 }).addTo(leafletMap);
+            mapOverlay = mapOverlayUpper;
+        }
+
+        renderAlignmentControls();
+        renderMarkers();
     }
 });
 
@@ -259,26 +284,17 @@ function switchLevel(level) {
     currentLevel = level;
     selectedKey = null;
 
-    // Seamlessly fade to new map overlay
-    var config = getCurrentImageConfig();
-    var oldOverlay = mapOverlay;
-
-    // Apply offset to upper level for alignment (lower is the base)
-    var bounds = [[0, 0], [config.height, config.width]];
-    if (level === 'upper' && currentMap.id === 'stella_montis') {
-        bounds = [[mapOffset.y, mapOffset.x], [config.height + mapOffset.y, config.width + mapOffset.x]];
-    }
-
-    // Create new overlay with opacity 0
-    mapOverlay = L.imageOverlay(config.image, bounds, { opacity: 0 }).addTo(leafletMap);
-
-    // Fade in new overlay and fade out old overlay
-    setTimeout(() => {
-        if (mapOverlay) mapOverlay.setOpacity(1);
-        if (oldOverlay) {
-            setTimeout(() => oldOverlay.remove(), 300); // Remove after fade completes
+    // For Stella Montis with both layers visible, just highlight the active layer
+    if (currentMap.id === 'stella_montis' && mapOverlayUpper && mapOverlayLower) {
+        // Highlight the active layer
+        if (level === 'upper') {
+            mapOverlayUpper.setOpacity(0.9);
+            mapOverlayLower.setOpacity(0.5);
+        } else {
+            mapOverlayUpper.setOpacity(0.5);
+            mapOverlayLower.setOpacity(0.9);
         }
-    }, 10);
+    }
 
     // Re-render UI (don't call fitBounds to keep position)
     renderLevelToggle();
