@@ -132,6 +132,10 @@ function initLeafletMap(map) {
                 setTimeout(() => {
                     if (mapOverlayLower) {
                         mapOverlayLower.setOpacity(lowerOpacity);
+                        // Upper is default, so bring it to front
+                        if (currentLevel === 'upper' && mapOverlayUpper) {
+                            mapOverlayUpper.bringToFront();
+                        }
                     }
                 }, 100);
             });
@@ -315,9 +319,11 @@ function switchLevel(level) {
         if (level === 'upper') {
             mapOverlayUpper.setOpacity(1.0);
             mapOverlayLower.setOpacity(0.25);
+            mapOverlayUpper.bringToFront();  // Bring active layer to top
         } else {
             mapOverlayUpper.setOpacity(0.25);
             mapOverlayLower.setOpacity(1.0);
+            mapOverlayLower.bringToFront();  // Bring active layer to top
         }
     }
 
