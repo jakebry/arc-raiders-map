@@ -257,7 +257,10 @@ function renderMarkers() {
             className: 'keycard-marker' + (isSelected ? ' selected' : ''),
             html: `
                 <div class="marker-dot" style="background-color: ${rarity.color}; box-shadow: 0 0 8px ${rarity.color};"></div>
-                <div class="marker-label" style="color: ${rarity.color};">${key.name}</div>
+                <div class="marker-label" style="color: ${rarity.color};">
+                    <div class="marker-label-name">${key.name}</div>
+                    ${key.doorImage ? `<img class="marker-label-image" src="${key.doorImage}" alt="${key.name} door">` : ''}
+                </div>
             `,
             iconSize: [isSelected ? 24 : 16, isSelected ? 24 : 16],
             iconAnchor: [isSelected ? 12 : 8, isSelected ? 12 : 8]
