@@ -10,10 +10,10 @@ const MAPS = [
     { id: 'spaceport',     name: 'Spaceport',         image: 'images/maps/spaceport.jpg',     preview: 'images/preview/spaceport.jpg',     width: 4896, height: 4896, border: 400 },
     { id: 'buried_city',   name: 'Buried City',       image: 'images/maps/buried_city.jpg',   preview: 'images/preview/buried_city.jpg',   width: 4896, height: 4896, border: 400 },
     { id: 'blue_gate',     name: 'Blue Gate',         image: 'images/maps/blue_gate.jpg',     preview: 'images/preview/blue_gate.jpg',     width: 4896, height: 3872, border: 400 },
-    { id: 'stella_montis', name: 'Stella Montis',     image: 'images/maps/stella_montis_lower_original.png', preview: 'images/preview/stella_montis.jpg', width: 5120, height: 3072, border: 0,
+    { id: 'stella_montis', name: 'Stella Montis',     image: 'images/maps/stella_montis_upper_original.png', preview: 'images/preview/stella_montis.jpg', width: 4096, height: 3072, border: 0,
       levels: {
-          upper: { image: 'images/maps/stella_montis_upper_original.png', width: 4096, height: 3072 },
-          lower: { image: 'images/maps/stella_montis_lower_original.png', width: 5120, height: 3072 }
+          upper: { image: 'images/maps/stella_montis_lower_original.png', width: 5120, height: 3072 },
+          lower: { image: 'images/maps/stella_montis_upper_original.png', width: 4096, height: 3072 }
       }
     }
 ];
