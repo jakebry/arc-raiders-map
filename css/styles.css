@@ -229,7 +229,7 @@ html, body {
     height: 56px;
     background: rgba(20, 20, 28, 0.9);
     border: 2px solid #2a2a35;
-    border-radius: 4px;
+    border-radius: 6px;
     cursor: pointer;
     transition: all 0.2s;
     position: relative;
@@ -246,11 +246,11 @@ html, body {
 }
 
 .inventory-slot.active {
-    border-color: var(--slot-color);
+    border: 3px solid var(--slot-color);
     background:
-        radial-gradient(circle at 85% 15%, transparent 0%, rgba(0, 0, 0, 0.4) 70%),
-        rgba(40, 40, 50, 0.95);
-    box-shadow: 0 0 16px var(--slot-color);
+        radial-gradient(circle at 15% 85%, rgba(255, 255, 255, 0.15) 0%, rgba(0, 0, 0, 0.3) 50%, rgba(0, 0, 0, 0.6) 100%),
+        rgba(25, 25, 35, 0.95);
+    box-shadow: 0 0 20px var(--slot-color), 0 4px 12px rgba(0, 0, 0, 0.6);
 }
 
 .inventory-slot-icon {
@@ -261,23 +261,7 @@ html, body {
 }
 
 .inventory-slot-rarity {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 45%;
-    height: 5px;
-    background: linear-gradient(to right, var(--slot-color) 0%, transparent 100%);
-    box-shadow: 0 0 8px var(--slot-color);
-    border-radius: 0 0 0 4px;
-    clip-path: polygon(
-        0 0,
-        0 100%,
-        20% 100%,
-        20% 40%,
-        100% 40%,
-        100% 100%,
-        100% 0
-    );
+    display: none;
 }
 
 /* --- Leaflet Overrides --- */
@@ -357,14 +341,15 @@ html, body {
 .marker-icon-container {
     width: 32px;
     height: 32px;
-    background: rgba(20, 20, 28, 0.95);
-    border: 2px solid;
-    border-radius: 4px;
+    background:
+        radial-gradient(circle at 15% 85%, rgba(255, 255, 255, 0.15) 0%, rgba(0, 0, 0, 0.3) 50%, rgba(0, 0, 0, 0.6) 100%),
+        rgba(25, 25, 35, 0.95);
+    border: 3px solid;
+    border-radius: 6px;
     display: flex;
     align-items: center;
     justify-content: center;
     position: relative;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
     pointer-events: none;
 }
 .marker-icon {
@@ -373,22 +358,7 @@ html, body {
     object-fit: contain;
 }
 .marker-icon-rarity {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    width: 45%;
-    height: 3px;
-    background: linear-gradient(to right, currentColor 0%, transparent 100%);
-    border-radius: 0 0 0 4px;
-    clip-path: polygon(
-        0 0,
-        0 100%,
-        20% 100%,
-        20% 40%,
-        100% 40%,
-        100% 100%,
-        100% 0
-    );
+    display: none;
 }
 .marker-card {
     background: rgba(20, 20, 28, 0.95);

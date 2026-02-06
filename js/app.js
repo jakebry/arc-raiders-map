@@ -402,9 +402,8 @@ function renderMarkers() {
                     <div class="marker-card-location">${key.location}</div>
                 </div>
             ` : `
-                <div class="marker-icon-container" style="border-color: ${rarity.color}; color: ${rarity.color};">
+                <div class="marker-icon-container" style="border-color: ${rarity.color}; box-shadow: 0 0 12px ${rarity.color}, 0 2px 8px rgba(0, 0, 0, 0.6);">
                     <img class="marker-icon" src="${key.icon}" alt="${key.name}" style="filter: drop-shadow(0 0 3px ${rarity.color});">
-                    <div class="marker-icon-rarity"></div>
                 </div>
             `,
             iconSize: isSelected ? [200, 120] : [32, 32],
