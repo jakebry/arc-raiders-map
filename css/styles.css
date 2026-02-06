@@ -270,8 +270,7 @@ html, body {
     left: 0;
     width: 16px;
     height: 16px;
-    background: var(--slot-color);
-    border-radius: 0 100% 0 0;  /* Rounded inside corner */
+    background: radial-gradient(circle at top right, transparent 16px, var(--slot-color) 16px);
     pointer-events: none;
 }
 
@@ -379,8 +378,7 @@ html, body {
     left: 0;
     width: 12px;
     height: 12px;
-    background: currentColor;
-    border-radius: 0 100% 0 0;  /* Rounded inside corner */
+    background: radial-gradient(circle at top right, transparent 12px, currentColor 12px);
     pointer-events: none;
 }
 .marker-icon {
