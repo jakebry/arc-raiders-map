@@ -402,6 +402,7 @@ function renderMarkers() {
                     <div class="marker-card-location">${key.location}</div>
                 </div>
             ` : `
+                <div class="marker-dot" style="background-color: ${rarity.color}; box-shadow: 0 0 8px ${rarity.color};"></div>
                 <div class="marker-icon-container" style="border-color: ${rarity.color}; box-shadow: 0 0 12px ${rarity.color}, 0 2px 8px rgba(0, 0, 0, 0.6); background: radial-gradient(circle at 15% 85%, ${rarity.color}99 0%, transparent 60%), rgba(25, 25, 35, 0.95);">
                     <img class="marker-icon" src="${key.icon}" alt="${key.name}" style="filter: drop-shadow(0 0 3px ${rarity.color});">
                 </div>
