@@ -162,34 +162,23 @@ function switchLevel(level) {
     currentLevel = level;
     selectedKey = null;
 
-    // Swap the map overlay
-    if (mapOverlay) mapOverlay.remove();
+    // Seamlessly fade to new map overlay
     var config = getCurrentImageConfig();
+    var oldOverlay = mapOverlay;
 
-    // Update max bounds for new image dimensions
-    var imageBounds = L.latLngBounds([[0, 0], [config.height, config.width]]);
-    leafletMap.setMaxBounds(imageBounds);
+    // Create new overlay with opacity 0
+    mapOverlay = L.imageOverlay(config.image, [[0, 0], [config.height, config.width]], { opacity: 0 }).addTo(leafletMap);
 
-    mapOverlay = L.imageOverlay(config.image, [[0, 0], [config.height, config.width]]).addTo(leafletMap);
+    // Fade in new overlay and fade out old overlay
+    setTimeout(() => {
+        if (mapOverlay) mapOverlay.setOpacity(1);
+        if (oldOverlay) {
+            setTimeout(() => oldOverlay.remove(), 300); // Remove after fade completes
+        }
+    }, 10);
 
-    // Recalculate minimum zoom for new image dimensions
-    var container = leafletMap.getContainer();
-    var containerWidth = container.offsetWidth;
-    var containerHeight = container.offsetHeight;
-    var scaleNeeded = Math.max(containerWidth / config.width, containerHeight / config.height);
-    var minZoom = Math.log2(scaleNeeded);
-    leafletMap.setMinZoom(minZoom);
-
-    // Re-fit to new content bounds
-    var contentBounds = L.latLngBounds(
-        [currentMap.border, currentMap.border],
-        [config.height - currentMap.border, config.width - currentMap.border]
-    );
-    leafletMap.fitBounds(contentBounds, { padding: [10, 10] });
-
-    // Re-render everything
+    // Re-render UI (don't call fitBounds to keep position)
     renderLevelToggle();
-    renderFilterBar();
     renderInventory();
     renderMarkers();
 }

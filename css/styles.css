@@ -272,6 +272,9 @@ html, body {
 .leaflet-container {
     background: #0a0a0f;
 }
+.leaflet-image-layer {
+    transition: opacity 0.3s ease-in-out;
+}
 .leaflet-control-zoom {
     background: rgba(20, 20, 28, 0.85) !important;
     border-color: #2a2a35 !important;
