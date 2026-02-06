@@ -92,7 +92,14 @@ function initLeafletMap(map) {
     var config = getCurrentImageConfig();
 
     // Set max bounds to the full image (prevents panning outside)
-    var imageBounds = L.latLngBounds([[0, 0], [config.height, config.width]]);
+    // For Stella Montis, use expanded bounds to allow alignment adjustment
+    var imageBounds;
+    if (map.id === 'stella_montis') {
+        // Expanded bounds to allow movement in all directions for alignment
+        imageBounds = L.latLngBounds([[-1000, -1000], [config.height + 1000, config.width + 1000]]);
+    } else {
+        imageBounds = L.latLngBounds([[0, 0], [config.height, config.width]]);
+    }
     leafletMap.setMaxBounds(imageBounds);
 
     // Apply offset to upper level for alignment (lower is the base)
