@@ -240,9 +240,12 @@ html, body {
 }
 
 .inventory-slot:hover {
-    border-color: #4a6fa5;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(74, 111, 165, 0.3);
+    border-color: var(--slot-color);
+    transform: translateY(-3px);
+    box-shadow: 0 0 20px var(--slot-color), 0 6px 16px rgba(0, 0, 0, 0.5);
+    background:
+        radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.08) 0%, transparent 60%),
+        rgba(30, 30, 40, 0.95);
 }
 
 .inventory-slot.active {
