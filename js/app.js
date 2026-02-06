@@ -404,7 +404,7 @@ function renderMarkers() {
 
         const marker = L.marker(key.coords, {
             icon,
-            draggable: true  // Make markers draggable
+            draggable: false  // Markers locked in place
         })
             .addTo(leafletMap)
             .on('click', () => selectKey(key))
