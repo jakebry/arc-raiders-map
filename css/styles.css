@@ -267,17 +267,19 @@ html, body {
     position: absolute;
     bottom: 0;
     left: 0;
-    width: 0;
-    height: 0;
-    background: radial-gradient(circle at top right, transparent 0px, var(--slot-color) 0px);
-    transition: all 0.25s ease;
+    width: 16px;
+    height: 16px;
+    background: radial-gradient(circle at top right, transparent 16px, var(--slot-color) 16px);
+    opacity: 0;
+    transform: scale(0);
+    transform-origin: bottom left;
+    transition: opacity 0.25s ease, transform 0.25s ease;
     pointer-events: none;
 }
 .inventory-slot:hover::after,
 .inventory-slot.active::after {
-    width: 16px;
-    height: 16px;
-    background: radial-gradient(circle at top right, transparent 16px, var(--slot-color) 16px);
+    opacity: 1;
+    transform: scale(1);
 }
 
 .inventory-slot-icon {
