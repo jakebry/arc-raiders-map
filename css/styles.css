@@ -249,7 +249,7 @@ html, body {
     border-style: solid;
     border-color: var(--slot-color);
     border-width: 3px 3px 10px 3px;  /* top right bottom left - thick bottom */
-    border-radius: 6px 6px 6px 14px;  /* Moderate bottom-left for inside curve, minimal outside change */
+    border-radius: 6px;  /* Uniform outside corners */
     background: rgba(25, 25, 35, 0.95);
     box-shadow: 0 0 20px var(--slot-color), 0 4px 12px rgba(0, 0, 0, 0.6);
     position: relative;
@@ -258,9 +258,20 @@ html, body {
     content: '';
     position: absolute;
     inset: 0;
-    border-radius: 4px 4px 4px 11px;
+    border-radius: 4px;
     background: radial-gradient(circle at 15% 85%, var(--slot-color) 0%, transparent 60%);
     opacity: 0.6;
+    pointer-events: none;
+}
+.inventory-slot.active::after {
+    content: '';
+    position: absolute;
+    bottom: 3px;
+    left: 3px;
+    width: 20px;
+    height: 20px;
+    background: var(--slot-color);
+    border-radius: 0 100% 0 0;  /* Rounded inside corner */
     pointer-events: none;
 }
 
@@ -354,11 +365,22 @@ html, body {
     height: 32px;
     border-style: solid;
     border-width: 2px 2px 8px 2px;  /* thick bottom */
-    border-radius: 4px 4px 4px 10px;  /* moderate bottom-left for inside curve */
+    border-radius: 4px;  /* Uniform outside corners */
     display: flex;
     align-items: center;
     justify-content: center;
     position: relative;
+    pointer-events: none;
+}
+.marker-icon-container::after {
+    content: '';
+    position: absolute;
+    bottom: 2px;
+    left: 2px;
+    width: 14px;
+    height: 14px;
+    background: currentColor;
+    border-radius: 0 100% 0 0;  /* Rounded inside corner */
     pointer-events: none;
 }
 .marker-icon {
