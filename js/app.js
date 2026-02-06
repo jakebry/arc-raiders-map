@@ -115,12 +115,14 @@ function initLeafletMap(map) {
     if (map.id === 'stella_montis' && map.levels) {
         // Lower level (fixed reference)
         var lowerConfig = map.levels.lower;
-        mapOverlayLower = L.imageOverlay(lowerConfig.image, [[0, 0], [lowerConfig.height, lowerConfig.width]], { opacity: 0.7 }).addTo(leafletMap);
+        var lowerOpacity = currentLevel === 'lower' ? 1.0 : 0.25;
+        mapOverlayLower = L.imageOverlay(lowerConfig.image, [[0, 0], [lowerConfig.height, lowerConfig.width]], { opacity: lowerOpacity }).addTo(leafletMap);
 
         // Upper level (adjustable)
         var upperConfig = map.levels.upper;
         var upperBounds = [[mapOffset.y, mapOffset.x], [upperConfig.height + mapOffset.y, upperConfig.width + mapOffset.x]];
-        mapOverlayUpper = L.imageOverlay(upperConfig.image, upperBounds, { opacity: 0.7 }).addTo(leafletMap);
+        var upperOpacity = currentLevel === 'upper' ? 1.0 : 0.25;
+        mapOverlayUpper = L.imageOverlay(upperConfig.image, upperBounds, { opacity: upperOpacity }).addTo(leafletMap);
 
         mapOverlay = mapOverlayUpper; // For compatibility
     } else {
@@ -296,15 +298,15 @@ function switchLevel(level) {
     currentLevel = level;
     selectedKey = null;
 
-    // For Stella Montis with both layers visible, just highlight the active layer
+    // For Stella Montis with both layers visible, make active layer prominent
     if (currentMap.id === 'stella_montis' && mapOverlayUpper && mapOverlayLower) {
-        // Highlight the active layer
+        // Active layer fully visible, inactive layer very faded
         if (level === 'upper') {
-            mapOverlayUpper.setOpacity(0.9);
-            mapOverlayLower.setOpacity(0.5);
+            mapOverlayUpper.setOpacity(1.0);
+            mapOverlayLower.setOpacity(0.25);
         } else {
-            mapOverlayUpper.setOpacity(0.5);
-            mapOverlayLower.setOpacity(0.9);
+            mapOverlayUpper.setOpacity(0.25);
+            mapOverlayLower.setOpacity(1.0);
         }
     }
 
