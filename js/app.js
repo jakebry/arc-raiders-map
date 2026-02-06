@@ -210,7 +210,7 @@ function renderInventory() {
         slot.className = 'inventory-slot' + (selectedKey && selectedKey.name === key.name ? ' active' : '');
         slot.style.setProperty('--slot-color', rarity.color);
         slot.innerHTML = `
-            <img class="inventory-slot-icon" src="images/keys/placeholder.svg" alt="${key.name}">
+            <img class="inventory-slot-icon" src="images/keys/keycard.png" alt="${key.name}" style="filter: drop-shadow(0 0 4px ${rarity.color});">
             <div class="inventory-slot-rarity"></div>
         `;
         slot.addEventListener('click', () => selectKey(key));
