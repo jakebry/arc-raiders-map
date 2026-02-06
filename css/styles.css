@@ -228,10 +228,12 @@ html, body {
     width: 56px;
     height: 56px;
     background: rgba(20, 20, 28, 0.9);
-    border: 2px solid var(--slot-color, #2a2a35);
+    border-style: solid;
+    border-color: var(--slot-color, #2a2a35);
+    border-width: 2px;
     border-radius: 6px;
     cursor: pointer;
-    transition: all 0.2s;
+    transition: border-width 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease, background 0.25s ease;
     position: relative;
     display: flex;
     align-items: center;
@@ -239,42 +241,43 @@ html, body {
     overflow: hidden;
 }
 
-.inventory-slot:hover {
-    border-color: var(--slot-color);
-    transform: translateY(-3px);
-    box-shadow: 0 0 20px var(--slot-color), 0 6px 16px rgba(0, 0, 0, 0.5);
-    background:
-        radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.08) 0%, transparent 60%),
-        rgba(30, 30, 40, 0.95);
+.inventory-slot:hover,
+.inventory-slot.active {
+    border-width: 3px 3px 10px 3px;
+    transform: translateY(-2px);
+    box-shadow: 0 0 20px var(--slot-color), 0 4px 12px rgba(0, 0, 0, 0.6);
 }
 
-.inventory-slot.active {
-    border-style: solid;
-    border-color: var(--slot-color);
-    border-width: 3px 3px 10px 3px;  /* top right bottom left - thick bottom */
-    border-radius: 6px;  /* Uniform outside corners */
-    background: rgba(25, 25, 35, 0.95);
-    box-shadow: 0 0 20px var(--slot-color), 0 4px 12px rgba(0, 0, 0, 0.6);
-    position: relative;
-}
-.inventory-slot.active::before {
+.inventory-slot::before {
     content: '';
     position: absolute;
     inset: 0;
     border-radius: 4px;
     background: radial-gradient(circle at 15% 85%, var(--slot-color) 0%, transparent 60%);
-    opacity: 0.6;
+    opacity: 0;
+    transition: opacity 0.25s ease;
     pointer-events: none;
 }
-.inventory-slot.active::after {
+.inventory-slot:hover::before,
+.inventory-slot.active::before {
+    opacity: 0.6;
+}
+.inventory-slot::after {
     content: '';
     position: absolute;
     bottom: 0;
     left: 0;
+    width: 0;
+    height: 0;
+    background: radial-gradient(circle at top right, transparent 0px, var(--slot-color) 0px);
+    transition: all 0.25s ease;
+    pointer-events: none;
+}
+.inventory-slot:hover::after,
+.inventory-slot.active::after {
     width: 16px;
     height: 16px;
     background: radial-gradient(circle at top right, transparent 16px, var(--slot-color) 16px);
-    pointer-events: none;
 }
 
 .inventory-slot-icon {
