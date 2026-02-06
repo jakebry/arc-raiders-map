@@ -111,20 +111,33 @@ function initLeafletMap(map) {
     }
     leafletMap.setMaxBounds(imageBounds);
 
-    // For Stella Montis, load BOTH layers at once for alignment
+    // For Stella Montis, load upper first (default), then lower in background
     if (map.id === 'stella_montis' && map.levels) {
-        // Lower level (fixed reference)
-        var lowerConfig = map.levels.lower;
-        var lowerOpacity = currentLevel === 'lower' ? 1.0 : 0.25;
-        mapOverlayLower = L.imageOverlay(lowerConfig.image, [[0, 0], [lowerConfig.height, lowerConfig.width]], { opacity: lowerOpacity }).addTo(leafletMap);
-
-        // Upper level (adjustable)
+        // Load upper level first (default view)
         var upperConfig = map.levels.upper;
         var upperBounds = [[mapOffset.y, mapOffset.x], [upperConfig.height + mapOffset.y, upperConfig.width + mapOffset.x]];
         var upperOpacity = currentLevel === 'upper' ? 1.0 : 0.25;
         mapOverlayUpper = L.imageOverlay(upperConfig.image, upperBounds, { opacity: upperOpacity }).addTo(leafletMap);
 
         mapOverlay = mapOverlayUpper; // For compatibility
+
+        // After upper loads, load lower level in background and fade in
+        mapOverlayUpper.on('load', function() {
+            var lowerConfig = map.levels.lower;
+            var lowerOpacity = currentLevel === 'lower' ? 1.0 : 0.25;
+
+            // Start with opacity 0, will fade in after loading
+            mapOverlayLower = L.imageOverlay(lowerConfig.image, [[0, 0], [lowerConfig.height, lowerConfig.width]], { opacity: 0 }).addTo(leafletMap);
+
+            // Fade in lower layer after it loads
+            mapOverlayLower.on('load', function() {
+                setTimeout(() => {
+                    if (mapOverlayLower) {
+                        mapOverlayLower.setOpacity(lowerOpacity);
+                    }
+                }, 100);
+            });
+        });
     } else {
         // Single layer map
         var bounds = [[0, 0], [config.height, config.width]];
