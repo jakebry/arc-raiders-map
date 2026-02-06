@@ -249,7 +249,7 @@ html, body {
     border-style: solid;
     border-color: var(--slot-color);
     border-width: 3px 3px 10px 3px;  /* top right bottom left - thick bottom */
-    border-radius: 6px 6px 6px 16px;  /* top-left top-right bottom-right bottom-left - special bottom-left curve */
+    border-radius: 6px 6px 6px 28px;  /* Larger bottom-left for pronounced inside curve */
     background: rgba(25, 25, 35, 0.95);
     box-shadow: 0 0 20px var(--slot-color), 0 4px 12px rgba(0, 0, 0, 0.6);
     position: relative;
@@ -258,7 +258,7 @@ html, body {
     content: '';
     position: absolute;
     inset: 0;
-    border-radius: 4px 4px 4px 12px;  /* Match parent radius */
+    border-radius: 4px 4px 4px 24px;  /* Match parent radius */
     background: radial-gradient(circle at 15% 85%, var(--slot-color) 0%, transparent 60%);
     opacity: 0.6;
     pointer-events: none;
@@ -354,7 +354,7 @@ html, body {
     height: 32px;
     border-style: solid;
     border-width: 2px 2px 8px 2px;  /* thick bottom */
-    border-radius: 4px 4px 4px 12px;  /* special bottom-left curve */
+    border-radius: 4px 4px 4px 18px;  /* larger bottom-left for inside curve */
     display: flex;
     align-items: center;
     justify-content: center;
