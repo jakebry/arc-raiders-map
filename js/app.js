@@ -8,6 +8,7 @@ let leafletMap = null;        // Leaflet map instance
 let markers = [];             // active Leaflet markers on the map
 let currentLevel = null;      // 'upper' or 'lower' for maps with levels, null otherwise
 let mapOverlay = null;        // reference to the active Leaflet imageOverlay
+let mapOffset = { x: 0, y: 0 }; // offset for aligning multi-level maps
 
 // --- DOM References ---
 const screenSelect = document.getElementById('screen-select');
@@ -54,9 +55,11 @@ function enterMap(map) {
     currentRarity = null;
     selectedKey = null;
     currentLevel = map.levels ? 'upper' : null;
+    mapOffset = { x: 0, y: 0 }; // Reset offset when entering a new map
     showScreen('screen-map');
     initLeafletMap(map);
     renderLevelToggle();
+    renderAlignmentControls();
     renderFilterBar();
     renderInventory();
 }
@@ -84,7 +87,13 @@ function initLeafletMap(map) {
     var imageBounds = L.latLngBounds([[0, 0], [config.height, config.width]]);
     leafletMap.setMaxBounds(imageBounds);
 
-    mapOverlay = L.imageOverlay(config.image, [[0, 0], [config.height, config.width]]).addTo(leafletMap);
+    // Apply offset to upper level for alignment (lower is the base)
+    var bounds = [[0, 0], [config.height, config.width]];
+    if (currentLevel === 'upper' && map.id === 'stella_montis') {
+        bounds = [[mapOffset.y, mapOffset.x], [config.height + mapOffset.y, config.width + mapOffset.x]];
+    }
+
+    mapOverlay = L.imageOverlay(config.image, bounds).addTo(leafletMap);
 
     // Fit the original map content (inside the blurred border) to the viewport.
     // Short delay ensures the container has rendered and has a valid size.
@@ -157,6 +166,73 @@ function renderLevelToggle() {
     });
 }
 
+// --- Alignment Controls (for Stella Montis) ---
+function renderAlignmentControls() {
+    const container = document.getElementById('alignment-controls');
+    if (!container) return;
+
+    if (currentMap && currentMap.id === 'stella_montis') {
+        container.style.display = 'flex';
+        container.innerHTML = `
+            <div style="display: flex; gap: 8px; align-items: center; background: rgba(20,20,28,0.9); padding: 8px 12px; border-radius: 6px; border: 1px solid #333;">
+                <span style="font-size: 11px; color: #888;">OFFSET:</span>
+                <span style="font-size: 12px; color: #60a5fa; font-family: monospace;">X: ${mapOffset.x}</span>
+                <span style="font-size: 12px; color: #60a5fa; font-family: monospace;">Y: ${mapOffset.y}</span>
+                <button id="btn-reset-offset" style="margin-left: 8px; padding: 4px 8px; font-size: 10px; background: rgba(40,40,50,0.8); border: 1px solid #444; color: #aaa; cursor: pointer; border-radius: 3px;">RESET</button>
+                <button id="btn-export-offset" style="padding: 4px 8px; font-size: 10px; background: rgba(30,50,80,0.8); border: 1px solid #4a6fa5; color: #7aa3d8; cursor: pointer; border-radius: 3px;">EXPORT</button>
+            </div>
+            <div style="font-size: 10px; color: #666; margin-left: 8px;">Use Arrow Keys to adjust</div>
+        `;
+
+        document.getElementById('btn-reset-offset').addEventListener('click', () => {
+            mapOffset = { x: 0, y: 0 };
+            switchLevel(currentLevel);
+        });
+
+        document.getElementById('btn-export-offset').addEventListener('click', () => {
+            console.clear();
+            console.log('=== STELLA MONTIS MAP OFFSET ===');
+            console.log(`mapOffset = { x: ${mapOffset.x}, y: ${mapOffset.y} };`);
+            console.log('\n=== Copy the above and send to Claude ===');
+            alert('Offset exported to console! Press F12 to view.');
+        });
+    } else {
+        container.style.display = 'none';
+    }
+}
+
+// --- Keyboard Controls for Map Alignment ---
+document.addEventListener('keydown', (e) => {
+    if (!currentMap || currentMap.id !== 'stella_montis' || currentLevel !== 'upper') return;
+
+    const step = e.shiftKey ? 10 : 1; // Hold Shift for bigger steps
+    let changed = false;
+
+    switch(e.key) {
+        case 'ArrowLeft':
+            mapOffset.x -= step;
+            changed = true;
+            break;
+        case 'ArrowRight':
+            mapOffset.x += step;
+            changed = true;
+            break;
+        case 'ArrowUp':
+            mapOffset.y -= step;
+            changed = true;
+            break;
+        case 'ArrowDown':
+            mapOffset.y += step;
+            changed = true;
+            break;
+    }
+
+    if (changed) {
+        e.preventDefault();
+        switchLevel(currentLevel);
+    }
+});
+
 // --- Level Switching ---
 function switchLevel(level) {
     currentLevel = level;
@@ -166,8 +242,14 @@ function switchLevel(level) {
     var config = getCurrentImageConfig();
     var oldOverlay = mapOverlay;
 
+    // Apply offset to upper level for alignment (lower is the base)
+    var bounds = [[0, 0], [config.height, config.width]];
+    if (level === 'upper' && currentMap.id === 'stella_montis') {
+        bounds = [[mapOffset.y, mapOffset.x], [config.height + mapOffset.y, config.width + mapOffset.x]];
+    }
+
     // Create new overlay with opacity 0
-    mapOverlay = L.imageOverlay(config.image, [[0, 0], [config.height, config.width]], { opacity: 0 }).addTo(leafletMap);
+    mapOverlay = L.imageOverlay(config.image, bounds, { opacity: 0 }).addTo(leafletMap);
 
     // Fade in new overlay and fade out old overlay
     setTimeout(() => {
@@ -179,6 +261,7 @@ function switchLevel(level) {
 
     // Re-render UI (don't call fitBounds to keep position)
     renderLevelToggle();
+    renderAlignmentControls();
     renderInventory();
     renderMarkers();
 }
