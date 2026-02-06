@@ -257,7 +257,7 @@ html, body {
     inset: 0;
     border-radius: 3px;
     background: radial-gradient(circle at 15% 85%, var(--slot-color) 0%, transparent 60%);
-    opacity: 0.3;
+    opacity: 0.5;
     pointer-events: none;
 }
 
