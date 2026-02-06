@@ -69,6 +69,7 @@ function enterMap(map) {
     renderLevelToggle();
     renderAlignmentControls();
     renderInventory();
+    renderMarkers();
 }
 
 // --- Leaflet Map ---
@@ -170,6 +171,9 @@ function initLeafletMap(map) {
         }
 
         leafletMap.fitBounds(contentBounds, { padding: [10, 10] });
+
+        // Render markers after map is ready
+        renderMarkers();
     }, 100);
 }
 
