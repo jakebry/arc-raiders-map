@@ -84,7 +84,7 @@ function initLeafletMap(map) {
         zoom: 0,
         minZoom: -5,  // Will be overridden dynamically
         maxZoom: 3,
-        zoomControl: true,
+        zoomControl: false,  // Disable default zoom control
         attributionControl: false,
         maxBoundsViscosity: 1.0  // Hard bounds (not elastic)
     });
@@ -109,6 +109,15 @@ function initLeafletMap(map) {
         imageBounds = L.latLngBounds([[0, 0], [config.height, config.width]]);
     }
     leafletMap.setMaxBounds(imageBounds);
+
+    // Sync zoom slider when map zoom changes (trackpad scroll, pinch, etc.)
+    leafletMap.on('zoomend', () => {
+        updateZoomSlider();
+        if (markers.length > 0) resolveMarkerCollisions();
+    });
+    leafletMap.on('moveend', () => {
+        if (markers.length > 0) resolveMarkerCollisions();
+    });
 
     // For Stella Montis, load upper first (default), then lower in background
     if (map.id === 'stella_montis' && map.levels) {
@@ -171,6 +180,9 @@ function initLeafletMap(map) {
         }
 
         leafletMap.fitBounds(contentBounds, { padding: [10, 10] });
+
+        // Update zoom slider to match initial zoom
+        updateZoomSlider();
 
         // Render markers after map is ready
         renderMarkers();
@@ -359,7 +371,60 @@ function renderInventory() {
         `;
         slot.addEventListener('click', () => selectKey(key));
         slot.title = key.name;
+
+        // Sync hover with map marker
+        slot.addEventListener('mouseenter', () => {
+            const marker = markers.find(m => m.options.keyId === key.id);
+            if (marker) {
+                const markerEl = marker.getElement();
+                if (markerEl) markerEl.classList.add('hotbar-hovered');
+            }
+        });
+        slot.addEventListener('mouseleave', () => {
+            const marker = markers.find(m => m.options.keyId === key.id);
+            if (marker) {
+                const markerEl = marker.getElement();
+                if (markerEl) markerEl.classList.remove('hotbar-hovered');
+            }
+        });
+
         inventorySlotsEl.appendChild(slot);
+    });
+}
+
+// --- Custom Zoom Control ---
+const zoomSlider = document.getElementById('zoom-slider');
+const zoomInBtn = document.querySelector('.zoom-in');
+const zoomOutBtn = document.querySelector('.zoom-out');
+
+function updateZoomSlider() {
+    if (leafletMap && zoomSlider) {
+        zoomSlider.value = leafletMap.getZoom();
+    }
+}
+
+if (zoomSlider) {
+    // Slider change updates map zoom
+    zoomSlider.addEventListener('input', (e) => {
+        if (leafletMap) {
+            leafletMap.setZoom(parseFloat(e.target.value));
+        }
+    });
+}
+
+if (zoomInBtn) {
+    zoomInBtn.addEventListener('click', () => {
+        if (leafletMap) {
+            leafletMap.zoomIn(0.5);
+        }
+    });
+}
+
+if (zoomOutBtn) {
+    zoomOutBtn.addEventListener('click', () => {
+        if (leafletMap) {
+            leafletMap.zoomOut(0.5);
+        }
     });
 }
 
@@ -400,27 +465,62 @@ function renderMarkers() {
         const icon = L.divIcon({
             className: 'keycard-marker' + (isSelected ? ' selected' : ''),
             html: isSelected ? `
-                <div class="marker-card" style="border-color: ${rarity.color}; box-shadow: 0 0 12px ${rarity.color};">
-                    <div class="marker-card-title" style="color: ${rarity.color};">${key.name}</div>
+                <div class="marker-card">
+                    <div class="marker-card-tags">
+                        <span class="marker-card-tag-box" style="background-color: ${rarity.color};"><img src="images/icons/key.svg" alt="Key" style="width: 16px; height: 16px; filter: brightness(0) invert(1);"></span>
+                        <span class="marker-card-tag-box" style="background-color: ${rarity.color};">KEY</span>
+                        <span class="marker-card-tag-box" style="background-color: ${rarity.color};">${rarity.label.toUpperCase()}</span>
+                    </div>
+                    <div class="marker-card-title">${key.name.toUpperCase()}</div>
                     ${key.doorImage ? `<img class="marker-card-door" src="${key.doorImage}" alt="${key.name} door">` : ''}
-                    <div class="marker-card-location">${key.location}</div>
+                    <div class="marker-card-section">
+                        <div class="marker-card-section-title">Description</div>
+                        <div class="marker-card-section-text">${key.description}</div>
+                    </div>
+                    <div class="marker-card-section">
+                        <div class="marker-card-section-title">Instructions</div>
+                        <div class="marker-card-section-text">${key.instructions}</div>
+                    </div>
+                    <div class="marker-card-footer">
+                        <span><img src="images/icons/weight.svg" alt="Weight"> ${key.weight}</span>
+                        <span><img src="images/icons/currency.svg" alt="Value"> ${key.value}</span>
+                    </div>
                 </div>
             ` : `
                 <div class="marker-dot" style="background-color: ${rarity.color}; box-shadow: 0 0 8px ${rarity.color};"></div>
-                <div class="marker-icon-container" style="border-color: ${rarity.color}; box-shadow: 0 0 12px ${rarity.color}, 0 2px 8px rgba(0, 0, 0, 0.6); background: radial-gradient(circle at 15% 85%, ${rarity.color}99 0%, transparent 60%), rgba(25, 25, 35, 0.95);">
+                <div class="marker-icon-container" style="color: ${rarity.color}; border-color: ${rarity.color}; box-shadow: 0 0 12px ${rarity.color}, 0 2px 8px rgba(0, 0, 0, 0.6);">
                     <img class="marker-icon" src="${key.icon}" alt="${key.name}" style="filter: drop-shadow(0 0 3px ${rarity.color});">
                 </div>
             `,
-            iconSize: isSelected ? [200, 120] : [32, 32],
-            iconAnchor: isSelected ? [100, 60] : [16, 16]
+            iconSize: isSelected ? [320, 450] : [45, 60],
+            iconAnchor: isSelected ? [160, 450] : [22.5, 60]
         });
 
         const marker = L.marker(key.coords, {
             icon,
-            draggable: false  // Markers locked in place
+            draggable: false,  // Markers locked in place
+            keyId: key.id  // Store key ID for hover sync
         })
             .addTo(leafletMap)
             .on('click', () => selectKey(key))
+            .on('mouseover', () => {
+                // Highlight corresponding inventory slot
+                const slots = document.querySelectorAll('.inventory-slot');
+                const slotIndex = getUniqueKeys(currentMap.id, currentRarity, currentLevel)
+                    .sort((a, b) => {
+                        const rarityOrder = { 'uncommon': 0, 'rare': 1, 'epic': 2 };
+                        return rarityOrder[a.rarity] - rarityOrder[b.rarity];
+                    })
+                    .findIndex(k => k.id === key.id);
+                if (slotIndex >= 0 && slots[slotIndex]) {
+                    slots[slotIndex].classList.add('hotbar-hovered');
+                }
+            })
+            .on('mouseout', () => {
+                // Remove highlight from inventory slot
+                const slots = document.querySelectorAll('.inventory-slot');
+                slots.forEach(slot => slot.classList.remove('hotbar-hovered'));
+            })
             .on('dragend', (e) => {
                 const newPos = e.target.getLatLng();
                 const newCoords = [Math.round(newPos.lat), Math.round(newPos.lng)];
@@ -438,6 +538,53 @@ function renderMarkers() {
             });
 
         markers.push(marker);
+    });
+
+    // Collision detection: offset overlapping icons
+    resolveMarkerCollisions();
+}
+
+function resolveMarkerCollisions() {
+    const markerPositions = markers.map(marker => {
+        const pos = leafletMap.latLngToContainerPoint(marker.getLatLng());
+        return { marker, pos, offsetX: 0 };
+    });
+
+    // Check each pair of markers
+    for (let i = 0; i < markerPositions.length; i++) {
+        for (let j = i + 1; j < markerPositions.length; j++) {
+            const a = markerPositions[i];
+            const b = markerPositions[j];
+
+            const dx = b.pos.x - a.pos.x;
+            const dy = b.pos.y - a.pos.y;
+            const distance = Math.sqrt(dx * dx + dy * dy);
+
+            // If markers are too close (within 50px), offset them horizontally
+            if (distance < 50 && Math.abs(dy) < 30) {
+                const offset = 25;
+                if (dx > 0) {
+                    b.offsetX += offset;
+                    a.offsetX -= offset;
+                } else {
+                    b.offsetX -= offset;
+                    a.offsetX += offset;
+                }
+            }
+        }
+    }
+
+    // Apply offsets
+    markerPositions.forEach(({ marker, offsetX }) => {
+        if (offsetX !== 0) {
+            const el = marker.getElement();
+            if (el) {
+                const iconContainer = el.querySelector('.marker-icon-container');
+                if (iconContainer) {
+                    iconContainer.style.transform = `translateX(calc(-50% + ${offsetX}px))`;
+                }
+            }
+        }
     });
 }
 

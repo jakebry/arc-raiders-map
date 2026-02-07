@@ -1,5 +1,12 @@
 /* css/styles.css */
 
+/* --- CSS Custom Property for Smooth Gradient Rotation --- */
+@property --gradient-angle {
+    syntax: '<angle>';
+    initial-value: 0deg;
+    inherits: false;
+}
+
 /* --- Reset & Base --- */
 *, *::before, *::after {
     margin: 0;
@@ -227,10 +234,10 @@ html, body {
 .inventory-slot {
     width: 56px;
     height: 56px;
-    background: rgba(20, 20, 28, 0.9);
-    border-style: solid;
-    border-color: var(--slot-color, #2a2a35);
-    border-width: 2px;
+    background:
+        radial-gradient(circle at 85% 15%, transparent 20%, color-mix(in srgb, var(--slot-color) 60%, transparent) 100%),
+        rgba(20, 20, 28, 0.9);
+    border: 2px solid var(--slot-color, #2a2a35);
     border-radius: 6px;
     cursor: pointer;
     transition: border-width 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease, background 0.25s ease;
@@ -238,11 +245,12 @@ html, body {
     display: flex;
     align-items: center;
     justify-content: center;
-    overflow: hidden;
+    overflow: visible;
 }
 
 .inventory-slot:hover,
-.inventory-slot.active {
+.inventory-slot.active,
+.inventory-slot.hotbar-hovered {
     border-width: 3px 3px 10px 3px;
     transform: translateY(-2px);
     box-shadow: 0 0 20px var(--slot-color), 0 4px 12px rgba(0, 0, 0, 0.6);
@@ -251,16 +259,35 @@ html, body {
 .inventory-slot::before {
     content: '';
     position: absolute;
-    inset: 0;
-    border-radius: 4px;
-    background: radial-gradient(circle at 15% 85%, var(--slot-color) 0%, transparent 60%);
+    top: -6px;
+    left: -6px;
+    right: -6px;
+    bottom: -14px;
+    border-radius: 10px;
+    padding: 2px;
+    --gradient-angle: 0deg;
+    background: conic-gradient(
+        from var(--gradient-angle) at 50% 50%,
+        #1a1a20 0deg,
+        #e879f9 70deg,
+        #ffffff 150deg,
+        #00d4ff 240deg,
+        #1a1a20 310deg,
+        #1a1a20 360deg
+    ) border-box;
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
     opacity: 0;
     transition: opacity 0.25s ease;
     pointer-events: none;
+    filter: blur(1.5px);
 }
 .inventory-slot:hover::before,
-.inventory-slot.active::before {
-    opacity: 0.6;
+.inventory-slot.active::before,
+.inventory-slot.hotbar-hovered::before {
+    opacity: 0.9;
+    animation: smoothRotate 3s linear infinite;
 }
 .inventory-slot::after {
     content: '';
@@ -277,7 +304,8 @@ html, body {
     pointer-events: none;
 }
 .inventory-slot:hover::after,
-.inventory-slot.active::after {
+.inventory-slot.active::after,
+.inventory-slot.hotbar-hovered::after {
     opacity: 1;
     transform: scale(1);
 }
@@ -353,31 +381,80 @@ html, body {
 
 /* --- Markers --- */
 .keycard-marker {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
     position: relative;
+    cursor: pointer;
+    width: 45px;
+    height: 60px;  /* Taller to accommodate icon above dot */
 }
 .marker-dot {
-    width: 100%;
-    height: 100%;
+    position: absolute;
+    width: 12px;
+    height: 12px;
+    left: 50%;
+    bottom: 0;
+    transform: translateX(-50%);
     border-radius: 50%;
-    border: 2px solid rgba(255,255,255,0.15);
+    border: 3px solid rgba(255,255,255,0.4);
+    box-shadow:
+        0 0 8px currentColor,
+        0 0 12px currentColor,
+        inset 0 0 4px currentColor;
     animation: pulse 2s infinite;
     pointer-events: none;
+    z-index: 2;
 }
 .marker-icon-container {
-    width: 32px;
-    height: 32px;
-    border-style: solid;
-    border-width: 2px 2px 8px 2px;  /* thick bottom */
-    border-radius: 4px;  /* Uniform outside corners */
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 45px;
+    height: 45px;
+    background:
+        radial-gradient(circle at 85% 15%, transparent 20%, color-mix(in srgb, currentColor 60%, transparent) 100%),
+        rgba(20, 20, 28, 0.9);
+    border: 2px solid currentColor;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: border-width 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
     display: flex;
     align-items: center;
     justify-content: center;
-    position: relative;
+    overflow: visible;
+    z-index: 1;
+}
+.keycard-marker:hover .marker-icon-container,
+.keycard-marker.hotbar-hovered .marker-icon-container {
+    border-width: 2.4px 2.4px 8px 2.4px;
+    transform: translateY(-1.6px);
+    box-shadow: 0 0 16px currentColor, 0 3.2px 9.6px rgba(0, 0, 0, 0.6);
+}
+.marker-icon-container::before {
+    content: '';
+    position: absolute;
+    top: -4.8px;
+    left: -4.8px;
+    right: -4.8px;
+    bottom: -11.2px;
+    border-radius: 8px;
+    padding: 1.6px;
+    --gradient-angle: 0deg;
+    background: conic-gradient(
+        from var(--gradient-angle) at 50% 50%,
+        #1a1a20 0deg,
+        #e879f9 70deg,
+        #ffffff 150deg,
+        #00d4ff 240deg,
+        #1a1a20 310deg,
+        #1a1a20 360deg
+    ) border-box;
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    opacity: 0;
+    transition: opacity 0.25s ease;
     pointer-events: none;
+    filter: blur(1.2px);
 }
 .marker-icon-container::after {
     content: '';
@@ -388,45 +465,122 @@ html, body {
     height: 12px;
     background: radial-gradient(circle at top right, transparent 12px, currentColor 12px);
     pointer-events: none;
+    z-index: 1;
+}
+.keycard-marker:hover .marker-icon-container::before,
+.keycard-marker.hotbar-hovered .marker-icon-container::before {
+    opacity: 0.9;
+    animation: smoothRotate 3s linear infinite;
+}
+.marker-icon-container::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 12.8px;
+    height: 12.8px;
+    background: radial-gradient(circle at top right, transparent 12.8px, currentColor 12.8px);
+    opacity: 0;
+    transform: scale(0);
+    transform-origin: bottom left;
+    transition: opacity 0.25s ease, transform 0.25s ease;
+    pointer-events: none;
+    z-index: 2;
+}
+.keycard-marker:hover .marker-icon-container::after,
+.keycard-marker.hotbar-hovered .marker-icon-container::after {
+    opacity: 1;
+    transform: scale(1);
 }
 .marker-icon {
-    width: 20px;
-    height: 20px;
+    width: 100%;
+    height: 100%;
     object-fit: contain;
+    padding: 6.4px;
 }
 .marker-icon-rarity {
     display: none;
 }
 .marker-card {
-    background: rgba(20, 20, 28, 0.95);
-    border: 2px solid;
-    border-radius: 6px;
-    padding: 10px;
-    min-width: 180px;
-    max-width: 200px;
-    backdrop-filter: blur(8px);
+    background: #f9ede0;
+    border: none;
+    border-radius: 8px;
+    min-width: 280px;
+    max-width: 320px;
+    overflow: hidden;
     pointer-events: none;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.8);
+    color: #2a2520;
+}
+.marker-card-tags {
+    display: flex;
+    align-items: stretch;
+    gap: 2px;
+    padding: 12px 12px 10px;
+}
+.marker-card-tag-box {
+    font-size: 12px;
+    font-weight: 500;
+    font-family: 'Arial Narrow', 'Helvetica Neue Condensed', 'Roboto Condensed', 'Oswald', sans-serif;
+    font-stretch: condensed;
+    letter-spacing: 0.12em;
+    padding: 6px 12px;
+    border: none;
+    border-radius: 2px;
+    color: #ffffff;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 24px;
+    height: 24px;
 }
 .marker-card-title {
-    font-size: 11px;
+    font-size: 13px;
     font-weight: 700;
     letter-spacing: 0.05em;
-    margin-bottom: 6px;
-    text-shadow: 0 0 4px rgba(0,0,0,0.8);
+    padding: 10px 12px 8px;
+    line-height: 1.3;
 }
 .marker-card-door {
     width: 100%;
-    height: 80px;
+    height: 120px;
     object-fit: cover;
-    border-radius: 3px;
-    margin-bottom: 6px;
-    border: 1px solid rgba(255,255,255,0.1);
 }
-.marker-card-location {
+.marker-card-section {
+    padding: 10px 12px;
+    border-bottom: 1px solid rgba(139, 115, 85, 0.3);
+}
+.marker-card-section-title {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    margin-bottom: 6px;
+    color: #5a4a38;
+    text-transform: uppercase;
+}
+.marker-card-section-text {
     font-size: 9px;
-    color: #999;
-    line-height: 1.3;
-    letter-spacing: 0.03em;
+    line-height: 1.5;
+    color: #3a2f28;
+}
+.marker-card-footer {
+    display: flex;
+    justify-content: space-around;
+    padding: 8px 12px;
+    background: #cec1b0;
+    font-size: 10px;
+    font-weight: 700;
+    color: #1e1c1e;
+}
+.marker-card-footer span {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+}
+.marker-card-footer img {
+    width: 14px;
+    height: 14px;
+    display: inline-block;
 }
 .marker-label {
     position: absolute;
@@ -482,11 +636,125 @@ html, body {
     0%, 100% { opacity: 1; box-shadow: 0 0 12px currentColor; }
     50%      { opacity: 0.8; box-shadow: 0 0 20px currentColor; }
 }
+@keyframes rotateBorder {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+@keyframes gradientSweep {
+    0% { background-position: -100% -100%; }
+    100% { background-position: 100% 100%; }
+}
+@keyframes smoothRotate {
+    from {
+        --gradient-angle: 0deg;
+    }
+    to {
+        --gradient-angle: 360deg;
+    }
+}
 
 /* --- Level Toggle --- */
 .level-toggle {
     display: flex;
     gap: 6px;
+}
+
+/* --- Custom Zoom Control --- */
+.custom-zoom {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    background: rgba(15, 15, 20, 0.35);
+    border: 1px solid rgba(42, 42, 53, 0.3);
+    border-radius: 6px;
+    padding: 10px 8px;
+    backdrop-filter: blur(4px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    transition: all 0.2s;
+}
+
+.custom-zoom:hover {
+    background: rgba(20, 20, 28, 0.55);
+    border-color: rgba(42, 42, 53, 0.5);
+}
+
+.zoom-btn {
+    width: 32px;
+    height: 32px;
+    background: rgba(20, 20, 30, 0.4);
+    border: 1px solid rgba(51, 51, 64, 0.4);
+    border-radius: 4px;
+    color: rgba(153, 153, 153, 0.7);
+    font-size: 18px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    user-select: none;
+}
+
+.zoom-btn:hover {
+    background: rgba(30, 30, 40, 0.7);
+    border-color: rgba(74, 111, 165, 0.6);
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.zoom-btn:active {
+    transform: scale(0.95);
+}
+
+.zoom-slider {
+    -webkit-appearance: slider-vertical;
+    appearance: slider-vertical;
+    width: 6px;
+    height: 120px;
+    background: rgba(30, 30, 40, 0.3);
+    border-radius: 3px;
+    outline: none;
+    cursor: pointer;
+}
+
+.zoom-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 14px;
+    height: 14px;
+    background: rgba(74, 111, 165, 0.4);
+    border: 2px solid rgba(90, 127, 181, 0.3);
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: 0 0 4px rgba(74, 111, 165, 0.2);
+}
+
+.zoom-slider::-webkit-slider-thumb:hover {
+    background: rgba(90, 127, 181, 0.7);
+    border-color: rgba(90, 127, 181, 0.5);
+    box-shadow: 0 0 8px rgba(74, 111, 165, 0.4);
+}
+
+.zoom-slider::-moz-range-thumb {
+    width: 14px;
+    height: 14px;
+    background: rgba(74, 111, 165, 0.4);
+    border: 2px solid rgba(90, 127, 181, 0.3);
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: 0 0 4px rgba(74, 111, 165, 0.2);
+}
+
+.zoom-slider::-moz-range-thumb:hover {
+    background: rgba(90, 127, 181, 0.7);
+    border-color: rgba(90, 127, 181, 0.5);
+    box-shadow: 0 0 8px rgba(74, 111, 165, 0.4);
 }
 
 /* --- Mobile --- */
@@ -519,6 +787,10 @@ html, body {
         flex-wrap: wrap;
         justify-content: center;
         max-width: 100vw;
+    }
+
+    .custom-zoom {
+        display: none;
     }
 }
 

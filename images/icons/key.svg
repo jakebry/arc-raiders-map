@@ -1,0 +1,16 @@
+<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <!-- Classic diagonal key design -->
+  <g transform="rotate(-45 8 8)">
+    <!-- Key shaft -->
+    <rect x="3" y="7" width="8" height="2" fill="#1e1c1e" rx="0.5"/>
+
+    <!-- Key head (circle) -->
+    <circle cx="3" cy="8" r="2.5" fill="none" stroke="#1e1c1e" stroke-width="1.5"/>
+    <circle cx="3" cy="8" r="1" fill="#1e1c1e"/>
+
+    <!-- Key teeth -->
+    <rect x="9" y="7" width="1" height="1.5" fill="#1e1c1e"/>
+    <rect x="10.5" y="7" width="1" height="2" fill="#1e1c1e"/>
+    <rect x="9" y="7.5" width="1" height="1.5" fill="#1e1c1e"/>
+  </g>
+</svg>
