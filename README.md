@@ -1,13 +1,13 @@
 # 🗺️ Arc Raiders — Interactive Keycard Map
 
-[![Live Site](https://img.shields.io/badge/🌐_Live_Map-arcraiderskeycard.vercel.app-blue?style=for-the-badge)](https://arcraiderskeycard.vercel.app)
+[![Live Site](https://img.shields.io/badge/🌐_Live_Map-arc-raiders-maps.com-blue?style=for-the-badge)](https://arc-raiders-maps.com)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green?style=for-the-badge)](LICENSE)
 [![Made with Leaflet](https://img.shields.io/badge/Leaflet.js-199900?style=for-the-badge&logo=leaflet&logoColor=white)](https://leafletjs.com)
 
 > A free, open-source, community-driven interactive map for **Arc Raiders** — find every keycard, trace every locked door, and plan your runs.
 
 <p align="center">
-  <a href="https://arcraiderskeycard.vercel.app">
+  <a href="https://arc-raiders-maps.com">
     <img src="images/preview/dam.jpg" alt="Arc Raiders Map Preview" width="700">
   </a>
   <br>
@@ -49,5 +49,5 @@ This is a **fan-made project** and is not affiliated with, endorsed by, or conne
 ---
 
 <p align="center">
-  <strong><a href="https://arcraiderskeycard.vercel.app">🌐 Open the Live Map</a></strong>
+  <strong><a href="https://arc-raiders-maps.com">🌐 Open the Live Map</a></strong>
 </p>

@@ -194,4 +194,4 @@ mapOverlayUpper.bringToFront();  // Ensure active layer on top
 
 ## Memory/Notes
 
-Additional project-specific notes in: `~/.claude/projects/-Users-jakebryan-Projects-arcraiderskeycard/memory/MEMORY.md`
+Additional project-specific notes available in Claude Code project memory.
