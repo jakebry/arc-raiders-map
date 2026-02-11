@@ -1,6 +1,5 @@
 <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <path d="M8 2C6.34315 2 5 3.34315 5 5C5 5.35064 5.06015 5.68722 5.17071 6H2L1 14H15L14 6H10.8293C10.9398 5.68722 11 5.35064 11 5C11 3.34315 9.65685 2 8 2Z" stroke="#1e1c1e" stroke-width="1.5" stroke-linejoin="round" fill="none"/>
-  <circle cx="8" cy="5" r="2" fill="none" stroke="#1e1c1e" stroke-width="1.5"/>
-  <path d="M3 9H13" stroke="#1e1c1e" stroke-width="1.2"/>
-  <path d="M3.5 11H12.5" stroke="#1e1c1e" stroke-width="1"/>
+  <!-- Shopping bag: solid filled, tapered body, single loop handle -->
+  <path d="M5.5 5.5C5.5 4.12 6.62 3 8 3C9.38 3 10.5 4.12 10.5 5.5" stroke="#1e1c1e" stroke-width="1.6" stroke-linecap="round" fill="none"/>
+  <path d="M3.5 6.5H12.5L11.5 14H4.5L3.5 6.5Z" fill="#1e1c1e"/>
 </svg>

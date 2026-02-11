@@ -1,5 +1,30 @@
 /* css/styles.css */
 
+/* --- Font Face Declarations --- */
+@font-face {
+    font-family: 'Rajdhani';
+    src: url('../fonts/Rajdhani-Regular.woff2') format('woff2');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Rajdhani';
+    src: url('../fonts/Rajdhani-Medium.woff2') format('woff2');
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: 'Rajdhani';
+    src: url('../fonts/Rajdhani-Bold.woff2') format('woff2');
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+}
+
 /* --- CSS Custom Property for Smooth Gradient Rotation --- */
 @property --gradient-angle {
     syntax: '<angle>';
@@ -46,16 +71,15 @@ html, body {
 #screen-select {
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    justify-content: space-between;
     background:
         radial-gradient(ellipse at 50% 0%, rgba(30, 30, 45, 0.8) 0%, transparent 70%),
         #0a0a0f;
-    padding: 40px 20px;
+    padding: 48px 20px 40px;
 }
 
 #screen-select header {
     text-align: center;
-    margin-bottom: 48px;
 }
 #screen-select header h1 {
     font-size: 2.8rem;
@@ -70,40 +94,80 @@ html, body {
     color: #555;
     margin-top: 8px;
 }
+#screen-select header .disclaimer {
+    font-size: 0.7rem;
+    letter-spacing: 0.08em;
+    color: #3a3a44;
+    margin-top: 14px;
+}
 
 .map-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 16px;
-    max-width: 900px;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 14px;
     width: 100%;
 }
 
 .map-card {
     background: #131318;
-    border: 1px solid #222230;
+    border: 2px solid #222230;
     border-radius: 8px;
-    overflow: hidden;
+    overflow: visible;
     cursor: pointer;
-    transition: border-color 0.25s, transform 0.2s, box-shadow 0.25s;
+    transition: border-color 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
     display: flex;
     flex-direction: column;
+    position: relative;
 }
 .map-card:hover {
     border-color: #4a6fa5;
-    transform: translateY(-3px);
-    box-shadow: 0 6px 24px rgba(74, 111, 165, 0.25);
+    transform: translateY(-4px);
+    box-shadow: 0 8px 28px rgba(74, 111, 165, 0.3);
+}
+/* Swirly glow border on hover */
+.map-card::before {
+    content: '';
+    position: absolute;
+    top: -5px;
+    left: -5px;
+    right: -5px;
+    bottom: -5px;
+    border-radius: 12px;
+    padding: 2px;
+    --gradient-angle: 0deg;
+    background: conic-gradient(
+        from var(--gradient-angle) at 50% 50%,
+        #1a1a20 0deg,
+        #e879f9 70deg,
+        #ffffff 150deg,
+        #00d4ff 240deg,
+        #1a1a20 310deg,
+        #1a1a20 360deg
+    ) border-box;
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    opacity: 0;
+    transition: opacity 0.25s ease;
+    pointer-events: none;
+    filter: blur(1.5px);
+    z-index: 1;
+}
+.map-card:hover::before {
+    opacity: 0.85;
+    animation: smoothRotate 3s linear infinite;
 }
 .map-card-img {
     width: 100%;
-    aspect-ratio: 16 / 10;
+    aspect-ratio: 4 / 3;
     background-size: cover;
     background-position: center;
     background-color: #1a1a22;
+    border-radius: 6px 6px 0 0;
 }
 .map-card-label {
-    padding: 14px 16px;
-    font-size: 0.9rem;
+    padding: 12px 14px;
+    font-size: 0.82rem;
     font-weight: 600;
     letter-spacing: 0.15em;
     color: #b8b8c8;
@@ -164,24 +228,6 @@ html, body {
     color: #fff;
 }
 
-.btn-export {
-    background: rgba(30, 50, 80, 0.8);
-    border: 1px solid #4a6fa5;
-    color: #7aa3d8;
-    padding: 6px 14px;
-    border-radius: 4px;
-    cursor: pointer;
-    font-size: 0.82rem;
-    letter-spacing: 0.1em;
-    transition: all 0.2s;
-    margin-left: 8px;
-}
-.btn-export:hover {
-    background: rgba(40, 60, 100, 0.9);
-    border-color: #60a5fa;
-    color: #fff;
-    box-shadow: 0 0 12px rgba(96, 165, 250, 0.3);
-}
 
 /* --- Rarity Filter Pills --- */
 .filter-bar {
@@ -325,6 +371,10 @@ html, body {
 .leaflet-container {
     background: #0a0a0f;
 }
+.leaflet-marker-pane,
+.leaflet-marker-icon {
+    overflow: visible !important;
+}
 .leaflet-container.space-station {
     background: #000000;
 }
@@ -335,30 +385,30 @@ html, body {
     mask-image: linear-gradient(
         to right,
         transparent 0%,
-        black 3%,
-        black 97%,
+        black 10%,
+        black 90%,
         transparent 100%
     ),
     linear-gradient(
         to bottom,
         transparent 0%,
-        black 3%,
-        black 97%,
+        black 10%,
+        black 90%,
         transparent 100%
     );
     mask-composite: intersect;
     -webkit-mask-image: linear-gradient(
         to right,
         transparent 0%,
-        black 3%,
-        black 97%,
+        black 10%,
+        black 90%,
         transparent 100%
     ),
     linear-gradient(
         to bottom,
         transparent 0%,
-        black 3%,
-        black 97%,
+        black 10%,
+        black 90%,
         transparent 100%
     );
     -webkit-mask-composite: source-in;
@@ -384,7 +434,14 @@ html, body {
     position: relative;
     cursor: pointer;
     width: 45px;
-    height: 60px;  /* Taller to accommodate icon above dot */
+    height: 68px;  /* Taller to accommodate icon above dot with gap */
+    overflow: visible !important;
+}
+.keycard-marker.selected {
+    display: flex !important;
+    align-items: flex-end !important;
+    overflow: visible !important;
+    z-index: 10000 !important;
 }
 .marker-dot {
     position: absolute;
@@ -416,7 +473,7 @@ html, body {
     border: 2px solid currentColor;
     border-radius: 5px;
     cursor: pointer;
-    transition: border-width 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
+    transition: border-width 0.2s ease, box-shadow 0.25s ease, transform 0.25s ease;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -426,18 +483,18 @@ html, body {
 .keycard-marker:hover .marker-icon-container,
 .keycard-marker.hotbar-hovered .marker-icon-container {
     border-width: 2.4px 2.4px 8px 2.4px;
-    transform: translateY(-1.6px);
+    transform: translateX(-50%) translateY(-1.6px);
     box-shadow: 0 0 16px currentColor, 0 3.2px 9.6px rgba(0, 0, 0, 0.6);
 }
 .marker-icon-container::before {
     content: '';
     position: absolute;
-    top: -4.8px;
-    left: -4.8px;
-    right: -4.8px;
-    bottom: -11.2px;
+    top: -5px;
+    left: -5px;
+    right: -5px;
+    bottom: -11px;
     border-radius: 8px;
-    padding: 1.6px;
+    padding: 1.5px;
     --gradient-angle: 0deg;
     background: conic-gradient(
         from var(--gradient-angle) at 50% 50%,
@@ -469,6 +526,10 @@ html, body {
 }
 .keycard-marker:hover .marker-icon-container::before,
 .keycard-marker.hotbar-hovered .marker-icon-container::before {
+    top: -5.4px;
+    left: -5.4px;
+    right: -5.4px;
+    bottom: -11px;
     opacity: 0.9;
     animation: smoothRotate 3s linear infinite;
 }
@@ -501,86 +562,172 @@ html, body {
 .marker-icon-rarity {
     display: none;
 }
+/* Selected marker: icon grows in-place, card anchored absolutely to the right */
+.keycard-marker.selected .marker-icon-container.selected-icon-grow {
+    width: 56px;
+    height: 56px;
+    top: -14px;
+    left: 50%;
+    transform: translateX(-50%);
+    border-width: 3px 3px 10px 3px;
+    box-shadow: 0 0 20px currentColor, 0 4px 12px rgba(0, 0, 0, 0.6);
+    z-index: 10;
+    animation: iconGrowIn 0.35s ease-out both;
+}
+.keycard-marker.selected .marker-icon-container.selected-icon-grow .marker-icon {
+    padding: 8px;
+}
+.keycard-marker.selected .marker-icon-container.selected-icon-grow::before {
+    top: -6px;
+    left: -6px;
+    right: -6px;
+    bottom: -13px;
+    opacity: 0.9;
+    animation: glowFadeIn 0.4s ease-out both, smoothRotate 3s linear 0.2s infinite;
+}
+.keycard-marker.selected .marker-icon-container.selected-icon-grow::after {
+    opacity: 1;
+    transform: scale(1);
+    animation: notchFadeIn 0.3s ease-out 0.15s both;
+}
+.marker-card-anchor {
+    position: absolute;
+    left: 100%;
+    top: 50%;
+    transform: translateY(-50%);
+    margin-left: 12px;
+    z-index: 5;
+    pointer-events: none;
+}
 .marker-card {
-    background: #f9ede0;
+    background: linear-gradient(180deg, #F5F0E8 0%, #EDE8DF 100%);
     border: none;
-    border-radius: 8px;
-    min-width: 280px;
-    max-width: 320px;
+    border-radius: 12px;
+    min-width: 340px;
+    max-width: 384px;
+    max-height: 560px;
     overflow: hidden;
     pointer-events: none;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.8);
-    color: #2a2520;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4), 0 4px 16px rgba(0, 0, 0, 0.2);
+    color: #1a1a1a;
+    font-family: 'Rajdhani', 'Arial Narrow', 'Helvetica Neue Condensed', 'Roboto Condensed', sans-serif;
+    display: flex;
+    flex-direction: column;
+    animation: cardSlideIn 0.4s ease-out 0.1s both;
 }
 .marker-card-tags {
     display: flex;
-    align-items: stretch;
+    align-items: center;
     gap: 2px;
-    padding: 12px 12px 10px;
+    padding: 14px 14px 8px;
 }
 .marker-card-tag-box {
-    font-size: 12px;
-    font-weight: 500;
-    font-family: 'Arial Narrow', 'Helvetica Neue Condensed', 'Roboto Condensed', 'Oswald', sans-serif;
-    font-stretch: condensed;
-    letter-spacing: 0.12em;
-    padding: 6px 12px;
+    font-size: 16px;
+    font-weight: 700;
+    font-family: 'Rajdhani', 'Arial Narrow', sans-serif;
+    letter-spacing: 0.04em;
+    padding: 6px 12px 4px;
     border: none;
-    border-radius: 2px;
-    color: #ffffff;
+    border-radius: 3px;
+    color: #011017;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    min-height: 24px;
-    height: 24px;
+    min-height: 30px;
+    height: 30px;
+    text-transform: uppercase;
+}
+.marker-card-tag-box .tag-key-icon {
+    position: relative;
+    top: -2px;
+    left: -2px;
+    width: 22px;
+    height: 22px;
+}
+.marker-card-tags.rarity-epic .marker-card-tag-box {
+    color: #ffffff;
 }
 .marker-card-title {
-    font-size: 13px;
+    font-family: 'Rajdhani', 'Arial Narrow', sans-serif;
+    font-size: 18px;
     font-weight: 700;
-    letter-spacing: 0.05em;
-    padding: 10px 12px 8px;
-    line-height: 1.3;
+    letter-spacing: 0.03em;
+    padding: 6px 14px 8px;
+    line-height: 1.2;
+    color: #000000;
+    text-transform: uppercase;
+    font-stretch: expanded;
 }
 .marker-card-door {
-    width: 100%;
-    height: 120px;
+    width: calc(100% - 28px);
+    height: 110px;
     object-fit: cover;
+    display: block;
+    margin: 4px 14px 8px;
+    border-radius: 4px;
+    border: 1px solid rgba(139, 115, 85, 0.3);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15), inset 0 0 0 1px rgba(255, 255, 255, 0.3);
+}
+.marker-card-body {
+    flex: 1;
+    overflow: hidden;
+    min-height: 0;
 }
 .marker-card-section {
-    padding: 10px 12px;
-    border-bottom: 1px solid rgba(139, 115, 85, 0.3);
+    padding: 6px 14px;
 }
 .marker-card-section-title {
+    font-family: 'Rajdhani', sans-serif;
     font-size: 10px;
     font-weight: 700;
-    letter-spacing: 0.08em;
-    margin-bottom: 6px;
-    color: #5a4a38;
+    letter-spacing: 0.1em;
+    margin-bottom: 3px;
+    color: #8a7a68;
     text-transform: uppercase;
 }
 .marker-card-section-text {
-    font-size: 9px;
-    line-height: 1.5;
-    color: #3a2f28;
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 1.35;
+    color: #2a2420;
 }
+/* No line-clamp — card grows to fit all text */
 .marker-card-footer {
     display: flex;
-    justify-content: space-around;
-    padding: 8px 12px;
-    background: #cec1b0;
-    font-size: 10px;
+    justify-content: center;
+    align-items: center;
+    gap: 0;
+    padding: 0;
+    background: #c9bba8;
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 13px;
     font-weight: 700;
-    color: #1e1c1e;
+    color: #1a1a1a;
+    margin-top: auto;
+    flex-shrink: 0;
+    min-height: 34px;
 }
 .marker-card-footer span {
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: 4px;
+    flex: 1;
+    padding: 8px 0;
+}
+.marker-card-footer .footer-divider {
+    width: 1px;
+    align-self: stretch;
+    background: linear-gradient(180deg, #F5F0E8, #EDE8DF);
+    flex-shrink: 0;
 }
 .marker-card-footer img {
     width: 14px;
     height: 14px;
+    vertical-align: middle;
     display: inline-block;
+    opacity: 0.8;
 }
 .marker-label {
     position: absolute;
@@ -650,6 +797,40 @@ html, body {
     }
     to {
         --gradient-angle: 360deg;
+    }
+}
+@keyframes glowFadeIn {
+    from { opacity: 0; }
+    to { opacity: 0.9; }
+}
+@keyframes notchFadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+@keyframes iconGrowIn {
+    from {
+        transform: translateX(-50%) scale(0.75);
+        opacity: 0.4;
+    }
+    to {
+        transform: translateX(-50%) scale(1);
+        opacity: 1;
+    }
+}
+@keyframes cardSlideIn {
+    from {
+        opacity: 0;
+        transform: translateX(-16px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
     }
 }
 
@@ -761,7 +942,11 @@ html, body {
 @media (max-width: 700px) {
     .map-grid {
         grid-template-columns: repeat(2, 1fr);
-        gap: 12px;
+        gap: 10px;
+    }
+
+    #screen-select {
+        padding: 32px 16px 24px;
     }
 
     #map-ui-overlay {
@@ -791,11 +976,5 @@ html, body {
 
     .custom-zoom {
         display: none;
-    }
-}
-
-@media (max-width: 400px) {
-    .map-grid {
-        grid-template-columns: 1fr;
     }
 }

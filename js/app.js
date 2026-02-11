@@ -17,7 +17,6 @@ const screenSelect = document.getElementById('screen-select');
 const screenMap    = document.getElementById('screen-map');
 const mapCardsEl   = document.getElementById('map-cards');
 const btnBack      = document.getElementById('btn-back');
-const btnExport    = document.getElementById('btn-export');
 const inventorySlotsEl = document.getElementById('inventory-slots');
 const leafletMapEl = document.getElementById('leaflet-map');
 
@@ -67,7 +66,6 @@ function enterMap(map) {
     showScreen('screen-map');
     initLeafletMap(map);
     renderLevelToggle();
-    renderAlignmentControls();
     renderInventory();
     renderMarkers();
 }
@@ -86,7 +84,7 @@ function initLeafletMap(map) {
         maxZoom: 3,
         zoomControl: false,  // Disable default zoom control
         attributionControl: false,
-        maxBoundsViscosity: 1.0  // Hard bounds (not elastic)
+        maxBoundsViscosity: 0.85  // Slightly elastic for smooth flyTo transitions
     });
 
     // Add dark space background for Stella Montis (space station)
@@ -103,12 +101,21 @@ function initLeafletMap(map) {
     // For Stella Montis, use expanded bounds to allow alignment adjustment
     var imageBounds;
     if (map.id === 'stella_montis') {
-        // Expanded bounds to allow movement in all directions for alignment
-        imageBounds = L.latLngBounds([[-1000, -1000], [config.height + 1000, config.width + 1000]]);
+        // No max bounds for Stella Montis - allow free panning across both layers
+        imageBounds = null;
     } else {
-        imageBounds = L.latLngBounds([[0, 0], [config.height, config.width]]);
+        // Add padding to max bounds so flyTo animations don't snap at edges
+        var pad = Math.max(config.width, config.height) * 0.15;
+        imageBounds = L.latLngBounds([[-pad, -pad], [config.height + pad, config.width + pad]]);
     }
-    leafletMap.setMaxBounds(imageBounds);
+    if (imageBounds) leafletMap.setMaxBounds(imageBounds);
+
+    // Click on map background deselects the current key
+    leafletMap.on('click', (e) => {
+        if (selectedKey) {
+            deselectKey();
+        }
+    });
 
     // Sync zoom slider when map zoom changes (trackpad scroll, pinch, etc.)
     leafletMap.on('zoomend', () => {
@@ -158,10 +165,22 @@ function initLeafletMap(map) {
 
     // Fit the original map content (inside the blurred border) to the viewport.
     // Short delay ensures the container has rendered and has a valid size.
-    var contentBounds = L.latLngBounds(
-        [map.border, map.border],
-        [config.height - map.border, config.width - map.border]
-    );
+    var contentBounds;
+    if (map.id === 'stella_montis' && map.levels) {
+        // Combined bounds of both layers for proper centering
+        var upperConfig = map.levels.upper;
+        var lowerConfig = map.levels.lower;
+        var minLat = Math.min(0, mapOffset.y);
+        var minLng = Math.min(0, mapOffset.x);
+        var maxLat = Math.max(lowerConfig.height, upperConfig.height + mapOffset.y);
+        var maxLng = Math.max(lowerConfig.width, upperConfig.width + mapOffset.x);
+        contentBounds = L.latLngBounds([minLat, minLng], [maxLat, maxLng]);
+    } else {
+        contentBounds = L.latLngBounds(
+            [map.border, map.border],
+            [config.height - map.border, config.width - map.border]
+        );
+    }
     setTimeout(() => {
         leafletMap.invalidateSize();
 
@@ -172,14 +191,19 @@ function initLeafletMap(map) {
         var scaleNeeded = Math.max(containerWidth / config.width, containerHeight / config.height);
         var minZoom = Math.log2(scaleNeeded);
 
-        // For Stella Montis, allow zooming out much further for alignment
+        // Allow zooming out a bit past the calculated minimum for smooth flyTo animations
         if (map.id === 'stella_montis') {
             leafletMap.setMinZoom(-3);
         } else {
-            leafletMap.setMinZoom(minZoom);
+            leafletMap.setMinZoom(minZoom - 0.5);
         }
 
-        leafletMap.fitBounds(contentBounds, { padding: [10, 10] });
+        if (map.id === 'stella_montis') {
+            // Manual center and zoom for Stella Montis - show full map
+            leafletMap.setView([1800, 1700], -1.8);
+        } else {
+            leafletMap.fitBounds(contentBounds, { padding: [10, 10] });
+        }
 
         // Update zoom slider to match initial zoom
         updateZoomSlider();
@@ -239,91 +263,6 @@ function renderLevelToggle() {
     });
 }
 
-// --- Alignment Controls (for Stella Montis) ---
-function renderAlignmentControls() {
-    const container = document.getElementById('alignment-controls');
-    if (!container) return;
-
-    // Hide alignment controls now that offset is locked in
-    // Uncomment the line below to re-enable alignment mode
-    // if (currentMap && currentMap.id === 'stella_montis') {
-    if (false) {
-        container.style.display = 'flex';
-        container.innerHTML = `
-            <div style="display: flex; gap: 8px; align-items: center; background: rgba(20,20,28,0.9); padding: 8px 12px; border-radius: 6px; border: 1px solid #333;">
-                <span style="font-size: 11px; color: #888;">OFFSET:</span>
-                <span style="font-size: 12px; color: #60a5fa; font-family: monospace;">X: ${mapOffset.x}</span>
-                <span style="font-size: 12px; color: #60a5fa; font-family: monospace;">Y: ${mapOffset.y}</span>
-                <button id="btn-reset-offset" style="margin-left: 8px; padding: 4px 8px; font-size: 10px; background: rgba(40,40,50,0.8); border: 1px solid #444; color: #aaa; cursor: pointer; border-radius: 3px;">RESET</button>
-                <button id="btn-export-offset" style="padding: 4px 8px; font-size: 10px; background: rgba(30,50,80,0.8); border: 1px solid #4a6fa5; color: #7aa3d8; cursor: pointer; border-radius: 3px;">EXPORT</button>
-            </div>
-            <div style="font-size: 10px; color: #666; margin-left: 8px;">Use Arrow Keys to adjust</div>
-        `;
-
-        document.getElementById('btn-reset-offset').addEventListener('click', () => {
-            mapOffset = { x: 0, y: 0 };
-            switchLevel(currentLevel);
-        });
-
-        document.getElementById('btn-export-offset').addEventListener('click', () => {
-            console.clear();
-            console.log('=== STELLA MONTIS MAP OFFSET ===');
-            console.log(`mapOffset = { x: ${mapOffset.x}, y: ${mapOffset.y} };`);
-            console.log('\n=== Copy the above and send to Claude ===');
-            alert('Offset exported to console! Press F12 to view.');
-        });
-    } else {
-        container.style.display = 'none';
-    }
-}
-
-// --- Keyboard Controls for Map Alignment ---
-// Disabled now that alignment is locked in. Uncomment to re-enable alignment mode.
-document.addEventListener('keydown', (e) => {
-    if (true) return; // Alignment locked in
-    if (!currentMap || currentMap.id !== 'stella_montis') return;
-
-    const step = e.shiftKey ? 10 : 1; // Hold Shift for bigger steps
-    let changed = false;
-
-    switch(e.key) {
-        case 'ArrowLeft':
-            mapOffset.x -= step;
-            changed = true;
-            break;
-        case 'ArrowRight':
-            mapOffset.x += step;
-            changed = true;
-            break;
-        case 'ArrowUp':
-            mapOffset.y -= step;
-            changed = true;
-            break;
-        case 'ArrowDown':
-            mapOffset.y += step;
-            changed = true;
-            break;
-    }
-
-    if (changed) {
-        e.preventDefault();
-
-        // Update upper layer position
-        if (mapOverlayUpper && currentMap.levels) {
-            var upperConfig = currentMap.levels.upper;
-            var upperBounds = [[mapOffset.y, mapOffset.x], [upperConfig.height + mapOffset.y, upperConfig.width + mapOffset.x]];
-
-            // Remove and recreate with new bounds
-            mapOverlayUpper.remove();
-            mapOverlayUpper = L.imageOverlay(upperConfig.image, upperBounds, { opacity: 0.7 }).addTo(leafletMap);
-            mapOverlay = mapOverlayUpper;
-        }
-
-        renderAlignmentControls();
-        renderMarkers();
-    }
-});
-
 // --- Level Switching ---
 function switchLevel(level) {
     currentLevel = level;
@@ -345,7 +284,6 @@ function switchLevel(level) {
 
     // Re-render UI (don't call fitBounds to keep position)
     renderLevelToggle();
-    renderAlignmentControls();
     renderInventory();
     renderMarkers();
 }
@@ -437,19 +375,6 @@ btnBack.addEventListener('click', () => {
     showScreen('screen-select');
 });
 
-// --- Export Coordinates Button ---
-btnExport.addEventListener('click', () => {
-    console.clear();
-    console.log('=== CURRENT COORDINATES ===\n');
-
-    KEYS.forEach(key => {
-        console.log(`{ id: '${key.id}', coords: [${key.coords[0]}, ${key.coords[1]}] },`);
-    });
-
-    console.log('\n=== Copy the above and paste to update data.js ===');
-    alert('Coordinates exported to console! Press F12 to view.');
-});
-
 // --- Markers ---
 function renderMarkers() {
     // Remove old markers
@@ -462,38 +387,48 @@ function renderMarkers() {
         const rarity = getRarity(key.rarity);
         const isSelected = selectedKey && selectedKey.id === key.id;
 
-        const icon = L.divIcon({
-            className: 'keycard-marker' + (isSelected ? ' selected' : ''),
-            html: isSelected ? `
-                <div class="marker-card">
-                    <div class="marker-card-tags">
-                        <span class="marker-card-tag-box" style="background-color: ${rarity.color};"><img src="images/icons/key.svg" alt="Key" style="width: 16px; height: 16px; filter: brightness(0) invert(1);"></span>
-                        <span class="marker-card-tag-box" style="background-color: ${rarity.color};">KEY</span>
-                        <span class="marker-card-tag-box" style="background-color: ${rarity.color};">${rarity.label.toUpperCase()}</span>
-                    </div>
-                    <div class="marker-card-title">${key.name.toUpperCase()}</div>
-                    ${key.doorImage ? `<img class="marker-card-door" src="${key.doorImage}" alt="${key.name} door">` : ''}
-                    <div class="marker-card-section">
-                        <div class="marker-card-section-title">Description</div>
-                        <div class="marker-card-section-text">${key.description}</div>
-                    </div>
-                    <div class="marker-card-section">
-                        <div class="marker-card-section-title">Instructions</div>
-                        <div class="marker-card-section-text">${key.instructions}</div>
-                    </div>
-                    <div class="marker-card-footer">
-                        <span><img src="images/icons/weight.svg" alt="Weight"> ${key.weight}</span>
-                        <span><img src="images/icons/currency.svg" alt="Value"> ${key.value}</span>
-                    </div>
-                </div>
-            ` : `
+        const markerIconHtml = `
                 <div class="marker-dot" style="background-color: ${rarity.color}; box-shadow: 0 0 8px ${rarity.color};"></div>
                 <div class="marker-icon-container" style="color: ${rarity.color}; border-color: ${rarity.color}; box-shadow: 0 0 12px ${rarity.color}, 0 2px 8px rgba(0, 0, 0, 0.6);">
                     <img class="marker-icon" src="${key.icon}" alt="${key.name}" style="filter: drop-shadow(0 0 3px ${rarity.color});">
+                </div>`;
+
+        const icon = L.divIcon({
+            className: 'keycard-marker' + (isSelected ? ' selected' : ''),
+            html: isSelected ? `
+                <div class="marker-dot" style="background-color: ${rarity.color}; box-shadow: 0 0 8px ${rarity.color};"></div>
+                <div class="marker-icon-container selected-icon-grow" style="color: ${rarity.color}; border-color: ${rarity.color}; --slot-color: ${rarity.color};">
+                    <img class="marker-icon" src="${key.icon}" alt="${key.name}" style="filter: drop-shadow(0 0 3px ${rarity.color});">
                 </div>
-            `,
-            iconSize: isSelected ? [320, 450] : [45, 60],
-            iconAnchor: isSelected ? [160, 450] : [22.5, 60]
+                <div class="marker-card-anchor">
+                    <div class="marker-card">
+                        <div class="marker-card-tags${rarity.id === 'epic' ? ' rarity-epic' : ''}">
+                            <span class="marker-card-tag-box" style="background-color: ${rarity.color};"><img class="tag-key-icon" src="images/icons/key.svg" alt="Key" style="transform: scaleX(-1); filter: ${rarity.id === 'epic' ? 'brightness(0) invert(1)' : 'brightness(0) invert(0.05)'};"></span>
+                            <span class="marker-card-tag-box" style="background-color: ${rarity.color};">KEY</span>
+                            <span class="marker-card-tag-box" style="background-color: ${rarity.color};">${rarity.label.toUpperCase()}</span>
+                        </div>
+                        <div class="marker-card-title">${key.name}</div>
+                        <div class="marker-card-body">
+                            ${key.doorImage ? `<img class="marker-card-door" src="${key.doorImage}" alt="${key.name} door">` : ''}
+                            <div class="marker-card-section">
+                                <div class="marker-card-section-title">Description</div>
+                                <div class="marker-card-section-text">${key.description}</div>
+                            </div>
+                            ${key.instructions ? `<div class="marker-card-section">
+                                <div class="marker-card-section-title">Instructions</div>
+                                <div class="marker-card-section-text instructions-text">${key.instructions}</div>
+                            </div>` : ''}
+                        </div>
+                        <div class="marker-card-footer">
+                            <span><img src="images/icons/weight.svg" alt="Weight"> ${key.weight}</span>
+                            <div class="footer-divider"></div>
+                            <span><img src="images/icons/currency.svg" alt="Value"> ${key.value}</span>
+                        </div>
+                    </div>
+                </div>
+            ` : markerIconHtml,
+            iconSize: [45, 68],
+            iconAnchor: [22.5, 68]
         });
 
         const marker = L.marker(key.coords, {
@@ -521,21 +456,6 @@ function renderMarkers() {
                 const slots = document.querySelectorAll('.inventory-slot');
                 slots.forEach(slot => slot.classList.remove('hotbar-hovered'));
             })
-            .on('dragend', (e) => {
-                const newPos = e.target.getLatLng();
-                const newCoords = [Math.round(newPos.lat), Math.round(newPos.lng)];
-
-                // Update the key object in memory
-                key.coords = newCoords;
-
-                // Log to console for easy copying
-                console.log(`{ id: '${key.id}', coords: [${newCoords[0]}, ${newCoords[1]}] }`);
-
-                // If this key is selected, update the detail panel
-                if (selectedKey && selectedKey.id === key.id) {
-                    selectedKey.coords = newCoords;
-                }
-            });
 
         markers.push(marker);
     });
@@ -589,13 +509,49 @@ function resolveMarkerCollisions() {
 }
 
 // --- Key Selection ---
+let preSelectView = null; // stores {center, zoom} before selection
+
 function selectKey(key) {
+    // If clicking the same key, deselect
+    if (selectedKey && selectedKey.id === key.id) {
+        deselectKey();
+        return;
+    }
+
+    // Save current view for restoring on deselect
+    if (!selectedKey) {
+        preSelectView = {
+            center: leafletMap.getCenter(),
+            zoom: leafletMap.getZoom()
+        };
+    }
+
     selectedKey = key;
 
-    // Zoom and pan to the selected key
-    leafletMap.flyTo(key.coords, 2, { duration: 0.6 });
+    // Zoom in slightly from current zoom, offset pin to center-left
+    const currentZoom = leafletMap.getZoom();
+    const targetZoom = Math.min(currentZoom + 0.3, leafletMap.getMaxZoom());
+    const targetPoint = leafletMap.project(key.coords, targetZoom);
+    // Shift so pin ends up ~30% from left edge (card opens right)
+    const container = leafletMap.getContainer();
+    const offsetX = container.offsetWidth * 0.15;
+    targetPoint.x += offsetX;
+    const targetLatLng = leafletMap.unproject(targetPoint, targetZoom);
+    leafletMap.flyTo(targetLatLng, targetZoom, { duration: 0.5 });
 
-    // Re-render inventory and markers to update active states
+    renderInventory();
+    renderMarkers();
+}
+
+function deselectKey() {
+    selectedKey = null;
+
+    // Restore previous view
+    if (preSelectView) {
+        leafletMap.flyTo(preSelectView.center, preSelectView.zoom, { duration: 0.5 });
+        preSelectView = null;
+    }
+
     renderInventory();
     renderMarkers();
 }

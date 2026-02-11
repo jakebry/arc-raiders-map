@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Arc Raiders — Keycard Map</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
-    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/styles.css?v=29">
 </head>
 <body>
 
@@ -14,6 +14,7 @@
         <header>
             <h1>ARC RAIDERS</h1>
             <p class="subtitle">KEYCARD MAP</p>
+            <p class="disclaimer">Not affiliated with Embark. Fan-made content.</p>
         </header>
         <div id="map-cards" class="map-grid"></div>
     </div>
@@ -22,20 +23,23 @@
     <div id="screen-map" class="screen">
         <div id="map-ui-overlay">
             <button id="btn-back" class="btn-back">← BACK</button>
-            <button id="btn-export" class="btn-export">EXPORT COORDS</button>
             <div id="level-toggle" class="level-toggle"></div>
-            <div id="alignment-controls" style="display: none;"></div>
         </div>
         <div id="map-container">
             <div id="leaflet-map"></div>
+            <div id="custom-zoom" class="custom-zoom">
+                <button class="zoom-btn zoom-in">+</button>
+                <input type="range" id="zoom-slider" class="zoom-slider" orient="vertical" min="-5" max="3" step="0.01" value="0">
+                <button class="zoom-btn zoom-out">−</button>
+            </div>
         </div>
         <div id="inventory-bar" class="inventory-bar">
             <div id="inventory-slots" class="inventory-slots"></div>
         </div>
     </div>
 
-    <script src="js/data.js"></script>
-    <script src="js/app.js"></script>
+    <script src="js/data.js?v=29"></script>
+    <script src="js/app.js?v=29"></script>
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 </body>
 </html>
