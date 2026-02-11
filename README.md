@@ -34,18 +34,6 @@
 ![Leaflet](https://img.shields.io/badge/Leaflet.js-199900?style=flat-square&logo=leaflet&logoColor=white)
 ![Vercel](https://img.shields.io/badge/Vercel-000000?style=flat-square&logo=vercel&logoColor=white)
 
-## 🚀 Local Development
-
-No build tools needed — just a local server:
-
-```bash
-git clone https://github.com/jakebry/arc-raiders-map.git
-cd arc-raiders-map
-python3 -m http.server 8000
-```
-
-Open [http://localhost:8000](http://localhost:8000) in your browser.
-
 ## 🤝 Contributing
 
 Contributions are welcome! Whether it's adding missing keycard locations, fixing marker positions, or improving the UI — check out [CONTRIBUTING.md](CONTRIBUTING.md) to get started.
