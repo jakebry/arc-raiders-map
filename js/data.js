@@ -151,7 +151,97 @@ const KEYS = [
         weight: 0.25, value: 100 },
 ];
 
-// Helper: get rarity object by id
+// --- Event Data (static descriptions, modifiers, difficulty) ---
+const EVENT_DATA = {
+    "Husk Graveyard": {
+        description: "Something has caused ARC machines to go down on their own in great amounts, leaving husks scattered around Topside. A better opportunity to gather information and parts has rarely presented itself.",
+        modifiers: ["Electrified First Wave husks"],
+        difficulty: 3, multiplier: null
+    },
+    "Night Raid": {
+        description: "Raiders have been finding especially good loot behind locked doors, and keys have been more plentiful. The heightened Raider activity has attracted more ARC than usual.",
+        modifiers: ["Fewer active Return Points", "No active Raider Hatches", "Increased loot value"],
+        difficulty: 5, multiplier: "2X"
+    },
+    "Electromagnetic Storm": {
+        description: "Lightning strikes batter the surface; frying electronics, disrupting ARC machines, and electrocuting unsuspecting Raiders.",
+        modifiers: ["Fewer active Return Points", "No active Raider Hatches", "Increased loot value", "Lightning strikes"],
+        difficulty: 5, multiplier: "2X"
+    },
+    "Hidden Bunker": {
+        description: "Someone has hacked the Outskirts Bunker's security system. Find the 4 buttons to unlock the doors, and be the first to plunder the treasure within.",
+        modifiers: ["Fewer active Return Points", "No active Raider Hatches", "Activate Rooftop Antennas", "Retrieve data from the bunker"],
+        difficulty: 5, multiplier: "2X"
+    },
+    "Cold Snap": {
+        description: "A cold front has swept in with snowfall, and a considerable drop in temperature. The air might feel crisp and brisk at first, but beware of frostbite. Candleberry bushes are bearing valuable fruit — they are now ripe for the picking.",
+        modifiers: ["Harvest Candleberries", "Increased loot value", "Damaging cold"],
+        difficulty: 4, multiplier: "2X"
+    },
+    "Matriarch": {
+        description: "A Matriarch has been sighted nearby. Her children seem hell-bent on keeping her from harm.",
+        modifiers: [],
+        difficulty: 4, multiplier: null
+    },
+    "Harvester": {
+        description: "A Harvester has descended from orbit, deploying its extraction systems across the area. Resources are plentiful but so are the dangers.",
+        modifiers: ["Harvester active in area"],
+        difficulty: 3, multiplier: null
+    },
+    "Launch Tower Loot": {
+        description: "The launch tower systems have briefly come back online, revealing hidden caches of pre-Exodus supplies.",
+        modifiers: ["Launch tower accessible", "Increased loot value"],
+        difficulty: 3, multiplier: null
+    },
+    "Locked Gate": {
+        description: "The gate's security system has malfunctioned, sealing off a section rich with untouched supplies.",
+        modifiers: ["Gate security active", "High-value loot behind gate"],
+        difficulty: 4, multiplier: null
+    },
+    "Bird City": {
+        description: "Flocks of birds have descended on the ruins, drawn by something deep below the surface.",
+        modifiers: [],
+        difficulty: 3, multiplier: null
+    },
+    "Prospecting Probes": {
+        description: "Automated prospecting probes have been deployed across the area, marking locations of valuable resources.",
+        modifiers: ["Probe locations marked", "Increased resource spawns"],
+        difficulty: 3, multiplier: null
+    }
+};
+
+// --- Default descriptions when no event is active ---
+const MAP_DEFAULTS = {
+    dam: {
+        description: "The Dam Battlegrounds stretch across a vast hydroelectric complex, now overrun by ARC machines. Raiders brave these grounds for the rich salvage left behind.",
+        difficulty: 3
+    },
+    spaceport: {
+        description: "Acerra Spaceport is a majestic testament to humanity's past ambitions. This is where the Exodus shuttles, vessels of hope and desperation, once roared into the heavens, leaving a beleaguered Earth behind.",
+        difficulty: 3
+    },
+    buried_city: {
+        description: "Deep beneath layers of sand and debris lies a city frozen in time. The Buried City holds secrets — and dangers — from before the ARC invasion.",
+        difficulty: 4
+    },
+    blue_gate: {
+        description: "Once a steadfast symbol of defiant connection, the Blue Gate now serves as a daunting entryway into the perilous mountain ranges. The surrounding valley bears scars both new and old.",
+        difficulty: 4
+    },
+    stella_montis: {
+        description: "A mountain station shrouded in mystery. Stella Montis towers above the surrounding landscape, its upper and lower levels each hiding their own dangers.",
+        difficulty: 4
+    }
+};
+
+// --- API map name → internal map ID ---
+const API_MAP_NAMES = {
+    "Dam": "dam",
+    "Spaceport": "spaceport",
+    "Buried City": "buried_city",
+    "Blue Gate": "blue_gate",
+    "Stella Montis": "stella_montis"
+};
 function getRarity(rarityId) {
     return RARITIES.find(r => r.id === rarityId);
 }

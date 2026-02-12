@@ -558,5 +558,10 @@ function deselectKey() {
 
 // --- Init on page load ---
 document.addEventListener('DOMContentLoaded', () => {
-    renderMapCards();
+    // Use the live events home screen if available, fallback to card grid
+    if (typeof initEventScreen === 'function') {
+        initEventScreen();
+    } else {
+        renderMapCards();
+    }
 });
