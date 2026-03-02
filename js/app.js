@@ -1,5 +1,7 @@
 // js/app.js
 
+import { MAPS, RARITIES, KEYS, getRarity, getUniqueKeys, getKeysForMap } from './data.js';
+
 // --- State ---
 let currentMap = null;        // currently selected map object
 let currentRarity = null;     // currently active rarity filter (null = all)
@@ -14,9 +16,9 @@ let mapOffset = { x: 0, y: 0 }; // offset for aligning multi-level maps
 
 // --- DOM References ---
 const screenSelect = document.getElementById('screen-select');
-const screenMap    = document.getElementById('screen-map');
-const mapCardsEl   = document.getElementById('map-cards');
-const btnBack      = document.getElementById('btn-back');
+const screenMap = document.getElementById('screen-map');
+const mapCardsEl = document.getElementById('map-cards');
+const btnBack = document.getElementById('btn-back');
 const inventorySlotsEl = document.getElementById('inventory-slots');
 const leafletMapEl = document.getElementById('leaflet-map');
 
@@ -40,11 +42,30 @@ function renderMapCards() {
     MAPS.forEach(map => {
         const card = document.createElement('div');
         card.className = 'map-card';
+        card.dataset.mapId = map.id;
         card.innerHTML = `
             <div class="map-card-img" style="background-image: url('${map.preview}')"></div>
             <div class="map-card-label">${map.name}</div>
         `;
-        card.addEventListener('click', () => enterMap(map));
+        card.addEventListener('click', () => {
+            // Only navigate on desktop, on mobile open drawer
+            if (window.innerWidth <= 768) {
+                // Ensure the global selectHomeMap function from home.js is called
+                document.dispatchEvent(new CustomEvent('mobileMapSelected', { detail: { mapId: map.id } }));
+            } else {
+                enterMap(map);
+            }
+        });
+        // Mobile double-tap to go straight to inspect
+        let lastTap = 0;
+        card.addEventListener('touchend', (e) => {
+            const now = Date.now();
+            if (now - lastTap < 300) {
+                e.preventDefault();
+                enterMap(map);
+            }
+            lastTap = now;
+        });
         mapCardsEl.appendChild(card);
     });
 }
@@ -137,7 +158,7 @@ function initLeafletMap(map) {
         mapOverlay = mapOverlayUpper; // For compatibility
 
         // After upper loads, load lower level in background and fade in
-        mapOverlayUpper.on('load', function() {
+        mapOverlayUpper.on('load', function () {
             var lowerConfig = map.levels.lower;
             var lowerOpacity = currentLevel === 'lower' ? 1.0 : 0.25;
 
@@ -145,7 +166,7 @@ function initLeafletMap(map) {
             mapOverlayLower = L.imageOverlay(lowerConfig.image, [[0, 0], [lowerConfig.height, lowerConfig.width]], { opacity: 0 }).addTo(leafletMap);
 
             // Fade in lower layer after it loads
-            mapOverlayLower.on('load', function() {
+            mapOverlayLower.on('load', function () {
                 setTimeout(() => {
                     if (mapOverlayLower) {
                         mapOverlayLower.setOpacity(lowerOpacity);
@@ -403,7 +424,7 @@ function renderMarkers() {
                 <div class="marker-card-anchor">
                     <div class="marker-card">
                         <div class="marker-card-tags${rarity.id === 'epic' ? ' rarity-epic' : ''}">
-                            <span class="marker-card-tag-box" style="background-color: ${rarity.color};"><img class="tag-key-icon" src="images/icons/key.svg" alt="Key" style="transform: scaleX(-1); filter: ${rarity.id === 'epic' ? 'brightness(0) invert(1)' : 'brightness(0) invert(0.05)'};"></span>
+                            <span class="marker-card-tag-box" style="background-color: ${rarity.color};"><img class="tag-key-icon" src="https://4avhgicb5hfji3xg.public.blob.vercel-storage.com/images/icons/key.svg" alt="Key" style="transform: scaleX(-1); filter: ${rarity.id === 'epic' ? 'brightness(0) invert(1)' : 'brightness(0) invert(0.05)'};"></span>
                             <span class="marker-card-tag-box" style="background-color: ${rarity.color};">KEY</span>
                             <span class="marker-card-tag-box" style="background-color: ${rarity.color};">${rarity.label.toUpperCase()}</span>
                         </div>
@@ -420,9 +441,9 @@ function renderMarkers() {
                             </div>` : ''}
                         </div>
                         <div class="marker-card-footer">
-                            <span><img src="images/icons/weight.svg" alt="Weight"> ${key.weight}</span>
+                            <span><img src="https://4avhgicb5hfji3xg.public.blob.vercel-storage.com/images/icons/weight.svg" alt="Weight"> ${key.weight}</span>
                             <div class="footer-divider"></div>
-                            <span><img src="images/icons/currency.svg" alt="Value"> ${key.value}</span>
+                            <span><img src="https://4avhgicb5hfji3xg.public.blob.vercel-storage.com/images/icons/currency.svg" alt="Value"> ${key.value}</span>
                         </div>
                     </div>
                 </div>
@@ -556,12 +577,4 @@ function deselectKey() {
     renderMarkers();
 }
 
-// --- Init on page load ---
-document.addEventListener('DOMContentLoaded', () => {
-    // Use the live events home screen if available, fallback to card grid
-    if (typeof initEventScreen === 'function') {
-        initEventScreen();
-    } else {
-        renderMapCards();
-    }
-});
+export { enterMap, renderMapCards };

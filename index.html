@@ -1,72 +1,115 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Arc Raiders — Keycard Map</title>
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
-    <link rel="stylesheet" href="css/styles.css?v=30">
+    <link rel="stylesheet" href="css/styles.css">
 </head>
+
 <body>
 
-    <!-- Screen 1: Map Selection (Event-based home screen) -->
+    <!-- Screen 1: Map Selection (Home screen) -->
     <div id="screen-select" class="screen active">
-        <div class="events-home">
+        <div class="home-layout">
             <!-- Header -->
-            <header class="events-header">
-                <div class="events-header-left">
-                    <h1>ARC RAIDERS</h1>
-                    <p class="subtitle">KEYCARD MAP</p>
+            <header class="home-header">
+                <div class="home-header-left">
+                    <img src="https://4avhgicb5hfji3xg.public.blob.vercel-storage.com/images/logo.svg" class="home-logo" alt="Arc Raiders Maps">
                 </div>
                 <p class="disclaimer">Not affiliated with Embark. Fan-made content.</p>
             </header>
 
-            <!-- Main content: map + side panel -->
-            <div class="events-content">
-                <!-- Overhead map with nodes -->
-                <div class="events-map-area">
-                    <div class="events-map-container" id="events-map-container">
-                        <img src="images/map-selection-bg.png" alt="Map Overview" class="events-map-bg">
-                        <div id="map-nodes"></div>
+            <!-- Main content: map column + side panel -->
+            <div class="home-main">
+                <!-- Map column (left ~75%): overhead map + selector strip -->
+                <div class="home-map-column">
+                    <div class="home-map-area">
+                        <div class="home-map-wrapper">
+                            <div class="home-map-container">
+                                <img src="https://4avhgicb5hfji3xg.public.blob.vercel-storage.com/images/blank-map.png" alt="Map Overview" class="home-map-bg">
+                            </div>
+                            <svg id="map-lines" class="map-lines-svg" xmlns="http://www.w3.org/2000/svg"></svg>
+                            <div id="map-markers"></div>
+                            <div id="map-events"></div>
+                            <div id="map-tags"></div>
+                        </div>
+                    </div>
+
+                    <!-- Map selector + MetaForge credit — only below the map -->
+                    <div class="home-map-footer">
+                        <div id="map-cards" class="map-grid"></div>
+                        <span class="home-credit">Event data by <a href="https://metaforge.app" target="_blank"
+                                rel="noopener">MetaForge</a></span>
                     </div>
                 </div>
 
-                <!-- Side panel: event card -->
-                <div class="events-side-panel" id="events-side-panel">
-                    <div class="event-card" id="event-card">
-                        <div class="event-card-image-wrap">
-                            <img id="event-card-image" class="event-card-image" src="" alt="Event">
-                            <div class="event-card-multiplier" id="event-card-multiplier">2X</div>
-                        </div>
-                        <div class="event-card-body">
-                            <div class="event-card-map-name" id="event-card-map-name">—</div>
-                            <div class="event-card-event-name" id="event-card-event-name">No Active Event</div>
-                            <div class="event-card-description" id="event-card-description">Select a map to view current event details.</div>
-                            <div class="event-card-modifiers" id="event-card-modifiers"></div>
-                            <div class="event-card-meta">
-                                <div class="event-card-difficulty" id="event-card-difficulty">
-                                    <span class="difficulty-label">DIFFICULTY</span>
-                                    <span class="difficulty-pips" id="difficulty-pips"></span>
-                                </div>
-                                <div class="event-card-timer" id="event-card-timer">
-                                    <span class="timer-label" id="timer-label">ENDS IN</span>
+                <!-- Side panel: detail card (right ~25%) -->
+                <div class="home-side-panel" id="home-side-panel">
+                    <!-- Mobile close button -->
+                    <button id="mobile-close-panel" class="mobile-close-btn" aria-label="Close details" style="display: none;">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                    </button>
+
+                    <!-- Primary Card: Current Status -->
+                    <div class="home-card" id="home-card">
+
+                        <!-- Top: map image with overlaid difficulty (top-left) and timer (top-right) -->
+                        <div class="home-card-image-wrap">
+                            <img id="home-card-image" class="home-card-image" src="" alt="Map Preview">
+                            <div class="home-card-difficulty" id="home-card-difficulty">
+                                <span class="difficulty-label">DIFFICULTY</span>
+                                <span class="difficulty-pips" id="difficulty-pips"></span>
+                            </div>
+                            <div class="home-card-timer" id="home-card-timer" style="display:none;">
+                                <div class="home-card-timer-wrap" id="home-card-timer-wrap">
+                                    <img src="https://4avhgicb5hfji3xg.public.blob.vercel-storage.com/images/events/icons/timer-icon.png" class="timer-icon-img" alt="">
                                     <span class="timer-value" id="timer-value">—</span>
                                 </div>
+                                <div class="double-points-tag" id="home-card-double-points" style="display:none;">
+                                    <img src="https://4avhgicb5hfji3xg.public.blob.vercel-storage.com/images/events/icons/double-points.png" class="double-points-icon"
+                                        alt="2X Points">
+                                    <span class="double-points-text">2X</span>
+                                </div>
                             </div>
-                            <button class="event-card-inspect-btn" id="event-card-inspect-btn">INSPECT MAP</button>
                         </div>
+
+                        <!-- Event icon circle (hidden when no active event) -->
+                        <div class="home-card-icon-zone" id="home-card-icon-zone" style="display:none;">
+                            <div class="home-card-icon-circle">
+                                <img id="home-card-icon" class="home-card-icon" src="" alt="">
+                            </div>
+                        </div>
+
+                        <!-- Body: cream section -->
+                        <div class="home-card-body">
+                            <div class="home-card-map-name" id="home-card-map-name">—</div>
+                            <div class="home-card-event-name" id="home-card-event-name">—</div>
+
+                            <!-- Description -->
+                            <div class="home-card-description" id="home-card-description">Select a map to view details.
+                            </div>
+
+                            <!-- Modifiers as bullet list -->
+                            <ul class="home-card-modifiers" id="home-card-modifiers" style="display:none;"></ul>
+
+                            <!-- Inspect button -->
+                            <button class="home-card-inspect-btn" id="home-card-inspect-btn">
+                                INSPECT MAP
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Secondary Card: Upcoming Event -->
+                    <div class="home-card home-card-upcoming" id="home-card-upcoming" style="display: none;">
+                        <div class="upcoming-header">UPCOMING</div>
+                        <div id="upcoming-events-list"></div>
                     </div>
                 </div>
             </div>
-
-            <!-- Footer credit -->
-            <footer class="events-footer">
-                <span>Event data provided by <a href="https://metaforge.app" target="_blank" rel="noopener">MetaForge</a></span>
-            </footer>
         </div>
-
-        <!-- Hidden fallback grid (kept for renderMapCards compatibility) -->
-        <div id="map-cards" class="map-grid" style="display:none;"></div>
     </div>
 
     <!-- Screen 2: Interactive Map -->
@@ -79,7 +122,8 @@
             <div id="leaflet-map"></div>
             <div id="custom-zoom" class="custom-zoom">
                 <button class="zoom-btn zoom-in">+</button>
-                <input type="range" id="zoom-slider" class="zoom-slider" orient="vertical" min="-5" max="3" step="0.01" value="0">
+                <input type="range" id="zoom-slider" class="zoom-slider" min="-5" max="3" step="0.01"
+                    value="0">
                 <button class="zoom-btn zoom-out">−</button>
             </div>
         </div>
@@ -88,9 +132,13 @@
         </div>
     </div>
 
-    <script src="js/data.js?v=30"></script>
-    <script src="js/app.js?v=30"></script>
-    <script src="js/events.js?v=30"></script>
+    <script type="module">
+        import { initHomeScreen } from './js/home.js';
+        document.addEventListener('DOMContentLoaded', () => {
+            initHomeScreen();
+        });
+    </script>
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 </body>
+
 </html>

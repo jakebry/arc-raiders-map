@@ -1,0 +1,235 @@
+/* --- Map Container (takes remaining space) --- */
+#map-container {
+    flex: 1;
+    position: relative;
+    min-width: 0;
+}
+
+#leaflet-map {
+    width: 100%;
+    height: 100%;
+    background: #0a0a0f;
+}
+
+/* --- Top UI Overlay (back button + filters) --- */
+#map-ui-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    padding: 12px 16px;
+    background: linear-gradient(to bottom, rgba(10, 10, 15, 0.85) 0%, transparent 100%);
+    pointer-events: none;
+}
+
+#map-ui-overlay>* {
+    pointer-events: auto;
+}
+
+.btn-back {
+    background: rgba(20, 20, 28, 0.8);
+    border: 1px solid #333340;
+    color: #999;
+    padding: 6px 14px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.82rem;
+    letter-spacing: 0.1em;
+    transition: border-color 0.2s, color 0.2s;
+}
+
+.btn-back:hover {
+    border-color: #4a6fa5;
+    color: #fff;
+}
+
+
+/* --- Leaflet Overrides --- */
+.leaflet-container {
+    background: #0a0a0f;
+}
+
+.leaflet-marker-pane,
+.leaflet-marker-icon {
+    overflow: visible !important;
+}
+
+.leaflet-container.space-station {
+    background: #000000;
+}
+
+.leaflet-image-layer {
+    transition: opacity 0.3s ease-in-out;
+}
+
+.leaflet-container.space-station .leaflet-image-layer {
+    mask-image: linear-gradient(to right,
+            transparent 0%,
+            black 10%,
+            black 90%,
+            transparent 100%),
+        linear-gradient(to bottom,
+            transparent 0%,
+            black 10%,
+            black 90%,
+            transparent 100%);
+    mask-composite: intersect;
+    -webkit-mask-image: linear-gradient(to right,
+            transparent 0%,
+            black 10%,
+            black 90%,
+            transparent 100%),
+        linear-gradient(to bottom,
+            transparent 0%,
+            black 10%,
+            black 90%,
+            transparent 100%);
+    -webkit-mask-composite: source-in;
+}
+
+.leaflet-control-zoom {
+    background: rgba(20, 20, 28, 0.85) !important;
+    border-color: #2a2a35 !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4) !important;
+    border-radius: 6px !important;
+}
+
+.leaflet-control-zoom a {
+    color: #999 !important;
+    border-bottom-color: #2a2a35 !important;
+    line-height: 28px !important;
+}
+
+.leaflet-control-zoom a:hover {
+    background: rgba(74, 111, 165, 0.2) !important;
+    color: #fff !important;
+}
+
+/* --- Level Toggle --- */
+.level-toggle {
+    display: flex;
+    gap: 6px;
+}
+
+/* --- Custom Zoom Control --- */
+.custom-zoom {
+    position: absolute;
+    bottom: 20px;
+    left: 20px;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    background: rgba(15, 15, 20, 0.35);
+    border: 1px solid rgba(42, 42, 53, 0.3);
+    border-radius: 6px;
+    padding: 10px 8px;
+    backdrop-filter: blur(4px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    transition: all 0.2s;
+}
+
+.custom-zoom:hover {
+    background: rgba(20, 20, 28, 0.55);
+    border-color: rgba(42, 42, 53, 0.5);
+}
+
+.zoom-btn {
+    width: 32px;
+    height: 32px;
+    background: rgba(20, 20, 30, 0.4);
+    border: 1px solid rgba(51, 51, 64, 0.4);
+    border-radius: 4px;
+    color: rgba(153, 153, 153, 0.7);
+    font-size: 18px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s;
+    user-select: none;
+}
+
+.zoom-btn:hover {
+    background: rgba(30, 30, 40, 0.7);
+    border-color: rgba(74, 111, 165, 0.6);
+    color: rgba(255, 255, 255, 0.9);
+}
+
+.zoom-btn:active {
+    transform: scale(0.95);
+}
+
+.zoom-slider {
+    writing-mode: vertical-lr;
+    direction: rtl;
+    width: 6px;
+    height: 120px;
+    background: rgba(30, 30, 40, 0.3);
+    border-radius: 3px;
+    outline: none;
+    cursor: pointer;
+}
+
+.zoom-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 14px;
+    height: 14px;
+    background: rgba(74, 111, 165, 0.4);
+    border: 2px solid rgba(90, 127, 181, 0.3);
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: 0 0 4px rgba(74, 111, 165, 0.2);
+}
+
+.zoom-slider::-webkit-slider-thumb:hover {
+    background: rgba(90, 127, 181, 0.7);
+    border-color: rgba(90, 127, 181, 0.5);
+    box-shadow: 0 0 8px rgba(74, 111, 165, 0.4);
+}
+
+.zoom-slider::-moz-range-thumb {
+    width: 14px;
+    height: 14px;
+    background: rgba(74, 111, 165, 0.4);
+    border: 2px solid rgba(90, 127, 181, 0.3);
+    border-radius: 50%;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: 0 0 4px rgba(74, 111, 165, 0.2);
+}
+
+.zoom-slider::-moz-range-thumb:hover {
+    background: rgba(90, 127, 181, 0.7);
+    border-color: rgba(90, 127, 181, 0.5);
+    box-shadow: 0 0 8px rgba(74, 111, 165, 0.4);
+}
+
+/* =============================================
+   HOME SCREEN
+   ============================================= */
+
+#screen-select {
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: stretch;
+    padding: 0;
+    background: #0a0a0f;
+    overflow: hidden;
+}
+
+.home-layout {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}

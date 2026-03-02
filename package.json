@@ -1,0 +1,15 @@
+{
+  "name": "arc-raiders-map",
+  "version": "1.0.0",
+  "description": "Interactive keycard map for Arc Raiders",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "vite": "^7.3.1"
+  }
+}

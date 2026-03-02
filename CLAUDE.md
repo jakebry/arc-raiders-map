@@ -19,6 +19,12 @@ python3 -m http.server 8000
 open http://localhost:8000
 ```
 
+**Testing with Chrome (CORS Disabled):**
+To test locally and bypass CORS issues (adjust port if using Vite on 5173 vs Python on 8000):
+```bash
+open -n -a "Google Chrome" --args --user-data-dir=/tmp/chrome_dev_test --disable-web-security "http://localhost:5173"
+```
+
 ### Deploy to Vercel
 ```bash
 # Only deploy when feature is complete or moving to next task
