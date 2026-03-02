@@ -3,6 +3,8 @@
 import { MAPS, EVENT_DATA, MAP_DEFAULTS, API_MAP_NAMES, getRarity, getUniqueKeys } from './data.js';
 import { enterMap, renderMapCards } from './app.js';
 
+const BLOB = 'https://4avhgicb5hfji3xg.public.blob.vercel-storage.com';
+
 // --- State ---
 let selectedMapId = 'dam';
 let panelFading = false;
@@ -86,32 +88,32 @@ function addDoubleActivate(el, mapId) {
 function getEventImage(mapId, eventName) {
     if (eventName) {
         const eventImages = {
-            'Bird City': 'https://4avhgicb5hfji3xg.public.blob.vercel-storage.com/images/events/Bird%20City.jpg',
-            'Cold Snap': 'https://4avhgicb5hfji3xg.public.blob.vercel-storage.com/images/events/Cold%20Snap.jpg',
-            'Electromagnetic Storm': 'https://4avhgicb5hfji3xg.public.blob.vercel-storage.com/images/events/ElectroMagnetic%20Storm.jpg',
-            'Harvester': 'https://4avhgicb5hfji3xg.public.blob.vercel-storage.com/images/events/Harvester.jpg',
-            'Hidden Bunker': 'https://4avhgicb5hfji3xg.public.blob.vercel-storage.com/images/events/Hidden%20Bunker.jpg',
-            'Hurricane': 'https://4avhgicb5hfji3xg.public.blob.vercel-storage.com/images/events/Hurricane.jpg',
-            'Husk Graveyard': 'https://4avhgicb5hfji3xg.public.blob.vercel-storage.com/images/events/Husk%20Graveyard.jpg',
-            'Launch Tower Loot': 'https://4avhgicb5hfji3xg.public.blob.vercel-storage.com/images/events/Launch%20Tower%20Loot.jpg',
-            'Locked Gate': 'https://4avhgicb5hfji3xg.public.blob.vercel-storage.com/images/events/Locked%20Gate.jpg',
-            'Lush Blooms': 'https://4avhgicb5hfji3xg.public.blob.vercel-storage.com/images/events/Lush%20Blooms.jpg',
-            'Matriarch': 'https://4avhgicb5hfji3xg.public.blob.vercel-storage.com/images/events/Matriarch.jpg',
-            'Night Raid': 'https://4avhgicb5hfji3xg.public.blob.vercel-storage.com/images/events/Night%20Raid.jpg',
-            'Prospecting Probes': 'https://4avhgicb5hfji3xg.public.blob.vercel-storage.com/images/events/Prospecting%20Probes.jpg',
-            'Uncovered Caches': 'https://4avhgicb5hfji3xg.public.blob.vercel-storage.com/images/events/UncoveredCaches.jpg'
+            'Bird City': `${BLOB}/images/events/Bird%20City.jpg`,
+            'Cold Snap': `${BLOB}/images/events/Cold%20Snap.jpg`,
+            'Electromagnetic Storm': `${BLOB}/images/events/ElectroMagnetic%20Storm.jpg`,
+            'Harvester': `${BLOB}/images/events/Harvester.jpg`,
+            'Hidden Bunker': `${BLOB}/images/events/Hidden%20Bunker.jpg`,
+            'Hurricane': `${BLOB}/images/events/Hurricane.jpg`,
+            'Husk Graveyard': `${BLOB}/images/events/Husk%20Graveyard.jpg`,
+            'Launch Tower Loot': `${BLOB}/images/events/Launch%20Tower%20Loot.jpg`,
+            'Locked Gate': `${BLOB}/images/events/Locked%20Gate.jpg`,
+            'Lush Blooms': `${BLOB}/images/events/Lush%20Blooms.jpg`,
+            'Matriarch': `${BLOB}/images/events/Matriarch.jpg`,
+            'Night Raid': `${BLOB}/images/events/Night%20Raid.jpg`,
+            'Prospecting Probes': `${BLOB}/images/events/Prospecting%20Probes.jpg`,
+            'Uncovered Caches': `${BLOB}/images/events/UncoveredCaches.jpg`
         };
         if (eventImages[eventName]) return eventImages[eventName];
     }
 
     const mapDefaults = {
-        'dam': 'https://4avhgicb5hfji3xg.public.blob.vercel-storage.com/images/events/Dam%20Battlegrounds.jpg',
-        'spaceport': 'https://4avhgicb5hfji3xg.public.blob.vercel-storage.com/images/events/Spaceport.jpg',
-        'blue_gate': 'https://4avhgicb5hfji3xg.public.blob.vercel-storage.com/images/events/Blue%20Gate.jpg'
+        'dam': `${BLOB}/images/events/Dam%20Battlegrounds.jpg`,
+        'spaceport': `${BLOB}/images/events/Spaceport.jpg`,
+        'blue_gate': `${BLOB}/images/events/Blue%20Gate.jpg`
     };
     if (mapDefaults[mapId]) return mapDefaults[mapId];
 
-    return `https://4avhgicb5hfji3xg.public.blob.vercel-storage.com/images/preview/${mapId}.jpg`;
+    return `${BLOB}/images/preview/${mapId}.jpg`;
 }
 
 function getMainEventIcon(eventName) {
@@ -135,10 +137,10 @@ function getMainEventIcon(eventName) {
     const filename = nameMap[eventName];
     // Force cache bust to guarantee updated SVGs load
     const cacheBust = typeof window !== 'undefined' ? `?v=${Date.now()}` : '';
-    if (filename) return `https://4avhgicb5hfji3xg.public.blob.vercel-storage.com/images/events/icons/${filename}${cacheBust}`;
+    if (filename) return `${BLOB}/images/events/icons/${filename}${cacheBust}`;
 
     const kebab = eventName.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
-    return `https://4avhgicb5hfji3xg.public.blob.vercel-storage.com/images/events/icons/${kebab}.svg${cacheBust}`;
+    return `${BLOB}/images/events/icons/${kebab}.svg${cacheBust}`;
 }
 
 function getMinorEventIcon(eventName) {
@@ -159,10 +161,10 @@ function getMinorEventIcon(eventName) {
         'Uncovered Caches': 'UncoveredCachesWhite Icon_Uncovered Caches Icon.svg'
     };
     const filename = nameMap[eventName];
-    if (filename) return `https://4avhgicb5hfji3xg.public.blob.vercel-storage.com/images/events/icons/White%20Icons/${filename}`;
+    if (filename) return `${BLOB}/images/events/icons/White%20Icons/${filename}`;
 
     const kebab = eventName.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
-    return `https://4avhgicb5hfji3xg.public.blob.vercel-storage.com/images/events/icons/White%20Icons/${kebab}.svg`;
+    return `${BLOB}/images/events/icons/White%20Icons/${kebab}.svg`;
 }
 
 function formatTime(ms) {

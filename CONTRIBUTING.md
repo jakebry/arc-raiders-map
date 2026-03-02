@@ -10,7 +10,7 @@ Thanks for your interest in contributing! 🎉
 ### 📍 Fix or Add Marker Locations
 1. Fork the repo and clone locally
 2. Edit `js/data.js` — keycard/door entries are coordinate arrays `[y, x]` in pixel space
-3. Test with `python3 -m http.server 8000`
+3. Test with `npx vite` (opens at http://localhost:5173)
 4. Submit a PR with a description of what changed
 
 ### 💡 Request a Feature

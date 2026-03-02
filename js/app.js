@@ -2,6 +2,8 @@
 
 import { MAPS, RARITIES, KEYS, getRarity, getUniqueKeys, getKeysForMap } from './data.js';
 
+const BLOB = 'https://4avhgicb5hfji3xg.public.blob.vercel-storage.com';
+
 // --- State ---
 let currentMap = null;        // currently selected map object
 let currentRarity = null;     // currently active rarity filter (null = all)
@@ -234,40 +236,6 @@ function initLeafletMap(map) {
     }, 100);
 }
 
-// --- Rarity Filter Bar ---
-function renderFilterBar() {
-    filterBarEl.innerHTML = '';
-
-    // "All" pill
-    const allPill = document.createElement('button');
-    allPill.className = 'filter-pill' + (currentRarity === null ? ' active' : '');
-    allPill.textContent = 'ALL';
-    allPill.addEventListener('click', () => {
-        currentRarity = null;
-        selectedKey = null;
-        renderFilterBar();
-        renderInventory();
-        renderMarkers();
-    });
-    filterBarEl.appendChild(allPill);
-
-    // One pill per rarity
-    RARITIES.forEach(rarity => {
-        const pill = document.createElement('button');
-        pill.className = 'filter-pill' + (currentRarity === rarity.id ? ' active' : '');
-        pill.style.setProperty('--pill-color', rarity.color);
-        pill.textContent = rarity.label.toUpperCase();
-        pill.addEventListener('click', () => {
-            currentRarity = rarity.id;
-            selectedKey = null;
-            renderFilterBar();
-            renderInventory();
-            renderMarkers();
-        });
-        filterBarEl.appendChild(pill);
-    });
-}
-
 // --- Level Toggle (Stella Montis upper/lower) ---
 function renderLevelToggle() {
     const el = document.getElementById('level-toggle');
@@ -424,7 +392,7 @@ function renderMarkers() {
                 <div class="marker-card-anchor">
                     <div class="marker-card">
                         <div class="marker-card-tags${rarity.id === 'epic' ? ' rarity-epic' : ''}">
-                            <span class="marker-card-tag-box" style="background-color: ${rarity.color};"><img class="tag-key-icon" src="https://4avhgicb5hfji3xg.public.blob.vercel-storage.com/images/icons/key.svg" alt="Key" style="transform: scaleX(-1); filter: ${rarity.id === 'epic' ? 'brightness(0) invert(1)' : 'brightness(0) invert(0.05)'};"></span>
+                            <span class="marker-card-tag-box" style="background-color: ${rarity.color};"><img class="tag-key-icon" src="${BLOB}/images/icons/key.svg" alt="Key" style="transform: scaleX(-1); filter: ${rarity.id === 'epic' ? 'brightness(0) invert(1)' : 'brightness(0) invert(0.05)'};"></span>
                             <span class="marker-card-tag-box" style="background-color: ${rarity.color};">KEY</span>
                             <span class="marker-card-tag-box" style="background-color: ${rarity.color};">${rarity.label.toUpperCase()}</span>
                         </div>
@@ -441,9 +409,9 @@ function renderMarkers() {
                             </div>` : ''}
                         </div>
                         <div class="marker-card-footer">
-                            <span><img src="https://4avhgicb5hfji3xg.public.blob.vercel-storage.com/images/icons/weight.svg" alt="Weight"> ${key.weight}</span>
+                            <span><img src="${BLOB}/images/icons/weight.svg" alt="Weight"> ${key.weight}</span>
                             <div class="footer-divider"></div>
-                            <span><img src="https://4avhgicb5hfji3xg.public.blob.vercel-storage.com/images/icons/currency.svg" alt="Value"> ${key.value}</span>
+                            <span><img src="${BLOB}/images/icons/currency.svg" alt="Value"> ${key.value}</span>
                         </div>
                     </div>
                 </div>

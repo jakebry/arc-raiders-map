@@ -1,6 +1,0 @@
-<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-  <!-- Currency: C shape with double vertical strokes, centered -->
-  <path d="M10.2 5C9.6 4 8.7 3.5 7.6 3.5C5.8 3.5 4.3 5.3 4.3 7.5C4.3 9.7 5.8 11.5 7.6 11.5C8.7 11.5 9.6 11 10.2 10" stroke="#1e1c1e" stroke-width="1.5" stroke-linecap="round" fill="none"/>
-  <line x1="7.2" y1="2.2" x2="7.2" y2="12.8" stroke="#1e1c1e" stroke-width="1.1" stroke-linecap="round"/>
-  <line x1="8.8" y1="2.2" x2="8.8" y2="12.8" stroke="#1e1c1e" stroke-width="1.1" stroke-linecap="round"/>
-</svg>
