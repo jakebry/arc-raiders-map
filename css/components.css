@@ -651,8 +651,8 @@
 .map-marker {
     position: absolute;
     transform: translate(-50%, -50%);
-    width: clamp(12px, 1.9cqw, 22px);
-    height: clamp(12px, 1.9cqw, 22px);
+    width: var(--map-marker-size, clamp(12px, 1.9cqw, 22px));
+    height: var(--map-marker-size, clamp(12px, 1.9cqw, 22px));
     border-radius: 50%;
     background: rgba(15, 20, 35, 0.55);
     backdrop-filter: blur(3px);
@@ -1050,6 +1050,14 @@
     font-size: 0.78rem;
     color: #8a7a68;
     font-weight: 600;
+}
+
+/* Event label container: column layout, right-aligned, gap controlled via CSS var */
+.special-event-label-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: var(--event-label-gap, 4px);
 }
 
 /* Upcoming timer: muted gray */
@@ -1596,10 +1604,9 @@
         gap: 2px;
     }
 
-    /* Shrink map marker dots */
+    /* Shrink map marker dots on mobile */
     .map-marker {
-        width: 8px !important;
-        height: 8px !important;
+        --map-marker-size: 8px;
     }
 
     /* Shrink node icons */
@@ -1625,9 +1632,9 @@
         font-size: 0.55rem;
     }
 
-    /* Tighten label-to-timer gap in event labels */
+    /* Tighten label-to-timer gap in event labels on mobile */
     .special-event-label-container {
-        gap: 2px !important;
+        --event-label-gap: 2px;
     }
 
     /* --- Side Panel: bottom sheet drawer --- */
@@ -1671,11 +1678,9 @@
         pointer-events: none;
     }
 
-    .home-side-panel.open .mobile-close-btn {
-        display: flex !important;
-    }
-
+    /* Mobile close button: hidden by default, shown only when panel is open */
     .mobile-close-btn {
+        display: none;
         position: absolute;
         top: -50px;
         right: 20px;
@@ -1685,12 +1690,16 @@
         width: 36px;
         height: 36px;
         border-radius: 50%;
-        display: flex;
         align-items: center;
         justify-content: center;
         z-index: 2000;
         backdrop-filter: blur(4px);
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+    }
+
+    /* More-specific selector wins over the hidden default above */
+    .home-side-panel.open .mobile-close-btn {
+        display: flex;
     }
 
     /* Main card fills available space above upcoming */

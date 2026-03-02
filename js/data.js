@@ -5,7 +5,7 @@
 // border: pixels of blurred extension added on each side of the original map image.
 
 // All assets (images, fonts) are served from Vercel Blob — no local asset folders.
-const BLOB = 'https://4avhgicb5hfji3xg.public.blob.vercel-storage.com';
+export const BLOB = 'https://4avhgicb5hfji3xg.public.blob.vercel-storage.com';
 
 export const MAPS = [
     { id: 'dam', name: 'Dam Battlegrounds', image: `${BLOB}/images/maps/dam.jpg`, preview: `${BLOB}/images/preview/dam.jpg`, width: 4896, height: 4540, border: 400, overheadCoords: { top: '55%', left: '48%' } },
@@ -216,72 +216,122 @@ export const KEYS = [
     },
 ];
 
-// --- Event Data (static descriptions, modifiers, difficulty) ---
+// --- Event Data (static descriptions, modifiers, difficulty, and icon/image paths) ---
+// image: banner image shown in the side panel for this event.
+// mainIcon: circular SVG icon shown on the overhead map (main events).
+// minorIcon: white SVG icon shown inline on the map node label (minor events).
 export const EVENT_DATA = {
     "Husk Graveyard": {
         description: "Something has caused ARC machines to go down on their own in great amounts, leaving husks scattered around Topside. A better opportunity to gather information and parts has rarely presented itself.",
         modifiers: ["Electrified First Wave husks"],
-        difficulty: 3, multiplier: null
+        difficulty: 3, multiplier: null,
+        image: `${BLOB}/images/events/Husk%20Graveyard.jpg`,
+        mainIcon: `${BLOB}/images/events/icons/arc_map_icons_Husk Graveyard Icon.svg`,
+        minorIcon: `${BLOB}/images/events/icons/White%20Icons/HuskGraveyard.svg`
     },
     "Night Raid": {
         description: "Raiders have been finding especially good loot behind locked doors, and keys have been more plentiful. The heightened Raider activity has attracted more ARC than usual.",
         modifiers: ["Fewer active Return Points", "No active Raider Hatches", "Increased loot value"],
-        difficulty: 5, multiplier: "2X"
+        difficulty: 5, multiplier: "2X",
+        image: `${BLOB}/images/events/Night%20Raid.jpg`,
+        mainIcon: `${BLOB}/images/events/icons/arc_map_icons_Night Raid Icon.svg`,
+        minorIcon: `${BLOB}/images/events/icons/White%20Icons/NightRaid.svg`
     },
     "Electromagnetic Storm": {
         description: "Lightning strikes batter the surface; frying electronics, disrupting ARC machines, and electrocuting unsuspecting Raiders.",
         modifiers: ["Fewer active Return Points", "No active Raider Hatches", "Increased loot value", "Lightning strikes"],
-        difficulty: 5, multiplier: "2X"
+        difficulty: 5, multiplier: "2X",
+        image: `${BLOB}/images/events/ElectroMagnetic%20Storm.jpg`,
+        mainIcon: `${BLOB}/images/events/icons/arc_map_icons_ElectroMagnetic Strorm Icon.svg`,
+        minorIcon: `${BLOB}/images/events/icons/White%20Icons/ElectromagneticStorm.svg`
     },
     "Hidden Bunker": {
         description: "Someone has hacked the Outskirts Bunker's security system. Find the 4 buttons to unlock the doors, and be the first to plunder the treasure within.",
         modifiers: ["Fewer active Return Points", "No active Raider Hatches", "Activate Rooftop Antennas", "Retrieve data from the bunker"],
-        difficulty: 5, multiplier: "2X"
+        difficulty: 5, multiplier: "2X",
+        image: `${BLOB}/images/events/Hidden%20Bunker.jpg`,
+        mainIcon: `${BLOB}/images/events/icons/arc_map_icons_Hidden Bunker Icon.svg`,
+        minorIcon: `${BLOB}/images/events/icons/White%20Icons/HiddenBunker.svg`
     },
     "Cold Snap": {
         description: "A cold front has swept in with snowfall, and a considerable drop in temperature. The air might feel crisp and brisk at first, but beware of frostbite. Candleberry bushes are bearing valuable fruit — they are now ripe for the picking.",
         modifiers: ["Harvest Candleberries", "Increased loot value", "Damaging cold"],
-        difficulty: 4, multiplier: "2X"
+        difficulty: 4, multiplier: "2X",
+        image: `${BLOB}/images/events/Cold%20Snap.jpg`,
+        mainIcon: `${BLOB}/images/events/icons/arc_map_icons_Cold Snap Icon.svg`,
+        minorIcon: `${BLOB}/images/events/icons/White%20Icons/ColdSnap.svg`
     },
     "Matriarch": {
         description: "A Matriarch has been sighted nearby. Her children seem hell-bent on keeping her from harm.",
         modifiers: [],
-        difficulty: 4, multiplier: null
+        difficulty: 4, multiplier: null,
+        image: `${BLOB}/images/events/Matriarch.jpg`,
+        mainIcon: `${BLOB}/images/events/icons/arc_map_icons_Matriarch Icon.svg`,
+        minorIcon: `${BLOB}/images/events/icons/White%20Icons/MatriarchIcon.svg`
     },
     "Harvester": {
         description: "A Harvester has descended from orbit, deploying its extraction systems across the area. Resources are plentiful but so are the dangers.",
         modifiers: ["Harvester active in area"],
-        difficulty: 3, multiplier: null
+        difficulty: 3, multiplier: null,
+        image: `${BLOB}/images/events/Harvester.jpg`,
+        mainIcon: `${BLOB}/images/events/icons/arc_map_icons_Harvester Icon.svg`,
+        minorIcon: `${BLOB}/images/events/icons/White%20Icons/Harvester.svg`
     },
     "Launch Tower Loot": {
         description: "The launch tower systems have briefly come back online, revealing hidden caches of pre-Exodus supplies.",
         modifiers: ["Launch tower accessible", "Increased loot value"],
-        difficulty: 3, multiplier: null
+        difficulty: 3, multiplier: null,
+        image: `${BLOB}/images/events/Launch%20Tower%20Loot.jpg`,
+        mainIcon: `${BLOB}/images/events/icons/LaunchTowerLoot Circle Icon_Launch Tower Loot Icon.svg`,
+        minorIcon: `${BLOB}/images/events/icons/White%20Icons/Launch Tower Loot White Logo.svg`
     },
     "Locked Gate": {
         description: "The gate's security system has malfunctioned, sealing off a section rich with untouched supplies.",
         modifiers: ["Gate security active", "High-value loot behind gate"],
-        difficulty: 4, multiplier: "2X"
+        difficulty: 4, multiplier: "2X",
+        image: `${BLOB}/images/events/Locked%20Gate.jpg`,
+        mainIcon: `${BLOB}/images/events/icons/arc_map_icons_Locked Gate Icon.svg`,
+        minorIcon: null
     },
     "Bird City": {
         description: "Flocks of birds have descended on the ruins, drawn by something deep below the surface.",
         modifiers: [],
-        difficulty: 3, multiplier: null
+        difficulty: 3, multiplier: null,
+        image: `${BLOB}/images/events/Bird%20City.jpg`,
+        mainIcon: `${BLOB}/images/events/icons/arc_map_icons_Bird City Icon.svg`,
+        minorIcon: `${BLOB}/images/events/icons/White%20Icons/Bird City.svg`
     },
     "Prospecting Probes": {
         description: "Automated prospecting probes have been deployed across the area, marking locations of valuable resources.",
         modifiers: ["Probe locations marked", "Increased resource spawns"],
-        difficulty: 3, multiplier: null
+        difficulty: 3, multiplier: null,
+        image: `${BLOB}/images/events/Prospecting%20Probes.jpg`,
+        mainIcon: `${BLOB}/images/events/icons/arc_map_icons_Prospecting Probes Icon.svg`,
+        minorIcon: `${BLOB}/images/events/icons/White%20Icons/ProspectingProbes.svg`
     },
     "Uncovered Caches": {
         description: "Old, pre-Exodus resource caches have been uncovered in the area. Plunder them before others do.",
         modifiers: ["Increased loot value", "High-value resource caches"],
-        difficulty: 3, multiplier: null
+        difficulty: 3, multiplier: null,
+        image: `${BLOB}/images/events/UncoveredCaches.jpg`,
+        mainIcon: `${BLOB}/images/events/icons/UncoveredCaches_Uncovered Caches Icon.svg`,
+        minorIcon: `${BLOB}/images/events/icons/White%20Icons/UncoveredCachesWhite Icon_Uncovered Caches Icon.svg`
     },
     "Hurricane": {
         description: "Strong winds are sweeping across the surface, affecting large parts of the area. Visibility and hearing may be reduced, so stay alert.",
         modifiers: ["Increased loot value", "Debris affects Shields", "Higher-threat ARC"],
-        difficulty: 4, multiplier: "2X"
+        difficulty: 4, multiplier: "2X",
+        image: `${BLOB}/images/events/Hurricane.jpg`,
+        mainIcon: `${BLOB}/images/events/icons/Hurricane in circle.svg`,
+        minorIcon: `${BLOB}/images/events/icons/White%20Icons/Hurricane white icon.svg`
+    },
+    "Lush Blooms": {
+        description: "Rare flowers have bloomed across the surface, attracting wildlife — and opportunistic raiders.",
+        modifiers: [],
+        difficulty: 3, multiplier: null,
+        image: `${BLOB}/images/events/Lush%20Blooms.jpg`,
+        mainIcon: `${BLOB}/images/events/icons/arc_map_icons_Lush Blooms Icon.svg`,
+        minorIcon: `${BLOB}/images/events/icons/White%20Icons/LushBlooms.svg`
     }
 };
 

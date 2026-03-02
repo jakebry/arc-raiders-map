@@ -1,8 +1,6 @@
 // js/app.js
 
-import { MAPS, RARITIES, KEYS, getRarity, getUniqueKeys, getKeysForMap } from './data.js';
-
-const BLOB = 'https://4avhgicb5hfji3xg.public.blob.vercel-storage.com';
+import { MAPS, RARITIES, KEYS, BLOB, getRarity, getUniqueKeys, getKeysForMap } from './data.js';
 
 // --- State ---
 let currentMap = null;        // currently selected map object
