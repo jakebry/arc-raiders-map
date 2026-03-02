@@ -90,7 +90,8 @@ function enterMap(map) {
     initLeafletMap(map);
     renderLevelToggle();
     renderInventory();
-    renderMarkers();
+    // renderMarkers() is called inside initLeafletMap's setTimeout
+    // after setView/fitBounds — calling it here would race and error
 }
 
 // --- Leaflet Map ---
