@@ -986,6 +986,11 @@
     filter: grayscale(1);
 }
 
+/* Mobile close button — hidden on desktop, shown via media query on mobile */
+.mobile-close-btn {
+    display: none;
+}
+
 /* --- Upcoming Event Card (Secondary) --- */
 .home-card-upcoming {
     margin-top: 0;
