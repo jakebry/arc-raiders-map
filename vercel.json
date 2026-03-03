@@ -1,0 +1,9 @@
+{
+  "rewrites": [
+    {
+      "source": "/api/arc-raiders/events-schedule",
+      "destination": "https://metaforge.app/api/arc-raiders/events-schedule"
+    }
+  ]
+}
+
