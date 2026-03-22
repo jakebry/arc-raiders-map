@@ -214,7 +214,13 @@ export function updateSidePanel(mapId, animate, currentEvents, showMode = null) 
         if (imgWrap) imgWrap.classList.add('fade-out');
         if (iconZone) iconZone.classList.add('fade-out');
 
-        setTimeout(() => {
+        // Preload the new image before fading in to prevent stale image flash
+        const preload = new Image();
+        preload.src = imageSrc;
+        let resolved = false;
+        const onReady = () => {
+            if (resolved) return; // guard against double invocation
+            resolved = true;
             doUpdate();
             if (body) { body.classList.remove('fade-out'); body.classList.add('fade-in'); }
             if (imgWrap) { imgWrap.classList.remove('fade-out'); imgWrap.classList.add('fade-in'); }
@@ -226,6 +232,16 @@ export function updateSidePanel(mapId, animate, currentEvents, showMode = null) 
                 if (iconZone) iconZone.classList.remove('fade-in');
                 panelFading = false;
             }, 300);
+        };
+
+        setTimeout(() => {
+            if (preload.complete) {
+                onReady();
+            } else {
+                const timeout = setTimeout(onReady, 500);
+                preload.onload = () => { clearTimeout(timeout); onReady(); };
+                preload.onerror = () => { clearTimeout(timeout); onReady(); };
+            }
         }, 200);
     } else {
         doUpdate();

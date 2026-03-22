@@ -152,10 +152,15 @@ function wireInspectButton() {
 }
 
 function wireMapCardHovers() {
+    let hoverTimeout = null;
     document.querySelectorAll('#map-cards .map-card').forEach(card => {
         card.addEventListener('mouseenter', () => {
             if (window.innerWidth > 768 && card.dataset.mapId) {
-                selectHomeMap(card.dataset.mapId, 'DEFAULT');
+                // Debounce the heavy work (updateMapNodes, updateSidePanel)
+                if (hoverTimeout) cancelAnimationFrame(hoverTimeout);
+                hoverTimeout = requestAnimationFrame(() => {
+                    selectHomeMap(card.dataset.mapId, 'DEFAULT');
+                });
             }
         });
     });
