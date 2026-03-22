@@ -156,10 +156,6 @@ function wireMapCardHovers() {
     document.querySelectorAll('#map-cards .map-card').forEach(card => {
         card.addEventListener('mouseenter', () => {
             if (window.innerWidth > 768 && card.dataset.mapId) {
-                // Immediately update the visual selection (CSS class toggle — cheap)
-                document.querySelectorAll('#map-cards .map-card').forEach(c =>
-                    c.classList.toggle('home-selected', c.dataset.mapId === card.dataset.mapId)
-                );
                 // Debounce the heavy work (updateMapNodes, updateSidePanel)
                 if (hoverTimeout) cancelAnimationFrame(hoverTimeout);
                 hoverTimeout = requestAnimationFrame(() => {
