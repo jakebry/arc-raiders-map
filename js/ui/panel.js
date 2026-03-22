@@ -217,7 +217,10 @@ export function updateSidePanel(mapId, animate, currentEvents, showMode = null) 
         // Preload the new image before fading in to prevent stale image flash
         const preload = new Image();
         preload.src = imageSrc;
+        let resolved = false;
         const onReady = () => {
+            if (resolved) return; // guard against double invocation
+            resolved = true;
             doUpdate();
             if (body) { body.classList.remove('fade-out'); body.classList.add('fade-in'); }
             if (imgWrap) { imgWrap.classList.remove('fade-out'); imgWrap.classList.add('fade-in'); }
@@ -232,11 +235,10 @@ export function updateSidePanel(mapId, animate, currentEvents, showMode = null) 
         };
 
         setTimeout(() => {
-            // If image already cached, fire immediately; otherwise wait for load (max 500ms)
             if (preload.complete) {
                 onReady();
             } else {
-                const timeout = setTimeout(onReady, 500); // fallback if image takes too long
+                const timeout = setTimeout(onReady, 500);
                 preload.onload = () => { clearTimeout(timeout); onReady(); };
                 preload.onerror = () => { clearTimeout(timeout); onReady(); };
             }

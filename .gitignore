@@ -26,3 +26,4 @@ dist/
 
 # AI context files
 .qodo/
+.vite/

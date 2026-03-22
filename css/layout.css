@@ -30,7 +30,7 @@
     border: none;
     overflow: visible;
     cursor: pointer;
-    transition: transform 0.15s ease;
+    transition: transform 0.25s ease;
     display: flex;
     flex-direction: column;
     position: relative;
