@@ -26,17 +26,17 @@
 }
 
 .map-card {
-    background: #131318;
     background: transparent;
     border: none;
     overflow: visible;
     cursor: pointer;
-    transition: transform 0.2s ease;
+    transition: transform 0.15s ease;
     display: flex;
     flex-direction: column;
     position: relative;
     width: 60px;
     flex-shrink: 0;
+    will-change: transform;
 }
 
 .map-card:hover {
@@ -79,15 +79,18 @@
     animation: smoothRotate 3s linear infinite;
 }
 
-/* Selected map card — orange outline + label */
+/* Selected map card — colorful border only, no orange outline */
 .map-card.home-selected .map-card-img {
-    outline: 2px solid #ff9f1c;
-    outline-offset: -2px;
     border-radius: 6px;
 }
 
+.map-card.home-selected::before {
+    opacity: 0.85;
+    animation: smoothRotate 3s linear infinite;
+}
+
 .map-card.home-selected .map-card-label {
-    color: #ff9f1c;
+    color: #e0e0f0;
 }
 
 .map-card-img {
